@@ -1,18 +1,10 @@
 Symfony Standard Edition
 ========================
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
-
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
-
 What's inside?
 --------------
 
-The Symfony Standard Edition is configured with the following defaults:
-
-  * An AppBundle you can use to start coding;
+The Blog RestFul Api (Based on Symfony) is configured with the following defaults:
 
   * Twig as the only configured template engine;
 
@@ -53,7 +45,13 @@ It comes pre-configured with the following bundles:
   * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
     integration
 
-All libraries and bundles included in the Symfony Standard Edition are
+  * **nelmio/api-doc-bundle
+  * **friendsofsymfony/user-bundle
+  * **friendsofsymfony/oauth-server-bundle
+  * **jms/serializer-bundle
+  * **friendsofsymfony/rest-bundle
+
+All libraries and bundles included in the Blog Restful Api (Based on Symfony) are
 released under the MIT or BSD license.
 
 Enjoy!
