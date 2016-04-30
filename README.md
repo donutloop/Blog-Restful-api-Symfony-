@@ -1,4 +1,4 @@
-Symfony Standard Edition
+Blog Restful API Symfony Edition
 ========================
 
 What's inside?
