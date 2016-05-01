@@ -22,6 +22,12 @@ class Article
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="user")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user_id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
@@ -61,5 +67,23 @@ class Article
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Get user id
+     *
+     * @return mixed
+     */
+    public function getUserId(){
+        return $this->user_id;
+    }
+
+    /**
+     * Set user id
+     *
+     * @param $id
+     */
+    public function setUserId($id){
+        $this->user_id = $id;
     }
 }
