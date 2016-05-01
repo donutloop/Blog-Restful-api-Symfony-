@@ -22,6 +22,27 @@ class Article
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
+
+    /** 
+     * @var string
+     * 
+     * @ORM\Column(name="created_at", type="string", length=255) 
+     */
+    private $createdAt;
+
+    /**
+     * @var string 
+     * 
+     * @ORM\Column(name="update_at", type="string", length=255)
+     */
+    private $updateAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="user")
@@ -38,15 +59,7 @@ class Article
     public function __construct() {
         $this->tags = new ArrayCollection();
     }
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     */
-    private $title;
-
-
+    
     /**
      * Get id
      *
@@ -128,5 +141,24 @@ class Article
     public function getTags()
     {
         return $this->tags;
+    }
+    
+    /**
+     *  Set create at  
+     * 
+     * @ORM\PrePersist 
+     */
+    public function setCreateAt()
+    {
+        $this->createdAt = date('Y-m-d H:i:s');
+    }
+    
+    /**
+     * Set update at 
+     * 
+     * @ORM\PreUpdate
+     */
+    public function setUpdateAt(){
+       $this->updateAt = date('Y-m-d H:i:s'); 
     }
 }
