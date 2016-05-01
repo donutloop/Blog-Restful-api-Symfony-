@@ -45,13 +45,13 @@ class Article
     private $updateAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="user")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="tag", inversedBy="article")
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="article")
      * @ORM\JoinTable(name="article_tag")
      */
     private $tags;

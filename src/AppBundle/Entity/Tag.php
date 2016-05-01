@@ -45,7 +45,7 @@ class Tag
     private $updateAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="article", mappedBy="tag")
+     * @ORM\ManyToMany(targetEntity="Article", mappedBy="tag")
      */
     private $articles;
 
@@ -93,7 +93,7 @@ class Tag
      * @param Article $article
      * @return Tag
      */
-    public function addTag(Article $article)
+    public function addArticle(Article $article)
     {
         $this->articles[] = $article;
         return $this;
@@ -103,7 +103,7 @@ class Tag
      *
      * @param Article $article
      */
-    public function removeTag(Article $article)
+    public function removeArticle(Article $article)
     {
         $this->articles->removeElement($article);
     }
