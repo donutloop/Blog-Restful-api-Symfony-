@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Entity\Tag;
 
 /**
  * Article
@@ -26,6 +28,16 @@ class Article
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user_id;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="tag", inversedBy="article")
+     * @ORM\JoinTable(name="article_tag")
+     */
+    private $tags;
+
+    public function __construct() {
+        $this->tags = new ArrayCollection();
+    }
 
     /**
      * @var string
@@ -85,5 +97,36 @@ class Article
      */
     public function setUserId($id){
         $this->user_id = $id;
+    }
+    
+    /**
+     * Add tags
+     *
+     * @param Tag $tags
+     * @return Article
+     */
+    public function addTag(Tag $tags)
+    {
+        $this->tags[] = $tags;
+        return $this;
+    }
+    /**
+     * Remove tags
+     *
+     * @param Tag $tags
+     */
+    public function removeTag(Tag $tags)
+    {
+        $this->tags->removeElement($tags);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return ArrayCollection
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }
