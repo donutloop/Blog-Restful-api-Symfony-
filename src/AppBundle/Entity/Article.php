@@ -52,7 +52,7 @@ class Article
     private $user_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="article")
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles")
      * @ORM\JoinTable(name="article_tag")
      */
     private $tags;

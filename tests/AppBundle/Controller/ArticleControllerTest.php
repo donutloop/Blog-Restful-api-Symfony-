@@ -13,10 +13,9 @@ class ArticleControllerTest extends WebTestCase
         $this->loadFixtures($fixtures);
 
         $client->request('GET', '/articles', array('ACCEPT' => 'application/json'));
+
         $response = $client->getResponse();
         $content = $response->getContent();
-
-        var_dump($content);
         $entities = json_decode($content);
 
         $this->assertEquals("PHP", $entities[0]->{'title'});
@@ -32,10 +31,8 @@ class ArticleControllerTest extends WebTestCase
         $response = $client->getResponse();
         $content = $response->getContent();
 
-        $content = json_decode($content);
-
-        $tags = $content[0]->{'Tag'};
-
-        $this->assertEquals("TDD", $tags[0]);
+        $entities = json_decode($content);
+        
+        $this->assertEquals(1, count($entities));
     }
 }
