@@ -15,9 +15,27 @@ class ArticleControllerTest extends WebTestCase
         $client->request('GET', '/articles', array('ACCEPT' => 'application/json'));
         $response = $client->getResponse();
         $content = $response->getContent();
+
+        var_dump($content);
+        $entities = json_decode($content);
+
+        $this->assertEquals("PHP", $entities[0]->{'title'});
+        $this->assertEquals("JAVA", $entities[1]->{'title'});
+    }
+
+    public function testArticleByAction() {
+        $client = static::createClient();
+        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
+        $this->loadFixtures($fixtures);
+
+        $client->request('GET', '/articles/tdd/1', array('ACCEPT' => 'application/json'));
+        $response = $client->getResponse();
+        $content = $response->getContent();
+
         $content = json_decode($content);
 
-        $this->assertEquals("PHP", $content[0]->{'title'});
-        $this->assertEquals("JAVA", $content[1]->{'title'});
+        $tags = $content[0]->{'Tag'};
+
+        $this->assertEquals("TDD", $tags[0]);
     }
 }

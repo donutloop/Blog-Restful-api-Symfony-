@@ -17,19 +17,19 @@ class ArticleRepository extends EntityRepository
 {
     /**
      * @param $name
+     * @param $maxResults
      * @return array
      */
-    public function findAllByTag($name){
+    public function findAllArticlesByTag($name, $maxResults){
 
        $query = $this->createQueryBuilder('a')
-                     ->select('a.*, t.*, u.*')
-                     ->leftJoin('Tag', 't')
-                     ->leftJoin('User', 'u')
-                     ->where('t.name = ?', $name)
+                     ->join('AppBundle\Entity\Tag', 't', 'WITH', 't.name LIKE :name')
+                     ->setMaxResults($maxResults)
+                     ->setParameter('name', $name)
                      ->getQuery();
 
         try{
-            $result = $query->getResult();
+            $result = $query->getArrayResult();
         }catch (NoResultException $e){
             return array();
         }

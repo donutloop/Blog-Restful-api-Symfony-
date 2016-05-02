@@ -116,22 +116,22 @@ class Article
     /**
      * Add tags
      *
-     * @param Tag $tags
+     * @param Tag $tag
      * @return Article
      */
-    public function addTag(Tag $tags)
+    public function addTag(Tag $tag)
     {
-        $this->tags[] = $tags;
+        $this->tags[] = $tag;
         return $this;
     }
     /**
      * Remove tags
      *
-     * @param Tag $tags
+     * @param Tag $tag
      */
-    public function removeTag(Tag $tags)
+    public function removeTag(Tag $tag)
     {
-        $this->tags->removeElement($tags);
+        $this->tags->removeElement($tag);
     }
 
     /**
