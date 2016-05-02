@@ -11,6 +11,7 @@ use AppBundle\Entity\Article;
  *
  * @ORM\Table(name="tag")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TagRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Tag
 {
@@ -40,7 +41,7 @@ class Tag
     /**
      * @var string
      *
-     * @ORM\Column(name="update_at", type="string", length=255)
+     * @ORM\Column(name="update_at", type="string", length=255, nullable=true)
      */
     private $updateAt;
 

@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
+ * @ORM\HasLifecycleCallbacks
  */
 class User extends BaseUser
 {
@@ -28,7 +29,7 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="update_at", type="string", length=255)
+     * @ORM\Column(name="update_at", type="string", length=255, nullable=true)
      */
     private $updateAt;
 
