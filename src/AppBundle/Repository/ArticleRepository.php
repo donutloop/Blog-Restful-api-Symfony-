@@ -21,7 +21,6 @@ class ArticleRepository extends EntityRepository
      * @return array
      */
     public function findAllArticlesByTag($name, $maxResults){
-
        $query = $this->createQueryBuilder('a')
                      ->join('AppBundle\Entity\Tag', 't', 'WITH', 't.name LIKE :name')
                      ->setMaxResults($maxResults)

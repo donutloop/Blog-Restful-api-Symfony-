@@ -7,7 +7,6 @@ use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 
 class ArticleController extends FOSRestController
 {
-
     /**
      * @RestAnnotaions\Get("/articles/{tag}/{maxResults}")
      * @param $tag

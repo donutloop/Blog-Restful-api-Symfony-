@@ -50,6 +50,9 @@ class Tag
      */
     private $articles;
 
+    /**
+     * Tag constructor.
+     */
     public function __construct() {
         $this->articles = new ArrayCollection();
     }

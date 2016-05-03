@@ -9,14 +9,11 @@ use AppBundle\Entity\Tag;
 
 class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
 {
-    static public $articles = array();
-
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-
         $tag = new Tag();
         $tag->setName("TDD");
         $manager->persist($tag);
@@ -32,9 +29,6 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($article2);
 
         $manager->flush();
-
-
-        self::$articles = array($article1, $article1);
     }
 
     public function getOrder()

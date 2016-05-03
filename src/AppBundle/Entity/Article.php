@@ -57,6 +57,9 @@ class Article
      */
     private $tags;
 
+    /**
+     * Article constructor.
+     */
     public function __construct() {
         $this->tags = new ArrayCollection();
     }
@@ -124,6 +127,7 @@ class Article
         $this->tags[] = $tag;
         return $this;
     }
+    
     /**
      * Remove tags
      *
