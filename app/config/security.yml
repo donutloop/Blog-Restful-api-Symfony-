@@ -12,19 +12,13 @@ security:
 
     firewalls:
         dev:
-                pattern: ^/(_(profiler|wdt)|css|images|js)/
-                security: false
-        main:
-            pattern: ^/
-            form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
-
-            logout:       true
-            anonymous:    true
-
-    access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        oauth_token:                                   # Everyone can access the access token URL.
+            pattern: ^/oauth/v2/token
+            security: false
+        api:
+            pattern: ^/secured                            # All URLs are protected
+            fos_oauth: true                            # OAuth2 protected resource
+            stateless: true                            # Do no set session cookies
+            anonymous: false                           # Anonymous access is not allowed                         # Anonymous access is not allowed

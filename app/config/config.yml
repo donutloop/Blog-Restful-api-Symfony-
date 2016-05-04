@@ -67,13 +67,27 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+# FOSRest Configuration
 fos_rest:
     routing_loader:
         default_format: json
+        include_format: false
 
+# FOSUser Configuration
 fos_user:
     db_driver: orm
     firewall_name: main
     user_class: AppBundle\Entity\User
 
+# FOSOauth Configuration
+fos_oauth_server:
+    db_driver:           orm
+    client_class:        AppBundle\Entity\AppClient
+    access_token_class:  AppBundle\Entity\AccessToken
+    refresh_token_class: AppBundle\Entity\RefreshToken
+    auth_code_class:     AppBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_manager
+
+#Nelmio Api Doc Configuration
 nelmio_api_doc: ~
