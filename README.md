@@ -45,11 +45,11 @@ It comes pre-configured with the following bundles:
   * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
     integration
 
-  * **nelmio/api-doc-bundle
-  * **friendsofsymfony/user-bundle
-  * **friendsofsymfony/oauth-server-bundle
-  * **jms/serializer-bundle
-  * **friendsofsymfony/rest-bundle
+  * [**NelmioApiDocBundle**][14] -  Adds API doc generation capabilities
+  * [**FOSUserBundle**][15] - Adds functionality for working with users
+  * [**FOSOAuthServerBundle**][16] - Adds functionality for oauth features
+  * [**JMSSerializerBundle**][17] - Adds functionality for encoding/decoding
+  * [**FOSRestBundle**][18] - Adds functionality for rest features
 
 All libraries and bundles included in the Blog Restful Api (Based on Symfony) are
 released under the MIT or BSD license.
@@ -64,3 +64,8 @@ Enjoy!
 [10]: https://symfony.com/doc/3.0/cookbook/email.html
 [11]: https://symfony.com/doc/3.0/cookbook/logging/monolog.html
 [13]: https://symfony.com/doc/3.0/bundles/SensioGeneratorBundle/index.html
+[14]: https://github.com/nelmio/NelmioApiDocBundle
+[15]: http://symfony.com/doc/current/bundles/FOSUserBundle/index.html
+[16]: https://github.com/FriendsOfSymfony/FOSOAuthServerBundle
+[17]: https://github.com/schmittjoh/JMSSerializerBundle
+[18]: http://symfony.com/doc/current/bundles/FOSRestBundle/index.html
