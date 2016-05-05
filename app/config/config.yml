@@ -72,6 +72,7 @@ fos_rest:
     routing_loader:
         default_format: json
         include_format: false
+    param_fetcher_listener: true
 
 # FOSUser Configuration
 fos_user:

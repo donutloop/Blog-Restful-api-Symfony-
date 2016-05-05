@@ -15,9 +15,9 @@ class ArticleControllerTest extends WebTestCase
         $response = $client->getResponse();
         $content = $response->getContent();
         $entities = json_decode($content);
-
-        $this->assertEquals("PHP", $entities[0]->{'title'});
-        $this->assertEquals("JAVA", $entities[1]->{'title'});
+        $acutal = count($entities->{'articles'}) > 0;
+        
+        $this->assertEquals(true, $acutal);
     }
 
     public function testArticleByAction() {
@@ -29,7 +29,8 @@ class ArticleControllerTest extends WebTestCase
         $response = $client->getResponse();
         $content = $response->getContent();
         $entities = json_decode($content);
-        
-        $this->assertEquals(1, count($entities));
+        $actual = count($entities->{'articles'});
+
+        $this->assertEquals(1, $actual);
     }
 }

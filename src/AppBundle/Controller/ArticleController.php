@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
+use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class ArticleController extends FOSRestController
@@ -17,22 +18,32 @@ class ArticleController extends FOSRestController
      *          "dataType"="string",
      *          "requirement"="\w+"
      *      },
-     *      {
-     *          "name"="maxResults",
-     *          "dataType"="integer",
-     *          "requirement"="\d+",
-     *          "description"="How many results?"
-     *      }
      *  },
      * )
-     * @RestAnnotaions\Get("/articles/{tag}/{maxResults}")
+     *
+     * @RestAnnotaions\Get("/articles/{tag}")
+     * @RestAnnotaions\QueryParam(name="limit", default="5")
+     * @RestAnnotaions\QueryParam(name="offset", default="0")
+     *
      * @param $tag
-     * @param $maxResults
+     * @param $paramFetcher
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getArticlesByTagAction($tag, $maxResults) {
-        $entities = $this->getDoctrine()->getRepository("AppBundle:Article")->findAllArticlesByTag($tag, $maxResults);
-        $view = $this->view($entities);
+    public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher) {
+
+        $limit = $paramFetcher->get('limit');
+        $offset = $paramFetcher->get('offset');
+        
+        $entities = $this->getDoctrine()
+                         ->getRepository("AppBundle:Article")
+                         ->findAllArticlesByTag($tag, $limit, $offset);
+
+        $data = array(
+            'articles' => $entities
+        );
+
+        $view = $this->view($data);
         return $this->handleView($view);
     }
 
@@ -42,7 +53,12 @@ class ArticleController extends FOSRestController
      */
     public function getArticlesAction() {
         $entities = $this->getDoctrine()->getRepository("AppBundle:Article")->findAll();
-        $view = $this->view($entities);
+
+        $data = array(
+            'articles' => $entities
+        );
+
+        $view = $this->view($data);
         return $this->handleView($view);
     }
 }
