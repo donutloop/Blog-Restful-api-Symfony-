@@ -46,9 +46,13 @@ It comes pre-configured with the following bundles:
     integration
 
   * [**NelmioApiDocBundle**][14] -  Adds API doc generation capabilities
+
   * [**FOSUserBundle**][15] - Adds functionality for working with users
+ 
   * [**FOSOAuthServerBundle**][16] - Adds functionality for oauth features
-  * [**JMSSerializerBundle**][17] - Adds functionality for encoding/decoding
+
+  * [**JMSSerializerBundle**][17] - Adds functionality for encoding/decodin
+ 
   * [**FOSRestBundle**][18] - Adds functionality for rest features
 
 All libraries and bundles included in the Blog Restful Api (Based on Symfony) are
