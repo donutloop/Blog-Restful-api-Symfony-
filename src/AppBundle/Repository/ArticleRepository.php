@@ -36,7 +36,32 @@ class ArticleRepository extends EntityRepository
         try{
             $result = $query->getArrayResult();
         }catch (NoResultException $e){
-            return array();
+            return array($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param $maxResults
+     * @param $firstResult
+     * @return array
+     */
+    public function findAllArticles($maxResults, $firstResult) {
+
+        $query = $this->createQueryBuilder('a')
+            ->leftJoin('AppBundle\Entity\Tag', 't', 'WITH', 'a.id = t.id')
+            ->setMaxResults($maxResults)
+            ->getQuery();
+
+        if ($firstResult) {
+            $query->setFirstResult($firstResult);
+        }
+
+        try{
+            $result = $query->getArrayResult();
+        }catch (NoResultException $e){
+            return array($e->getMessage());
         }
 
         return $result;

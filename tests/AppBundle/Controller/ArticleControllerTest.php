@@ -16,7 +16,7 @@ class ArticleControllerTest extends WebTestCase
         $content = $response->getContent();
         $entities = json_decode($content);
         $acutal = count($entities->{'articles'}) > 0;
-        
+
         $this->assertEquals(true, $acutal);
     }
 
@@ -25,7 +25,7 @@ class ArticleControllerTest extends WebTestCase
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
         $this->loadFixtures($fixtures);
 
-        $client->request('GET', '/articles/tdd/1', array('ACCEPT' => 'application/json'));
+        $client->request('GET', '/articles/tdd?limit=1', array('ACCEPT' => 'application/json'));
         $response = $client->getResponse();
         $content = $response->getContent();
         $entities = json_decode($content);

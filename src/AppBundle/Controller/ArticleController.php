@@ -40,7 +40,9 @@ class ArticleController extends FOSRestController
                          ->findAllArticlesByTag($tag, $limit, $offset);
 
         $data = array(
-            'articles' => $entities
+            'articles' => $entities,
+            'offset' => $offset,
+            'limit' => $limit
         );
 
         $view = $this->view($data);
@@ -49,13 +51,26 @@ class ArticleController extends FOSRestController
 
     /**
      * @RestAnnotaions\Get("/articles")
+     * @RestAnnotaions\QueryParam(name="limit", default="5")
+     * @RestAnnotaions\QueryParam(name="offset", default="0")
+     *
+     * @param $paramFetcher
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getArticlesAction() {
-        $entities = $this->getDoctrine()->getRepository("AppBundle:Article")->findAll();
+    public function getArticlesAction(ParamFetcher $paramFetcher) {
+
+        $limit = $paramFetcher->get('limit');
+        $offset = $paramFetcher->get('offset');
+
+        $entities = $this->getDoctrine()
+                         ->getRepository("AppBundle:Article")
+                         ->findAllArticles($limit, $offset);
 
         $data = array(
-            'articles' => $entities
+            'articles' => $entities,
+            'offset' => $offset,
+            'limit' => $limit
         );
 
         $view = $this->view($data);
