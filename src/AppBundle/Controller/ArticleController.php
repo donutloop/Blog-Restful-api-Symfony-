@@ -6,6 +6,8 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ArticleController extends FOSRestController
 {
@@ -71,6 +73,37 @@ class ArticleController extends FOSRestController
             'articles' => $entities,
             'offset' => $offset,
             'limit' => $limit
+        );
+
+        $view = $this->view($data);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @RestAnnotaions\Delete("/article/{id}")
+     *
+     * @param $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteArticleAction($id) {
+
+        $doctrine = $this->getDoctrine();
+        $repo = $doctrine->getRepository("AppBundle:Article");
+        $em = $doctrine->getManager();
+
+        $entity = $repo->find($id);
+
+        if (!$entity) {
+            throw new HttpException(404, sprintf('Dataset not found (id: %d)', $id));
+        }
+
+        $em->remove($entity);
+        $em->flush();
+
+        $data = array(
+            'message' => sprintf('Dataset succesfully removed (id: %d)', $id),
+            'statusCode' => 200
         );
 
         $view = $this->view($data);
