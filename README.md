@@ -1,4 +1,4 @@
-Blog Restful API Symfony Edition
+Blog Restful API Symfony Edition (Alpha)
 ========================
 
 What's inside?
@@ -55,6 +55,10 @@ It comes pre-configured with the following bundles:
  
   * [**FOSRestBundle**][18] - Adds functionality for rest features
 
+  * [**FunctionalTestBundle**][19] - Adds functionality for functional test features
+
+  * [**DoctrineFixturesBundle**][19] - Adds functionality for fixtures features
+
 All libraries and bundles included in the Blog Restful Api (Based on Symfony) are
 released under the MIT or BSD license.
 
@@ -73,3 +77,5 @@ Enjoy!
 [16]: https://github.com/FriendsOfSymfony/FOSOAuthServerBundle
 [17]: https://github.com/schmittjoh/JMSSerializerBundle
 [18]: http://symfony.com/doc/current/bundles/FOSRestBundle/index.html
+[19]: https://github.com/liip/LiipFunctionalTestBundle
+[20]: http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
