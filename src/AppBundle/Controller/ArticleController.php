@@ -40,6 +40,10 @@ class ArticleController extends FOSRestController
                          ->getRepository("AppBundle:Article")
                          ->findAllArticlesByTag($tag, $limit, $offset);
 
+        if (!$entities) {
+            throw new HttpException(404, sprintf('Dataset not found (tag: %d)', $tag));
+        }
+
         $data = array(
             'articles' => $entities,
             'offset' => $offset,
@@ -67,6 +71,10 @@ class ArticleController extends FOSRestController
         $entities = $this->getDoctrine()
                          ->getRepository("AppBundle:Article")
                          ->findAllArticles($limit, $offset);
+
+        if (!$entities) {
+            throw new HttpException(404, 'Datasets not found');
+        }
 
         $data = array(
             'articles' => $entities,
