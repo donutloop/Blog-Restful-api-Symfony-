@@ -1,3 +1,7 @@
 articles:
     type:     rest
     resource: AppBundle\Controller\ArticleController
+
+tags:
+    type:     rest
+    resource: AppBundle\Controller\TagController

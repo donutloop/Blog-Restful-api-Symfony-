@@ -19,16 +19,17 @@ class TagRepository extends EntityRepository
     /**
      * @return array
      */
-    public function findAllNames(){
+    public function findAllNames() {
+        
         $query = $this->createQueryBuilder('t')
             ->select('DISTINCT t.name')
             ->getQuery();
 
         try{
-            $result = $query->getResult();
+            $result = $query->getArrayResult();
         }catch(NoResultException $e){
             return array();
-        }
+        };
 
         return $result;
     }
