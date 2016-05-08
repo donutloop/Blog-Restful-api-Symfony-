@@ -73,6 +73,8 @@ fos_rest:
         default_format: json
         include_format: false
     param_fetcher_listener: true
+    view:
+        view_response_listener: 'force'
 
 # FOSUser Configuration
 fos_user:

@@ -50,8 +50,7 @@ class ArticleController extends FOSRestController
             'limit' => $limit
         );
 
-        $view = $this->view($data);
-        return $this->handleView($view);
+        return $data;
     }
 
     /**
@@ -82,8 +81,7 @@ class ArticleController extends FOSRestController
             'limit' => $limit
         );
 
-        $view = $this->view($data);
-        return $this->handleView($view);
+        return $data;
     }
 
     /**
@@ -112,8 +110,7 @@ class ArticleController extends FOSRestController
             'message' => sprintf('Dataset succesfully removed (id: %d)', $id),
             'statusCode' => 200
         );
-
-        $view = $this->view($data);
-        return $this->handleView($view);
+        
+        return $data;
     }
 }

@@ -28,7 +28,6 @@ class TagController extends FOSRestController{
            'tags' => $entities
        );
 
-       $view = $this->view($data);
-       return $this->handleView($view);
+       return $data;
    }
 }
