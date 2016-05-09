@@ -2,10 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Article;
+use AppBundle\Form\ArticleType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ArticleController extends FOSRestController
@@ -112,5 +115,25 @@ class ArticleController extends FOSRestController
         );
         
         return $data;
+    }
+
+    /**
+     * @RestAnnotaions\Post("/article/create")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function createArticleAction(Request $request) {
+
+        $serializer = $this->get('serializer');
+        $entity = $serializer->deserialize($request->getContent(), 'AppBundle\\Entity\\Article', 'json');
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
+
+        return  array(
+            'message' => sprintf('Dataset succesfully created (id: %d)', $entity->getId()),
+            'statusCode' => 200
+        );
     }
 }

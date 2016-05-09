@@ -4,9 +4,36 @@ namespace Tests\AppBundle\Controller;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\DataFixtures\ORM\LoadArticleData;
+use JMS\Serializer\Serializer;
 
 class ArticleControllerTest extends WebTestCase
 {
+
+    public function testCreateArticle() {
+
+        $client = static::createClient();
+
+        $entity = array(
+            'title' => 'Test Eintrag'
+        );
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+        $jsonContent = $serializer->serialize($entity, 'json');
+
+        $client->request('Post',
+            '/article/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $jsonContent
+        );
+        
+        $doctrine = $this->getContainer()->get('doctrine');
+        $entity = $doctrine->getRepository('AppBundle:Article')->findBy(array('title' => 'Test Eintrag'));
+
+        $this->assertEquals(true, !empty($entity));
+    }
+    
     public function testArticlesAction() {
         $client = static::createClient();
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
