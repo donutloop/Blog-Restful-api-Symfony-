@@ -16,7 +16,7 @@ class TagControllerTest extends WebTestCase
        $content = $response->getContent();
        
        $entities = json_decode($content);
-       $acutal = count($entities->{'tags'}) > 0;
+       $acutal = count($entities->tags) > 0;
 
        $this->assertEquals(true, $acutal);
    }

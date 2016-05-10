@@ -28,10 +28,10 @@ class ArticleControllerTest extends WebTestCase
             $jsonContent
         );
 
-        $doctrine = $this->getContainer()->get('doctrine');
-        $entity = $doctrine->getRepository('AppBundle:Article')->findBy(array('title' => 'Test Eintrag'));
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
 
-        $this->assertEquals(true, !empty($entity));
+        $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
     }
 
     public function testCreateArticleNotValid() {
@@ -54,9 +54,9 @@ class ArticleControllerTest extends WebTestCase
         );
 
         $response = $client->getResponse();
-        $content = json_decode($response->getContent());
+        $data = json_decode($response->getContent());
 
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $content->statusCode);
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->statusCode);
     }
     
     public function testArticlesAction() {
@@ -68,7 +68,7 @@ class ArticleControllerTest extends WebTestCase
         $response = $client->getResponse();
         $content = $response->getContent();
         $entities = json_decode($content);
-        $acutal = count($entities->{'articles'}) > 0;
+        $acutal = count($entities->articles) > 0;
 
         $this->assertEquals(true, $acutal);
     }
@@ -82,7 +82,7 @@ class ArticleControllerTest extends WebTestCase
         $response = $client->getResponse();
         $content = $response->getContent();
         $entities = json_decode($content);
-        $actual = count($entities->{'articles'});
+        $actual = count($entities->articles);
 
         $this->assertEquals(1, $actual);
     }
@@ -100,7 +100,7 @@ class ArticleControllerTest extends WebTestCase
         $content = $response->getContent();
         $data = json_decode($content);
         
-        $this->assertEquals(200, $data->{'statusCode'});
+        $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
     }
 
     public function testDeleteArticleNotFound() {
@@ -111,6 +111,6 @@ class ArticleControllerTest extends WebTestCase
         $content = $response->getContent();
         $data = json_decode($content);
 
-        $this->assertEquals(404, $data->{'error'}->{'code'});
+        $this->assertEquals(Codes::HTTP_NOT_FOUND, $data->error->code);
     }
 }
