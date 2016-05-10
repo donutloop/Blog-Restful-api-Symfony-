@@ -2,13 +2,13 @@
 
 namespace Tests\AppBundle\Controller;
 
+use FOS\RestBundle\Util\Codes;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\DataFixtures\ORM\LoadArticleData;
-use JMS\Serializer\Serializer;
+
 
 class ArticleControllerTest extends WebTestCase
 {
-
     public function testCreateArticle() {
 
         $client = static::createClient();
@@ -27,11 +27,36 @@ class ArticleControllerTest extends WebTestCase
             array('CONTENT_TYPE' => 'application/json'),
             $jsonContent
         );
-        
+
         $doctrine = $this->getContainer()->get('doctrine');
         $entity = $doctrine->getRepository('AppBundle:Article')->findBy(array('title' => 'Test Eintrag'));
 
         $this->assertEquals(true, !empty($entity));
+    }
+
+    public function testCreateArticleNotValid() {
+
+        $client = static::createClient();
+
+        $entity = array(
+            'title' =>  null
+        );
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+        $jsonContent = $serializer->serialize($entity, 'json');
+
+        $client->request('Post',
+            '/article/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $jsonContent
+        );
+
+        $response = $client->getResponse();
+        $content = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $content->statusCode);
     }
     
     public function testArticlesAction() {

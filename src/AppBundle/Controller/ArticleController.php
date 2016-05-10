@@ -9,7 +9,6 @@ use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use AppBundle\Form\ArticleType;
 use AppBundle\Entity\Article;
 
 class ArticleController extends FOSRestController
@@ -128,19 +127,23 @@ class ArticleController extends FOSRestController
         $serializer = $this->get('serializer');
         $entity = $serializer->deserialize($request->getContent(), 'AppBundle\\Entity\\Article', 'json');
 
-        $newEntity = new Article();
+        $validator = $this->get('validator');
 
-        $form = $this->createForm(ArticleType::class, $newEntity);
-        $form->setData($entity);
-        $form->submit(null);
+        $errors = $validator->validate($entity);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+        if (count($errors) > 0) {
+
+            $errorsString = (string) $errors;
+
+            return array(
+                'statusCode' => Codes::HTTP_BAD_REQUEST,
+                'error' => $errorsString
+            );
         }
-        
-        #Todo add error handling 
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
 
         return  array(
             'message' => sprintf('Dataset succesfully created (id: %d)', $entity->getId()),

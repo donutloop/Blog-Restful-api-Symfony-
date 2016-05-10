@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Entity\Tag;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Article
@@ -23,9 +24,11 @@ class Article
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @var string
+     *
+     * @Assert\NotNull()
      *
      * @ORM\Column(name="title", type="string", length=255)
      */
@@ -46,12 +49,16 @@ class Article
     private $updateAt;
 
     /**
+     * @var integer
+     *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user_id;
 
     /**
+     * @var array
+     *
      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles")
      * @ORM\JoinTable(name="article_tag")
      */
