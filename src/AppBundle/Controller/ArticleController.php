@@ -9,7 +9,6 @@ use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use AppBundle\Entity\Article;
 
 class ArticleController extends FOSRestController
 {
