@@ -22,6 +22,12 @@ class ArticleController extends FOSRestController
      *          "requirement"="\w+"
      *      },
      *  },
+     *  statusCodes={
+     *         200="Returned when successful",
+     *         404={
+     *           "Returned when datasets is not found"
+     *         }
+     *   }
      * )
      *
      * @RestAnnotaions\Get("/articles/{tag}")
@@ -43,19 +49,30 @@ class ArticleController extends FOSRestController
                          ->findAllArticlesByTag($tag, $limit, $offset);
 
         if (!$entities) {
-            throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Dataset not found (tag: %d)', $tag));
+            throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Datasets not found (tag: %d)', $tag));
         }
 
         $data = array(
             'articles' => $entities,
             'offset' => $offset,
-            'limit' => $limit
+            'limit' => $limit,
+            'statusCode' => Codes::HTTP_OK
         );
 
         return $data;
     }
 
     /**
+     * @ApiDoc(
+     *  resource=true,
+     *  statusCodes={
+     *         200="Returned when successful",
+     *         404={
+     *           "Returned when datasets not found"
+     *         }
+     *   }
+     * )
+     *
      * @RestAnnotaions\Get("/articles")
      * @RestAnnotaions\QueryParam(name="limit", default="5")
      * @RestAnnotaions\QueryParam(name="offset", default="0")
@@ -80,13 +97,31 @@ class ArticleController extends FOSRestController
         $data = array(
             'articles' => $entities,
             'offset' => $offset,
-            'limit' => $limit
+            'limit' => $limit,
+            'statusCode' => Codes::HTTP_OK
         );
 
         return $data;
     }
 
     /**
+     * @ApiDoc(
+     *  resource=true,
+     *  requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="integer",
+     *          "requirement"="\d+"
+     *      },
+     *  },
+     *  statusCodes={
+     *         200="Returned when successful",
+     *         404={
+     *           "Returned when dataset is not found"
+     *         }
+     *   }
+     * )
+     *
      * @RestAnnotaions\Delete("/article/{id}")
      *
      * @param $id
@@ -117,6 +152,16 @@ class ArticleController extends FOSRestController
     }
 
     /**
+     * @ApiDoc(
+     *  resource=true,
+     *  statusCodes={
+     *         200="Returned when successful",
+     *         400={
+     *           "Returned when dataset is not inserted"
+     *         }
+     *   }
+     * )
+     *
      * @RestAnnotaions\Post("/article/create")
      *
      * @return \Symfony\Component\HttpFoundation\Response
