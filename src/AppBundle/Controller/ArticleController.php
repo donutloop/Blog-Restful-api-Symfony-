@@ -5,9 +5,12 @@ namespace AppBundle\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use AppBundle\Form\ArticleType;
+use AppBundle\Entity\Article;
 
 class ArticleController extends FOSRestController
 {
@@ -42,7 +45,7 @@ class ArticleController extends FOSRestController
                          ->findAllArticlesByTag($tag, $limit, $offset);
 
         if (!$entities) {
-            throw new HttpException(404, sprintf('Dataset not found (tag: %d)', $tag));
+            throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Dataset not found (tag: %d)', $tag));
         }
 
         $data = array(
@@ -73,7 +76,7 @@ class ArticleController extends FOSRestController
                          ->findAllArticles($limit, $offset);
 
         if (!$entities) {
-            throw new HttpException(404, 'Datasets not found');
+            throw new HttpException(Codes::HTTP_NOT_FOUND, 'Datasets not found');
         }
 
         $data = array(
@@ -101,7 +104,7 @@ class ArticleController extends FOSRestController
         $entity = $repo->find($id);
 
         if (!$entity) {
-            throw new HttpException(404, sprintf('Dataset not found (id: %d)', $id));
+            throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Dataset not found (id: %d)', $id));
         }
 
         $em->remove($entity);
@@ -109,7 +112,7 @@ class ArticleController extends FOSRestController
 
         $data = array(
             'message' => sprintf('Dataset succesfully removed (id: %d)', $id),
-            'statusCode' => 200
+            'statusCode' => Codes::HTTP_OK
         );
         
         return $data;
@@ -125,13 +128,23 @@ class ArticleController extends FOSRestController
         $serializer = $this->get('serializer');
         $entity = $serializer->deserialize($request->getContent(), 'AppBundle\\Entity\\Article', 'json');
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($entity);
-        $em->flush();
+        $newEntity = new Article();
+
+        $form = $this->createForm(ArticleType::class, $newEntity);
+        $form->setData($entity);
+        $form->submit(null);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+        }
+        
+        #Todo add error handling 
 
         return  array(
             'message' => sprintf('Dataset succesfully created (id: %d)', $entity->getId()),
-            'statusCode' => 200
+            'statusCode' => Codes::HTTP_OK
         );
     }
 }
