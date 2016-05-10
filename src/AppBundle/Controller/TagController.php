@@ -42,4 +42,51 @@ class TagController extends FOSRestController{
 
        return $data;
    }
+
+    /**
+     * @ApiDoc(
+     *  resource=true,
+     *  requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="integer",
+     *          "requirement"="\d+"
+     *      },
+     *  },
+     *  statusCodes={
+     *         200="Returned when successful",
+     *         404={
+     *           "Returned when dataset is not found"
+     *         }
+     *   }
+     * )
+     *
+     * @RestAnnotaions\Delete("/tag/{id}")
+     *
+     * @param $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteTagAction($id) {
+
+        $doctrine = $this->getDoctrine();
+
+        $entity = $doctrine->getRepository('AppBundle:Tag')->find($id);
+
+        if (!$entity) {
+            throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Dataset not found (id: %d)', $id));
+        }
+
+        $em = $doctrine->getManager();
+
+        $em->remove($entity);
+        $em->flush();
+
+        $data = array(
+            'message' => sprintf('Dataset successfully removed (id: %d)', $id),
+            'statusCode' => Codes::HTTP_OK
+        );
+
+        return $data;
+    }
 }

@@ -10,7 +10,7 @@ use AppBundle\Entity\Tag;
 class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
 {
 
-    static $tags = array();
+    static $tags = null;
 
     /**
      * {@inheritDoc}
@@ -29,6 +29,8 @@ class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
             'Machine learing',
             'Math'
         );
+
+        self::$tags = array();
 
         foreach ($tagNames as $tagName) {
             $tag = new Tag();
