@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\Tag;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -65,10 +64,19 @@ class Article
     private $tags;
 
     /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="ArticleContent", mappedBy="articles")
+     * @ORM\JoinTable(name="article_content")
+     */
+    private $contents;
+
+    /**
      * Article constructor.
      */
     public function __construct() {
         $this->tags = new ArrayCollection();
+        $this->contents = new ArrayCollection();
     }
     
     /**
@@ -154,14 +162,45 @@ class Article
     {
         return $this->tags;
     }
+
+    /**
+     * Add content
+     *
+     * @param ArticleContent $content
+     * @return Article
+     */
+    public function addContent(ArticleContent $content)
+    {
+        $this->contents[] = $content;
+        return $this;
+    }
+
+    /**
+     * Remove content
+     *
+     * @param ArticleContent $content
+     */
+    public function removeContent(ArticleContent $content)
+    {
+        $this->contents->removeElement($content);
+    }
+
+    /**
+     * Get contents
+     *
+     * @return ArrayCollection
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
     
     /**
      *  Set create at  
      * 
      * @ORM\PrePersist 
      */
-    public function setCreateAt()
-    {
+    public function setCreateAt(){
         $this->createdAt = date('Y-m-d H:i:s');
     }
     
@@ -172,5 +211,23 @@ class Article
      */
     public function setUpdateAt(){
        $this->updateAt = date('Y-m-d H:i:s'); 
+    }
+
+    /**
+     * get create at 
+     * 
+     * @return string
+     */
+    public function getCreateAt(){
+        return $this->createdAt;
+    }
+
+    /**
+     * get update at 
+     * 
+     * @return string
+     */
+    public function getUpdateAt(){
+        return $this->updateAt;
     }
 }

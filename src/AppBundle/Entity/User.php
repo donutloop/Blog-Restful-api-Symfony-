@@ -51,4 +51,22 @@ class User extends BaseUser
     public function setUpdateAt(){
         $this->updateAt = date('Y-m-d H:i:s');
     }
+
+    /**
+     * get create at
+     *
+     * @return string
+     */
+    public function getCreateAt(){
+        return $this->createdAt;
+    }
+
+    /**
+     * get update at
+     *
+     * @return string
+     */
+    public function getUpdateAt(){
+        return $this->updateAt;
+    }
 }

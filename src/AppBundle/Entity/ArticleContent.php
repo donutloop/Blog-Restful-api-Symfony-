@@ -2,18 +2,16 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\Article;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Tag
+ * ArticleContent
  *
- * @ORM\Table(name="tag")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TagRepository")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="article_content")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleContentRepository")
  */
-class Tag
+class ArticleContent
 {
     /**
      * @var int
@@ -27,9 +25,16 @@ class Tag
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="content", type="text")
      */
-    private $name;
+    private $content;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="content_type", type="string", length=255)
+     */
+    private $contentType;
 
     /**
      * @var string
@@ -44,9 +49,9 @@ class Tag
      * @ORM\Column(name="update_at", type="string", length=255, nullable=true)
      */
     private $updateAt;
-
+    
     /**
-     * @ORM\ManyToMany(targetEntity="Article", mappedBy="tags")
+     * @ORM\ManyToOne(targetEntity="Article", inversedBy="contents")
      */
     private $articles;
 
@@ -68,27 +73,51 @@ class Tag
     }
 
     /**
-     * Set name
+     * Set content
      *
-     * @param string $name
+     * @param string $content
      *
-     * @return Tag
+     * @return ArticleContent
      */
-    public function setName($name)
+    public function setContent($content)
     {
-        $this->name = $name;
+        $this->content = $content;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get content
      *
      * @return string
      */
-    public function getName()
+    public function getContent()
     {
-        return $this->name;
+        return $this->content;
+    }
+
+    /**
+     * Set contentType
+     *
+     * @param string $contentType
+     *
+     * @return ArticleContent
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+
+        return $this;
+    }
+
+    /**
+     * Get contentType
+     *
+     * @return string
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
     }
 
     /**
@@ -117,8 +146,7 @@ class Tag
      *
      * @return ArrayCollection
      */
-    public function getArticles()
-    {
+    public function getArticles(){
         return $this->articles;
     }
 
@@ -127,8 +155,7 @@ class Tag
      *
      * @ORM\PrePersist
      */
-    public function setCreateAt()
-    {
+    public function setCreateAt(){
         $this->createdAt = date('Y-m-d H:i:s');
     }
 
