@@ -67,7 +67,6 @@ class Article
      * @var array
      *
      * @ORM\OneToMany(targetEntity="ArticleContent", mappedBy="articles")
-     * @ORM\JoinTable(name="article_content")
      */
     private $contents;
 
@@ -139,7 +138,7 @@ class Article
      */
     public function addTag(Tag $tag)
     {
-        $this->tags->add($tag);
+        $this->tags[] = $tag;
         return $this;
     }
     

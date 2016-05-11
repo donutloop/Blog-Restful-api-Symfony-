@@ -53,7 +53,7 @@ class ArticleContent
     
     /**
      * @ORM\ManyToOne(targetEntity="Article", inversedBy="contents")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(name="article_id", referencedColumnName="id")
      */
     private $articles;
 
