@@ -139,7 +139,7 @@ class Article
      */
     public function addTag(Tag $tag)
     {
-        $this->tags[] = $tag;
+        $this->tags->add($tag);
         return $this;
     }
     
@@ -171,7 +171,7 @@ class Article
      */
     public function addContent(ArticleContent $content)
     {
-        $this->contents[] = $content;
+        $this->contents->add($content);
         return $this;
     }
 

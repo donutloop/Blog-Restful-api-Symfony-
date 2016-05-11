@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="article_content")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleContentRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class ArticleContent
 {
@@ -52,15 +53,9 @@ class ArticleContent
     
     /**
      * @ORM\ManyToOne(targetEntity="Article", inversedBy="contents")
+     * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $articles;
-
-    /**
-     * Tag constructor.
-     */
-    public function __construct() {
-        $this->articles = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -118,36 +113,6 @@ class ArticleContent
     public function getContentType()
     {
         return $this->contentType;
-    }
-
-    /**
-     * Add article
-     *
-     * @param Article $article
-     * @return Tag
-     */
-    public function addArticle(Article $article)
-    {
-        $this->articles[] = $article;
-        return $this;
-    }
-    /**
-     * Remove article
-     *
-     * @param Article $article
-     */
-    public function removeArticle(Article $article)
-    {
-        $this->articles->removeElement($article);
-    }
-
-    /**
-     * Get articles
-     *
-     * @return ArrayCollection
-     */
-    public function getArticles(){
-        return $this->articles;
     }
 
     /**

@@ -24,6 +24,8 @@ class ArticleRepository extends EntityRepository
     public function findAllArticlesByTag($name, $maxResults, $firstResult) {
 
         $query = $this->createQueryBuilder('a')
+                     ->select('a.id, a.title, a.createdAt, t.name as tags, ac.content, ac.contentType')
+                     ->Join('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.id')
                      ->join('AppBundle\Entity\Tag', 't', 'WITH', 't.name LIKE :name')
                      ->setMaxResults($maxResults)
                      ->setParameter('name', $name)
@@ -50,6 +52,8 @@ class ArticleRepository extends EntityRepository
     public function findAllArticles($maxResults, $firstResult) {
 
         $query = $this->createQueryBuilder('a')
+            ->select('a.id, a.title, a.createdAt, t.name as tags, ac.content, ac.contentType')
+            ->leftJoin('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.id')
             ->leftJoin('AppBundle\Entity\Tag', 't', 'WITH', 'a.id = t.id')
             ->setMaxResults($maxResults)
             ->getQuery();

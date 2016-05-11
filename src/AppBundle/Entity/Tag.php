@@ -99,7 +99,7 @@ class Tag
      */
     public function addArticle(Article $article)
     {
-        $this->articles[] = $article;
+        $this->articles->add($article);
         return $this;
     }
     /**
