@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,10 +51,28 @@ class ArticleContent
     private $updateAt;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Article", inversedBy="contents")
+     * @ORM\ManyToOne(targetEntity="Article")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id")
      */
-    private $articles;
+    private $article;
+
+    /**
+     * Get article
+     *
+     * @param $article
+     */
+    public function setArticle(Article $article){
+        $this->article = $article;
+    }
+
+    /**
+     * Get article
+     *
+     * @return mixed
+     */
+    public function getArticle(){
+        return $this->article;
+    }
 
     /**
      * Get id

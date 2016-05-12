@@ -53,7 +53,7 @@ class Article
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user_id;
+    private $user;
 
     /**
      * @var array
@@ -64,18 +64,10 @@ class Article
     private $tags;
 
     /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="ArticleContent", mappedBy="articles")
-     */
-    private $contents;
-
-    /**
      * Article constructor.
      */
     public function __construct() {
         $this->tags = new ArrayCollection();
-        $this->contents = new ArrayCollection();
     }
     
     /**
@@ -113,21 +105,21 @@ class Article
     }
 
     /**
-     * Get user id
+     * Get user
      *
-     * @return mixed
+     * @return User
      */
-    public function getUserId(){
-        return $this->user_id;
+    public function getUser(){
+        return $this->user;
     }
 
     /**
-     * Set user id
+     * Set user
      *
-     * @param $id
+     * @param $user
      */
-    public function setUserId($id){
-        $this->user_id = $id;
+    public function setUser(User $user){
+        $this->user = $user;
     }
     
     /**
@@ -162,38 +154,6 @@ class Article
         return $this->tags;
     }
 
-    /**
-     * Add content
-     *
-     * @param ArticleContent $content
-     * @return Article
-     */
-    public function addContent(ArticleContent $content)
-    {
-        $this->contents->add($content);
-        return $this;
-    }
-
-    /**
-     * Remove content
-     *
-     * @param ArticleContent $content
-     */
-    public function removeContent(ArticleContent $content)
-    {
-        $this->contents->removeElement($content);
-    }
-
-    /**
-     * Get contents
-     *
-     * @return ArrayCollection
-     */
-    public function getContents()
-    {
-        return $this->contents;
-    }
-    
     /**
      *  Set create at  
      * 

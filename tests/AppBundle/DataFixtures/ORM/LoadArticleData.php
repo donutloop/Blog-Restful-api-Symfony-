@@ -27,7 +27,11 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
         $user->setPassword('test');
         $manager->persist($user);
 
-        $manager->flush();
+        $user1 = new User();
+        $user1->setUsername('Test user1');
+        $user1->setEmail('test@test1.de');
+        $user1->setPassword('test');
+        $manager->persist($user1);
 
         $tag = new Tag();
         $tag->setName("TDD");
@@ -37,48 +41,47 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
         $tag1->setName("Testing");
         $manager->persist($tag1);
 
+        $article1 = new Article();
+        $article1->setTitle("PHP");
+        $article1->setUser($user1);
+        $article1->addTag($tag);
+        $article1->addTag($tag1);
+        $manager->persist($article1);
+
+        $article2 = new Article();
+        $article2->setTitle("JAVA");
+        $article2->setUser($user);
+        $article2->addTag($tag);
+        $article2->addTag($tag1);
+        $manager->persist($article2);
+
         $articleConetent1 = new ArticleContent();
         $articleConetent1->setContent('Lorem Ipsum');
         $articleConetent1->setContentType('Code');
+        $articleConetent1->setArticle($article1);
         $manager->persist($articleConetent1);
 
         $articleConetent2 = new ArticleContent();
         $articleConetent2->setContent('Lorem Ipsum');
         $articleConetent2->setContentType('Code');
+        $articleConetent2->setArticle($article2);
         $manager->persist($articleConetent2);
 
         $articleConetent3 = new ArticleContent();
         $articleConetent3->setContent('Lorem Ipsum');
         $articleConetent3->setContentType('Code');
+        $articleConetent3->setArticle($article1);
+
         $manager->persist($articleConetent3);
 
         $articleConetent4 = new ArticleContent();
         $articleConetent4->setContent('Lorem Ipsum');
         $articleConetent4->setContentType('Code');
+        $articleConetent4->setArticle($article2);
         $manager->persist($articleConetent4);
 
         $manager->flush();
-
-        $article1 = new Article();
-        $article1->setTitle("PHP");
-        $article1->setUserId($user);
-        $article1->addTag($tag);
-        $article1->addTag($tag1);
-        $article1->addContent($articleConetent1);
-        $article1->addContent($articleConetent2);
-        $manager->persist($article1);
-
-        $article2 = new Article();
-        $article2->setTitle("JAVA");
-        $article2->setUserId($user);
-        $article2->addTag($tag);
-        $article2->addTag($tag1);
-        $article2->addContent($articleConetent3);
-        $article2->addContent($articleConetent4);
-        $manager->persist($article2);
-
-        $manager->flush();
-
+        
         self::$articles = array($article1, $article2);
     }
 
