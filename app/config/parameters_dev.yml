@@ -1,7 +1,7 @@
 parameters:
     database_host: 127.0.0.1
     database_port: null
-    database_name: blog_api_test
+    database_name: blog_api_dev
     database_user: root
     database_password: stellatarum
     mailer_transport: smtp
