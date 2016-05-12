@@ -54,7 +54,7 @@ class ArticleContent
      * @ORM\ManyToOne(targetEntity="Article")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id")
      */
-    private $article;
+    private $article_id;
 
     /**
      * Get article
@@ -62,7 +62,7 @@ class ArticleContent
      * @param $article
      */
     public function setArticle(Article $article){
-        $this->article = $article;
+        $this->article_id = $article;
     }
 
     /**
@@ -71,7 +71,7 @@ class ArticleContent
      * @return mixed
      */
     public function getArticle(){
-        return $this->article;
+        return $this->article_id;
     }
 
     /**

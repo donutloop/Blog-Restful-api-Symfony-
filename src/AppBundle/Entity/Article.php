@@ -53,7 +53,7 @@ class Article
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private $user_id;
 
     /**
      * @var array
@@ -110,7 +110,7 @@ class Article
      * @return User
      */
     public function getUser(){
-        return $this->user;
+        return $this->user_id;
     }
 
     /**
@@ -119,7 +119,7 @@ class Article
      * @param $user
      */
     public function setUser(User $user){
-        $this->user = $user;
+        $this->user_id = $user;
     }
     
     /**

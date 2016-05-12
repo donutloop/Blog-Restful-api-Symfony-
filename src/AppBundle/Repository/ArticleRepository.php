@@ -25,7 +25,7 @@ class ArticleRepository extends EntityRepository
 
         $query = $this->createQueryBuilder('a')
                      ->select('a.id, a.title, a.createdAt, t.name as tags, ac.content, ac.contentType, u.username')
-                     ->leftJoin('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.id')
+                     ->join('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.article_id')
                      ->join('AppBundle\Entity\User', 'u', 'WITH', 'a.user_id = u.id')
                      ->join('AppBundle\Entity\Tag', 't', 'WITH', 't.name LIKE :name')
                      ->setMaxResults($maxResults)
@@ -54,7 +54,7 @@ class ArticleRepository extends EntityRepository
 
         $query = $this->createQueryBuilder('a')
             ->select('a.id, a.title, a.createdAt, t.name as tags, ac.content, ac.contentType, u.username')
-            ->leftJoin('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.id')
+            ->join('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.article_id')
             ->join('AppBundle\Entity\User', 'u', 'WITH', 'a.user_id = u.id')
             ->leftJoin('AppBundle\Entity\Tag', 't', 'WITH', 'a.id = t.id')
             ->setMaxResults($maxResults)
