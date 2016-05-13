@@ -12,9 +12,24 @@ class ArticleControllerTest extends WebTestCase
     public function testCreateArticle() {
 
         $client = static::createClient();
+        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadUserData');
+        $this->loadFixtures($fixtures);
 
         $entity = array(
-            'title' => 'Test Eintrag'
+            'article' => array(
+                'title' => 'Test Eintrag',
+                'username' => 'test-user',
+                'contents' => array(
+                    array(
+                        'contentType' => 'code',
+                        'content' => 'lorem ipsum'
+                    ),
+                    array(
+                        'contentType' => 'code',
+                        'content' => 'lorem ipsum'
+                    )
+                )
+            )
         );
 
         $serializer = $this->getContainer()->get('jms_serializer');
@@ -56,7 +71,7 @@ class ArticleControllerTest extends WebTestCase
         $response = $client->getResponse();
         $data = json_decode($response->getContent());
 
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->statusCode);
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
     }
     
     public function testArticlesAction() {
@@ -99,7 +114,7 @@ class ArticleControllerTest extends WebTestCase
         $response = $client->getResponse();
         $content = $response->getContent();
         $data = json_decode($content);
-        
+
         $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
     }
 

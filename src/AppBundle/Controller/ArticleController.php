@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Article;
+use AppBundle\Entity\ArticleContent;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -168,29 +170,74 @@ class ArticleController extends FOSRestController
      */
     public function createArticleAction(Request $request) {
 
-        $serializer = $this->get('serializer');
-        $entity = $serializer->deserialize($request->getContent(), 'AppBundle\\Entity\\Article', 'json');
+        $data = json_decode($request->getContent());
+        $doctrine = $this->getDoctrine();
 
-        $validator = $this->get('validator');
+        if (!empty($data->article)) {
 
-        $errors = $validator->validate($entity);
+            if (!empty($data->article->username)) {
 
-        if (count($errors) > 0) {
+                $user = $doctrine->getRepository('AppBundle:User')->findOneBy(array('username' =>$data->article->username));
 
-            $errorsString = (string) $errors;
+                if (!$user) {
+                    throw new HttpException(Codes::HTTP_BAD_REQUEST, sprintf('User not found (%w)', $data->article->username));
+                }
 
-            return array(
-                'statusCode' => Codes::HTTP_BAD_REQUEST,
-                'error' => $errorsString
-            );
+            }else{
+                throw new HttpException(Codes::HTTP_BAD_REQUEST, 'User not set');
+            }
+
+            $validator = $this->get('validator');
+
+            $mainEntity = new Article();
+
+            $mainEntity->setTitle(isset($data->article->title) ? $data->article->title : null);
+
+            $mainEntity->setUser($user);
+
+            $errors = $validator->validate($mainEntity);
+
+            if (count($errors) > 0) {
+
+                $errorsString = (string) $errors;
+
+                throw new HttpException(Codes::HTTP_BAD_REQUEST, $errorsString);
+            }
+
+            $em = $doctrine->getManager();
+
+            $em->persist($mainEntity);
+
+            if (!empty($data->article->contents)) {
+
+                foreach($data->article->contents as $data) {
+
+                    $entity = new ArticleContent();
+                    $entity->setContent(isset($data->content) ? $data->content : null);
+                    $entity->setContentType(isset($data->contentType) ? $data->contentType : null);
+                    $entity->setArticle($mainEntity);
+
+                    $errors = $validator->validate($entity);
+
+                    if (count($errors) > 0) {
+
+                        $errorsString = (string) $errors;
+
+                        throw new HttpException(Codes::HTTP_BAD_REQUEST, $errorsString);
+                    }
+
+                    $em->persist($entity);
+                }
+            }
+
+            $em->flush();
+        }
+        else{
+             throw new HttpException(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($entity);
-        $em->flush();
-
         return  array(
-            'message' => sprintf('Dataset succesfully created (id: %d)', $entity->getId()),
+            'message' => sprintf('Dataset succesfully created (id: %d)', $mainEntity->getId()),
             'statusCode' => Codes::HTTP_OK
         );
     }
