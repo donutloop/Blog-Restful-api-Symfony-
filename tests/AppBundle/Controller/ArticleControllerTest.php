@@ -12,13 +12,25 @@ class ArticleControllerTest extends WebTestCase
     public function testCreateArticle() {
 
         $client = static::createClient();
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadUserData');
+        $fixtures = array(
+            'Tests\AppBundle\DataFixtures\ORM\LoadUserData',
+            'Tests\AppBundle\DataFixtures\ORM\LoadTagData'
+        );
+
         $this->loadFixtures($fixtures);
 
         $entity = array(
             'article' => array(
                 'title' => 'Test Eintrag',
                 'username' => 'test-user',
+                'tags' => array(
+                    array(
+                        'name' => 'Python2'
+                    ),
+                    array(
+                        'name' => 'Python3'
+                    )
+                ),
                 'contents' => array(
                     array(
                         'contentType' => 'code',
@@ -45,7 +57,7 @@ class ArticleControllerTest extends WebTestCase
 
         $response = $client->getResponse();
         $data = json_decode($response->getContent());
-
+        
         $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
     }
 
@@ -93,7 +105,7 @@ class ArticleControllerTest extends WebTestCase
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
         $this->loadFixtures($fixtures);
 
-        $client->request('GET', '/articles/tdd?limit=1', array('ACCEPT' => 'application/json'));
+        $client->request('GET', '/articles/doctrine2?limit=1', array('ACCEPT' => 'application/json'));
         $response = $client->getResponse();
         $content = $response->getContent();
         $entities = json_decode($content);

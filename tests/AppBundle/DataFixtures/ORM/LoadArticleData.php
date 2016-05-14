@@ -34,11 +34,11 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($user1);
 
         $tag = new Tag();
-        $tag->setName("TDD");
+        $tag->setName("doctrine2");
         $manager->persist($tag);
 
         $tag1 = new Tag();
-        $tag1->setName("Testing");
+        $tag1->setName("doctrine");
         $manager->persist($tag1);
 
         $article1 = new Article();

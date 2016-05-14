@@ -171,9 +171,10 @@ class ArticleController extends FOSRestController
     public function createArticleAction(Request $request) {
 
         $data = json_decode($request->getContent());
-        $doctrine = $this->getDoctrine();
 
         if (!empty($data->article)) {
+
+            $doctrine = $this->getDoctrine();
 
             if (!empty($data->article->username)) {
 
@@ -186,7 +187,7 @@ class ArticleController extends FOSRestController
             }else{
                 throw new HttpException(Codes::HTTP_BAD_REQUEST, 'User not set');
             }
-
+            
             $validator = $this->get('validator');
 
             $mainEntity = new Article();
@@ -205,16 +206,16 @@ class ArticleController extends FOSRestController
             }
 
             $em = $doctrine->getManager();
-
             $em->persist($mainEntity);
+            $em->flush();
 
             if (!empty($data->article->contents)) {
 
-                foreach($data->article->contents as $data) {
+                foreach($data->article->contents as $item) {
 
                     $entity = new ArticleContent();
-                    $entity->setContent(isset($data->content) ? $data->content : null);
-                    $entity->setContentType(isset($data->contentType) ? $data->contentType : null);
+                    $entity->setContent(isset($item->content) ? $item->content : null);
+                    $entity->setContentType(isset($item->contentType) ? $item->contentType : null);
                     $entity->setArticle($mainEntity);
 
                     $errors = $validator->validate($entity);
@@ -227,10 +228,26 @@ class ArticleController extends FOSRestController
                     }
 
                     $em->persist($entity);
+                    $em->flush();
                 }
             }
 
-            $em->flush();
+            if (!empty($data->article->tags)) {
+
+                $repo = $doctrine->getRepository('AppBundle:Tag');
+
+                $tags_linked = array();
+                
+                foreach($data->article->tags as $item) {
+                    
+                    $id = $repo->findIdByName($item->name);
+
+                    if ($id && !in_array($id, $tags_linked)) {
+                        $repo->link($id, $mainEntity);
+                        array_push($tags_linked, $id);
+                    }
+                }
+            }
         }
         else{
              throw new HttpException(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
