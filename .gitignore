@@ -8,6 +8,8 @@
 
 # Parameters
 /app/config/parameters.yml
+/app/config/parameters_dev.yml
+/app/config/parameters_test.yml
 /app/config/parameters.ini
 
 # Managed by Composer
