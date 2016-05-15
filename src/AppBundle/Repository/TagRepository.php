@@ -36,6 +36,8 @@ class TagRepository extends EntityRepository
     /**
      * @param $tag_id
      * @param Article $article
+     *
+     *  TODO write test cases
      */
     public function link($tag_id, Article $article) {
         $entity = $this->find($tag_id);
