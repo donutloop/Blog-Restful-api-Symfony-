@@ -133,11 +133,11 @@ class ArticleControllerTest extends WebTestCase
     public function testDeleteArticleNotFound() {
         $client = static::createClient();
 
-        $client->request('DELETE', '/article/999999999999', array('ACCEPT' => 'application/json'));
+        $client->request('DELETE', '/article/99999', array('ACCEPT' => 'application/json'));
         $response = $client->getResponse();
         $content = $response->getContent();
         $data = json_decode($content);
-
+        
         $this->assertEquals(Codes::HTTP_NOT_FOUND, $data->error->code);
     }
 }
