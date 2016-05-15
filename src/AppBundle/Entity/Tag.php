@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Entity\Article;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Tag
@@ -26,6 +27,9 @@ class Tag
 
     /**
      * @var string
+     *
+     * @Assert\notNull()
+     * @Assert\Length(min=3, max=255)
      *
      * @ORM\Column(name="name", type="string", length=255)
      */

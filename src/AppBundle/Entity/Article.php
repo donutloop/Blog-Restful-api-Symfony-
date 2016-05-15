@@ -28,6 +28,7 @@ class Article
      * @var string
      *
      * @Assert\NotNull()
+     * @Assert\Length(min=3, max=255)
      *
      * @ORM\Column(name="title", type="string", length=255)
      */
