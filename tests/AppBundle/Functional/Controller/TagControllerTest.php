@@ -1,5 +1,5 @@
 <?php
-namespace Tests\AppBundle\Controller;
+namespace Tests\AppBundle\Functional\Controller;
 
 use FOS\RestBundle\Util\Codes;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
