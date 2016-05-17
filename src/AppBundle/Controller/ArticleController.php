@@ -211,24 +211,18 @@ class ArticleController extends FOSRestController
 
             if (!empty($data->article->contents)) {
 
-                foreach($data->article->contents as $item) {
+                $repo = $doctrine->getRepository('AppBundle:ArticleContent');
 
-                    $entity = new ArticleContent();
-                    $entity->setContent(isset($item->content) ? $item->content : null);
-                    $entity->setContentType(isset($item->contentType) ? $item->contentType : null);
-                    $entity->setArticle($mainEntity);
+                foreach($data->article->contents as $content) {
 
-                    $errors = $validator->validate($entity);
+                    $content->content = $content->content ??  null;
+                    $content->contentType = $content->contentType ??  null;
 
-                    if (count($errors) > 0) {
+                    $entity = $repo->createArticleContent($mainEntity, $content, $validator);
 
-                        $errorsString = (string) $errors;
-
-                        throw new HttpException(Codes::HTTP_BAD_REQUEST, $errorsString);
+                    if (is_string($entity)) {
+                        throw new HttpException(Codes::HTTP_BAD_REQUEST, $entity);
                     }
-
-                    $em->persist($entity);
-                    $em->flush();
                 }
             }
 
