@@ -100,12 +100,12 @@ class ArticleControllerTest extends WebTestCase
         $this->assertEquals(true, $acutal);
     }
 
-    public function testArticleByAction() {
+    public function testArticleByTagAction() {
         $client = static::createClient();
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
         $this->loadFixtures($fixtures);
 
-        $client->request('GET', '/articles/doctrine2?limit=1', array('ACCEPT' => 'application/json'));
+        $client->request('GET', '/articles/test-tag?limit=1', array('ACCEPT' => 'application/json'));
         $response = $client->getResponse();
         $content = $response->getContent();
         $entities = json_decode($content);

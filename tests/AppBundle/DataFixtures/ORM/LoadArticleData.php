@@ -11,78 +11,165 @@ use AppBundle\Entity\Tag;
 
 class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
 {
-
+    /**
+     * @var array
+     */
     static $articles = array();
+
+    /**
+     * @var
+     */
+    private $manager;
+
+    /**
+     * @param $data
+     * @param int $number
+     * @return User
+     */
+    private function createTestUser($data, $number = 1) {
+        $number = (string) $number;
+        $entity = new User();
+        $entity->setUsername(sprintf($data['username'], $number));
+        $entity->setEmail(sprintf($data['email'], $number));
+        $entity->setPassword($data['password']);
+        $this->getManager()->persist($entity);
+        return $entity;
+    }
+
+    /**
+     * @param $data
+     * @param $uid
+     * @return Tag
+     */
+    private function createTestTag($data, $uid) {
+        $entity = new Tag();
+        $entity->setName(sprintf($data['name'], $uid));
+        $this->getManager()->persist($entity);
+        return $entity;
+    }
+
+    /**
+     * @param $data
+     * @param array $tags
+     * @param User $user
+     * @param int $number
+     * @return Article
+     */
+    private function createTestArticle($data, array $tags = array(), User $user , $number = 1) {
+
+        $entity = new Article();
+        $entity->setTitle(sprintf($data['title'], $number));
+        $entity->setUser($user);
+
+        foreach ($tags as $tag){
+            $entity->addTag($tag);
+        }
+
+        $this->getManager()->persist($entity);
+
+        return $entity;
+    }
+
+    /**
+     * @param $article
+     * @param $data
+     */
+    private function createTestArticleContent($article, $data) {
+        $entity = new ArticleContent();
+        $entity->setContentType($data['type']);
+        $entity->setContent($data['content']);
+        $entity->setArticle($article);
+        $this->getManager()->persist($entity);
+    }
+
+    /**
+     * @param $manager
+     */
+    private function setManager($manager) {
+        $this->manager = $manager;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getManager() {
+        return $this->manager;
+    }
 
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
-    {
-        #todo create test data better
-        
-        $user = new User();
-        $user->setUsername('Test user');
-        $user->setEmail('test@test.de');
-        $user->setPassword('test');
-        $manager->persist($user);
+    public function load(ObjectManager $manager) {
 
-        $user1 = new User();
-        $user1->setUsername('Test user1');
-        $user1->setEmail('test@test1.de');
-        $user1->setPassword('test');
-        $manager->persist($user1);
+        $this->setManager($manager);
 
-        $tag = new Tag();
-        $tag->setName("doctrine2");
-        $manager->persist($tag);
+        $data = array(
+                'user' => array(
+                    'username' => 'test-user-%d',
+                    'email' => '%d-test@test.com',
+                    'password' => 'test'
+                ),
+                'tags' => array (
+                    array(
+                        'name' => 'test-tag-%s',
+                    ),
+                     array(
+                         'name' => 'test-tag-%s',
+                     )
+                ),
+                'article' => array(
+                    'title' => 'test-entry-%d'
+                ),
+                'articleContent' => array(
+                    array(
+                        'type' => 'text',
+                        'content' => 'Lorem Ipsum'
+                    ),
+                    array(
+                        'type' => 'code',
+                        'content' => 'Lorem Ipsum'
+                    )
+                )
+        );
 
-        $tag1 = new Tag();
-        $tag1->setName("doctrine");
-        $manager->persist($tag1);
+        self::$articles = array();
 
-        $article1 = new Article();
-        $article1->setTitle("PHP");
-        $article1->setUser($user1);
-        $article1->addTag($tag);
-        $article1->addTag($tag1);
-        $manager->persist($article1);
+        $count = 0;
 
-        $article2 = new Article();
-        $article2->setTitle("JAVA");
-        $article2->setUser($user);
-        $article2->addTag($tag);
-        $article2->addTag($tag1);
-        $manager->persist($article2);
+        while ($count !=  10) {
 
-        $articleConetent1 = new ArticleContent();
-        $articleConetent1->setContent('Lorem Ipsum');
-        $articleConetent1->setContentType('Code');
-        $articleConetent1->setArticle($article1);
-        $manager->persist($articleConetent1);
+            $tags = array();
+            $user = null;
+            $article = null;
 
-        $articleConetent2 = new ArticleContent();
-        $articleConetent2->setContent('Lorem Ipsum');
-        $articleConetent2->setContentType('Code');
-        $articleConetent2->setArticle($article2);
-        $manager->persist($articleConetent2);
+            if (isset($data['user'])) {
+                $user = $this->createTestUser($data['user'], $count);
+            }
 
-        $articleConetent3 = new ArticleContent();
-        $articleConetent3->setContent('Lorem Ipsum');
-        $articleConetent3->setContentType('Code');
-        $articleConetent3->setArticle($article1);
+            if (isset($data['tags'])) {
 
-        $manager->persist($articleConetent3);
+                foreach ($data['tags'] as $tag) {
+                    $tag = $this->createTestTag($tag, uniqid());
+                    array_push($tags, $tag);
+                }
+            }
 
-        $articleConetent4 = new ArticleContent();
-        $articleConetent4->setContent('Lorem Ipsum');
-        $articleConetent4->setContentType('Code');
-        $articleConetent4->setArticle($article2);
-        $manager->persist($articleConetent4);
+            if (isset($data['article'])) {
+                  $article = $this->createTestArticle($data['article'], $tags, $user, $count);
+            }
 
-        $manager->flush();
-        
-        self::$articles = array($article1, $article2);
+            if (isset($data['articleContent'])) {
+
+                foreach ($data['articleContent'] as $content){
+                    $this->createTestArticleContent($article, $content);
+                }
+            }
+
+            array_push(self::$articles, $article);
+            $count++;
+        }
+
+        $this->getManager()->flush();
     }
 
     public function getOrder()
