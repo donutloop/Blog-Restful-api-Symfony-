@@ -26,7 +26,7 @@ class ArticleRepository extends EntityRepository
                      ->join('AppBundle\Entity\User', 'u', 'WITH', 'a.user_id = u.id')
                      ->join('AppBundle\Entity\Tag', 't', 'WITH', 't.name LIKE :name')
                      ->setMaxResults($maxResults)
-                     ->setParameter('name', $name)
+                     ->setParameter('name', $name . '%')
                      ->getQuery();
 
         if ($firstResult) {
