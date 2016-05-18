@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ArticleContent
@@ -25,12 +26,16 @@ class ArticleContent
     /**
      * @var string
      *
+     * @Assert\NotNull()
+     *
      * @ORM\Column(name="content", type="text")
      */
     private $content;
 
     /**
      * @var string
+     *
+     * @Assert\NotNull()
      *
      * @ORM\Column(name="content_type", type="string", length=255)
      */

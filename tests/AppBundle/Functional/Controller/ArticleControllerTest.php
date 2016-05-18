@@ -9,17 +9,12 @@ use Tests\AppBundle\DataFixtures\ORM\LoadArticleData;
 
 class ArticleControllerTest extends WebTestCase
 {
-    public function testCreateArticle() {
 
-        $client = static::createClient();
-        $fixtures = array(
-            'Tests\AppBundle\DataFixtures\ORM\LoadUserData',
-            'Tests\AppBundle\DataFixtures\ORM\LoadTagData'
-        );
-
-        $this->loadFixtures($fixtures);
-
-        $entity = array(
+    /**
+     * @return array
+     */
+    private function getRawArticleData() {
+        return array(
             'article' => array(
                 'title' => 'Test Eintrag',
                 'username' => 'test-user',
@@ -43,22 +38,214 @@ class ArticleControllerTest extends WebTestCase
                 )
             )
         );
+    }
+
+    public function testCreateArticle() {
+
+        $client = static::createClient();
+        $fixtures = array(
+            'Tests\AppBundle\DataFixtures\ORM\LoadUserData',
+            'Tests\AppBundle\DataFixtures\ORM\LoadTagData'
+        );
+
+        $this->loadFixtures($fixtures);
 
         $serializer = $this->getContainer()->get('jms_serializer');
-        $jsonContent = $serializer->serialize($entity, 'json');
+
+        $entityRaw = $this->getRawArticleData();
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
 
         $client->request('Post',
             '/article/create',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
-            $jsonContent
+            $entityJson
         );
 
         $response = $client->getResponse();
         $data = json_decode($response->getContent());
         
         $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
+    }
+
+    public function testCreateArticleDataEmpty() {
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityJson = $serializer->serialize(array(), 'json');
+
+        $client->request('Post',
+            '/article/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testCreateArticleUserNotSet() {
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawArticleData();
+
+        $entityRaw['article']['username'] = null;
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Post',
+            '/article/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testCreateArticleUserNotFound() {
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawArticleData();
+
+        $entityRaw['article']['username'] = 'test-user-x';
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Post',
+            '/article/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testCreateArticleTitleEmpty() {
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawArticleData();
+
+        $entityRaw['article']['title'] = null;
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Post',
+            '/article/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testCreateArticleContentTypeEmpty() {
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawArticleData();
+
+        $entityRaw['article']['contents'][0]['contentType'] = null;
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Post',
+            '/article/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testCreateArticleContentEmpty() {
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawArticleData();
+
+        $entityRaw['article']['contents'][0]['content'] = null;
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Post',
+            '/article/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testCreateArticleContentNotSet() {
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawArticleData();
+
+        $entityRaw['article']['contents'] = null;
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Post',
+            '/article/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
     }
 
     public function testCreateArticleNotValid() {

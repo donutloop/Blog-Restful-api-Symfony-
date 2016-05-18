@@ -224,6 +224,8 @@ class ArticleController extends FOSRestController
                         throw new HttpException(Codes::HTTP_BAD_REQUEST, $entity);
                     }
                 }
+            } else {
+                throw new HttpException(Codes::HTTP_BAD_REQUEST, 'Content not set');
             }
 
             if (!empty($data->article->tags)) {
