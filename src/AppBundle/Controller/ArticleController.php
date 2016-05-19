@@ -190,25 +190,16 @@ class ArticleController extends FOSRestController
             
             $validator = $this->get('validator');
 
-            $mainEntity = new Article();
+            $data->article->title = $data->article->title ?? null;
 
-            $mainEntity->setTitle(isset($data->article->title) ? $data->article->title : null);
+            $repo = $doctrine->getRepository('AppBundle:Article');
 
-            $mainEntity->setUser($user);
-
-            $errors = $validator->validate($mainEntity);
-
-            if (count($errors) > 0) {
-
-                $errorsString = (string) $errors;
-
-                throw new HttpException(Codes::HTTP_BAD_REQUEST, $errorsString);
-            }
-
-            $em = $doctrine->getManager();
-            $em->persist($mainEntity);
-            $em->flush();
-
+            try{
+                $mainEntity = $repo->createArticle($data->article, $user, $validator);
+            }catch(\Exception $e){
+                throw new HttpException(Codes::HTTP_BAD_REQUEST, $e->getMessage());
+            };
+            
             if (!empty($data->article->contents)) {
 
                 $repo = $doctrine->getRepository('AppBundle:ArticleContent');

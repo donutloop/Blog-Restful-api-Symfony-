@@ -1,8 +1,11 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Article;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * ArticleRepository
@@ -68,5 +71,29 @@ class ArticleRepository extends EntityRepository
         }
 
         return $result;
+    }
+
+    public function createArticle(\stdClass $data, User $user , ValidatorInterface $validator) {
+
+        $entity = new Article();
+
+        $entity->setTitle($data->title);
+
+        $entity->setUser($user);
+
+        $errors = $validator->validate($entity);
+
+        if (count($errors) > 0) {
+
+            $errors = (string) $errors;
+
+            throw new \Exception($errors);
+        }
+
+        $em = $this->getEntityManager();
+        $em->persist($entity);
+        $em->flush();
+
+        return $entity;
     }
 }
