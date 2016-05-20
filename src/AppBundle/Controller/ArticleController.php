@@ -209,11 +209,11 @@ class ArticleController extends FOSRestController
                     $content->content = $content->content ??  null;
                     $content->contentType = $content->contentType ??  null;
 
-                    $entity = $repo->createArticleContent($mainEntity, $content, $validator);
-
-                    if (is_string($entity)) {
-                        throw new HttpException(Codes::HTTP_BAD_REQUEST, $entity);
-                    }
+                    try{
+                        $repo->createArticleContent($mainEntity, $content, $validator);
+                    }catch(\Exception $e){
+                        throw new HttpException(Codes::HTTP_BAD_REQUEST, $e->getMessage());
+                    };
                 }
             } else {
                 throw new HttpException(Codes::HTTP_BAD_REQUEST, 'Content not set');

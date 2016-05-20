@@ -16,8 +16,9 @@ class ArticleContentRepository extends EntityRepository
     /**
      * @param Article $mainEntity
      * @param \stdClass $data
-     * @param $validator
-     * @return ArticleContent|string
+     * @param ValidatorInterface $validator
+     * @return ArticleContent
+     * @throws \Exception
      */
     public function createArticleContent(Article $mainEntity, \stdClass $data, ValidatorInterface $validator) {
 
@@ -31,7 +32,7 @@ class ArticleContentRepository extends EntityRepository
         $errors = $validator->validate($entity);
 
         if (count($errors) > 0) {
-            return (string) $errors;
+            throw new \Exception((string) $errors);
         }
 
         $em->persist($entity);
