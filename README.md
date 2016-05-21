@@ -4,7 +4,7 @@ Blog Restful API Symfony Edition (Alpha)
 What's inside?
 --------------
 
-The Blog RestFul Api (Based on Symfony) is configured with the following defaults:
+The Blog RestFul Api (Based on Symfony 3) is configured with the following defaults:
 
   * Twig as the only configured template engine;
 
@@ -59,7 +59,7 @@ It comes pre-configured with the following bundles:
 
   * [**DoctrineFixturesBundle**][19] - Adds functionality for fixtures features
 
-All libraries and bundles included in the Blog Restful Api (Based on Symfony) are
+All libraries and bundles included in the Blog Restful Api (Based on Symfony 3) are
 released under the MIT or BSD license.
 
 Enjoy!
