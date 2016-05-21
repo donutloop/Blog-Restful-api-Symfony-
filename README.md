@@ -1,4 +1,4 @@
-Blog Restful API Symfony Edition (Alpha)
+Blog Restful API Symfony 3 Edition (Alpha)
 ========================
 
 What's inside?
