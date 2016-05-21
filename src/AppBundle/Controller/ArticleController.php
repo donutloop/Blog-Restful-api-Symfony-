@@ -227,6 +227,10 @@ class ArticleController extends FOSRestController
                 
                 foreach($data->article->tags as $item) {
                     
+                    if (!empty($item->name)) {
+                        continue;
+                    }
+                    
                     $id = $repo->findIdByName($item->name);
 
                     if ($id && !in_array($id, $tags_linked)) {
