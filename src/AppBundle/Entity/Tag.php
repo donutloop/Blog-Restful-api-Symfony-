@@ -29,7 +29,7 @@ class Tag
      * @var string
      *
      * @Assert\notNull()
-     * @Assert\Length(min=3, max=255)
+     * @Assert\Length(min=3, max=30)
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
