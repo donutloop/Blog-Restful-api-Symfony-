@@ -12,21 +12,26 @@ use AppBundle\Entity\Tag;
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {
 
-    static $user = array();
+    static $entity = null;
+
+    static $username = null;
 
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-        $user = new User();
-        $user->setUsername('test-user');
-        $user->setEmail('test@test2.de');
-        $user->setPassword('test');
-        $manager->persist($user);
+        $username = 'test-user';
+
+        $entity = new User();
+        $entity->setUsername($username);
+        $entity->setEmail('test@test2.de');
+        $entity->setPassword('test');
+        $manager->persist($entity);
         $manager->flush();
 
-        self::$user = array($user);
+        self::$entity = $entity;
+        self::$username = $username;
     }
 
     public function getOrder()

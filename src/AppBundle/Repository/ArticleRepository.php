@@ -5,6 +5,7 @@ use AppBundle\Entity\Article;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -94,7 +95,7 @@ class ArticleRepository extends EntityRepository
 
             $errors = (string) $errors;
 
-            throw new \Exception($errors);
+            throw new ValidatorException($errors);
         }
 
         $em = $this->getEntityManager();

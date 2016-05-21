@@ -47,6 +47,44 @@ class ArticleContentRepositoryTest extends WebTestCase
         $this->assertEquals(1, count($entity));
     }
 
+    public function testCreateArticleEmptyContent() {
+
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+
+        $this->loadFixtures(array(
+            'Tests\AppBundle\DataFixtures\ORM\LoadOneArticleData'
+        ));
+
+        $data = new \stdClass();
+        $data->content = null;
+        $data->contentType = 'text';
+
+        $repo = $this->em->getRepository('AppBundle:ArticleContent');
+
+        $validator = $this->container->get('validator');
+
+        $repo->createArticleContent(LoadOneArticleData::$entity, $data , $validator);
+    }
+
+    public function testCreateArticleEmptyContentType() {
+
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+
+        $this->loadFixtures(array(
+            'Tests\AppBundle\DataFixtures\ORM\LoadOneArticleData'
+        ));
+
+        $data = new \stdClass();
+        $data->content = 'Lorem Ipsum';
+        $data->contentType = null;
+
+        $repo = $this->em->getRepository('AppBundle:ArticleContent');
+
+        $validator = $this->container->get('validator');
+
+        $repo->createArticleContent(LoadOneArticleData::$entity, $data , $validator);
+    }
+
     /**
      * {@inheritDoc}
      */

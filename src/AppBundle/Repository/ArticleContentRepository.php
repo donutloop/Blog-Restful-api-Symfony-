@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleContent;
+use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -32,7 +33,7 @@ class ArticleContentRepository extends EntityRepository
         $errors = $validator->validate($entity);
 
         if (count($errors) > 0) {
-            throw new \Exception((string) $errors);
+            throw new ValidatorException((string) $errors);
         }
 
         $em->persist($entity);
