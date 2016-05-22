@@ -4,7 +4,6 @@ namespace Tests\AppBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use AppBundle\Entity\Article;
 use AppBundle\Entity\Tag;
 
 class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
