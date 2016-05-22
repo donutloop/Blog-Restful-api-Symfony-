@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\RestBundle\Util\Codes;
 
@@ -84,6 +85,55 @@ class TagController extends FOSRestController{
 
         $data = array(
             'message' => sprintf('Dataset successfully removed (id: %d)', $id),
+            'statusCode' => Codes::HTTP_OK
+        );
+
+        return $data;
+    }
+
+     /**
+      * @ApiDoc(
+      *  resource=true,
+      *  requirements={
+      *      {
+      *          "name"="name",
+      *          "dataType"="string",
+      *          "requirement"="\w+"
+      *      },
+      *  },
+      *  statusCodes={
+      *         200="Returned when successful",
+      *         400={
+      *           "Returned when dataset is not inserted"
+      *         }
+      *   }
+      * )
+      *
+      * @RestAnnotaions\Post("/tag/create")
+      *
+      * @param $request
+      *
+      * @return array
+     **/
+    public function createTagAction(Request $request) {
+
+        $data = json_decode($request->getContent());
+
+        if (!isset($data->tag)) {
+            throw new HttpException(Codes::HTTP_BAD_REQUEST, 'Dataset unsuccessfully created (Bad format)');
+        }
+
+        $repo = $this->getDoctrine()->getRepository('AppBundle:Tag');
+        $validator = $this->get('validator');
+
+        try{
+            $entity = $repo->createTag($data->tag, $validator);
+        }catch (\Exception $e){
+            throw new HttpException(Codes::HTTP_BAD_REQUEST, sprintf('Dataset unsuccessfully created (Name: %d)', $data->tag->name));
+        }
+        
+        $data = array(
+            'message' => sprintf('Dataset successfully created (Name: %d)', $entity->getName()),
             'statusCode' => Codes::HTTP_OK
         );
 

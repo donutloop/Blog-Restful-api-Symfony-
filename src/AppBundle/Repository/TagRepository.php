@@ -55,6 +55,7 @@ class TagRepository extends EntityRepository
     /**
      * @param \stdClass $data
      * @param ValidatorInterface $validator
+     * @return Tag
      */
     public function createTag(\stdClass $data, ValidatorInterface $validator) {
         $em = $this->getEntityManager();
@@ -70,6 +71,8 @@ class TagRepository extends EntityRepository
 
         $em->persist($entity);
         $em->flush();
+
+        return $entity;
     }
 
     /**

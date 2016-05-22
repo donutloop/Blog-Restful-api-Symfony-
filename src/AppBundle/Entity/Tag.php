@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Entity\Article;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Tag
@@ -13,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="tag")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TagRepository")
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity("name")
+ *
  */
 class Tag
 {
@@ -30,8 +33,9 @@ class Tag
      *
      * @Assert\notNull()
      * @Assert\Length(min=3, max=30)
+     * @Assert\NotBlank()
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
