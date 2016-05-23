@@ -117,27 +117,11 @@ class TagController extends FOSRestController{
      **/
     public function createTagAction(Request $request) {
 
-        $data = json_decode($request->getContent());
+        $callback = function($repo, $data, $validator) {
+            return $repo->createTag($data->tag, $validator);
+        };
 
-        if (!isset($data->tag)) {
-            throw new HttpException(Codes::HTTP_BAD_REQUEST, 'Dataset unsuccessfully created (Bad format)');
-        }
-
-        $repo = $this->getDoctrine()->getRepository('AppBundle:Tag');
-        $validator = $this->get('validator');
-
-        try{
-            $entity = $repo->createTag($data->tag, $validator);
-        }catch (\Exception $e){
-            throw new HttpException(Codes::HTTP_BAD_REQUEST, sprintf('Dataset unsuccessfully created (Name: %d)', $data->tag->name));
-        }
-        
-        $data = array(
-            'message' => sprintf('Dataset successfully created (Name: %d)', $entity->getName()),
-            'statusCode' => Codes::HTTP_OK
-        );
-
-        return $data;
+        return $this->tagProcess($request, $callback , 'Dataset unsuccessfully created');
     }
 
     /**
