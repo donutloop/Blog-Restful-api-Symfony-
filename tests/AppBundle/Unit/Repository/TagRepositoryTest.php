@@ -3,6 +3,7 @@ namespace Tests\AppBundle\Unit\Repository;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\DataFixtures\ORM\LoadOneTagData;
+use Tests\AppBundle\DataFixtures\ORM\LoadTagData;
 
 class TagRepositoryTest extends WebTestCase
 {
@@ -50,6 +51,24 @@ class TagRepositoryTest extends WebTestCase
         $entity = $repo->findBy(array('name' => 'test-create-tag'));
 
         $this->assertEquals(1, count($entity));
+    }
+
+    public function testCreateTagUnique() {
+
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+
+        $this->loadFixtures(array(
+            'Tests\AppBundle\DataFixtures\ORM\LoadTagData'
+        ));
+
+        $repo = $this->em->getRepository('AppBundle:Tag');
+
+        $validator = $this->container->get('validator');
+
+        $data = new \stdClass();
+        $data->name = 'GOlang';
+
+        $repo->createTag($data, $validator);
     }
 
     public function testCreateTagEmptyName() {
@@ -181,6 +200,27 @@ class TagRepositoryTest extends WebTestCase
         $data = new \stdClass();
         $data->name = 'test-tag-update';
         $data->id = '1';
+
+        $repo->updateTag($data, $validator);
+    }
+
+    public function testUpdateTagUnique() {
+
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+
+        $this->loadFixtures(array(
+            'Tests\AppBundle\DataFixtures\ORM\LoadTagData'
+        ));
+
+        $entity = LoadTagData::$tags[0];
+
+        $repo = $this->em->getRepository('AppBundle:Tag');
+
+        $validator = $this->container->get('validator');
+
+        $data = new \stdClass();
+        $data->name = 'GOlang';
+        $data->id = $entity->getId();
 
         $repo->updateTag($data, $validator);
     }

@@ -310,4 +310,33 @@ class TagControllerTest extends WebTestCase
 
         $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
     }
+
+    public function testUpdateTagUniqueAction() {
+
+        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadTagData');
+        $this->loadFixtures($fixtures);
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawTagData();
+        $entityRaw['tag']['name'] = 'GOlang';
+        $entityRaw['tag']['id'] = LoadTagData::$tags[0]->getId();
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Patch',
+            '/tag/update',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
 }
