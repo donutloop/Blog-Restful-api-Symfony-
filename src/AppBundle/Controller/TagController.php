@@ -139,4 +139,73 @@ class TagController extends FOSRestController{
 
         return $data;
     }
+
+    /**
+     * @ApiDoc(
+     *  resource=true,
+     *  requirements={
+     *      {
+     *          "name"="name",
+     *          "dataType"="string",
+     *          "requirement"="\w+"
+     *      },
+     *      {
+     *          "name"="id",
+     *          "dataType"="integer",
+     *          "requirement"="\d+"
+     *      }
+     *  },
+     *  statusCodes={
+     *         200="Returned when successful",
+     *         400={
+     *           "Returned when dataset is not updated"
+     *         }
+     *   }
+     * )
+     *
+     * @RestAnnotaions\Patch("/tag/update")
+     *
+     * @param $request
+     *
+     * @return array
+     **/
+    public function updateTagAction(Request $request) {
+
+        $callback = function($repo, $data, $validator) {
+            return $repo->updateTag($data->tag, $validator);
+        };
+
+        return $this->tagProcess($request, $callback , 'Dataset unsuccessfully updated');
+    }
+
+    /**
+     * @param $request
+     * @param $callback
+     * @param $message
+     * @return array
+     */
+    private function tagProcess($request, $callback, $message) {
+
+        $data = json_decode($request->getContent());
+
+        if (!isset($data->tag)) {
+            throw new HttpException(Codes::HTTP_BAD_REQUEST, $message . '(Bad format)');
+        }
+
+        $repo = $this->getDoctrine()->getRepository('AppBundle:Tag');
+        $validator = $this->get('validator');
+
+        try{
+              $entity = $callback($repo, $data, $validator);
+        }catch (\Exception $e){
+            throw new HttpException(Codes::HTTP_BAD_REQUEST, $message . sprintf(' (Name: %d)', $data->tag->name));
+        }
+
+        $data = array(
+            'message' => sprintf('Dataset successfully created (Name: %d)', $entity->getName()),
+            'statusCode' => Codes::HTTP_OK
+        );
+
+        return $data;
+    }
 }

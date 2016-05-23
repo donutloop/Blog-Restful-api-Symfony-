@@ -2,6 +2,7 @@
 namespace Tests\AppBundle\Unit\Repository;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\DataFixtures\ORM\LoadOneTagData;
 
 class TagRepositoryTest extends WebTestCase
 {
@@ -103,6 +104,85 @@ class TagRepositoryTest extends WebTestCase
             ->findIdByName('Math');
 
         $this->assertEquals(true, count($entities) == 1);
+    }
+
+    public function testUpdateTag() {
+        $this->loadFixtures(array(
+            'Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'
+        ));
+
+        $entity = LoadOneTagData::$entity;
+
+        $repo = $this->em->getRepository('AppBundle:Tag');
+
+        $validator = $this->container->get('validator');
+
+        $data = new \stdClass();
+        $data->name = 'test-tag-updated';
+        $data->id = $entity->getId();
+
+        $repo->updateTag($data, $validator);
+
+        $entity = $repo->findBy(array('name' => 'test-tag-updated'));
+
+        $this->assertEquals(1, count($entity));
+    }
+
+    public function testUpdateTagInvaildMax() {
+
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+
+        $this->loadFixtures(array(
+            'Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'
+        ));
+
+        $entity = LoadOneTagData::$entity;
+
+        $repo = $this->em->getRepository('AppBundle:Tag');
+
+        $validator = $this->container->get('validator');
+
+        $data = new \stdClass();
+        $data->name = 'Lorem ipsum dolor sit amet, com';
+        $data->id = $entity->getId();
+
+        $repo->updateTag($data, $validator);
+    }
+
+    public function testUpdateTagInvaildMin() {
+
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+
+        $this->loadFixtures(array(
+            'Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'
+        ));
+
+        $entity = LoadOneTagData::$entity;
+
+        $repo = $this->em->getRepository('AppBundle:Tag');
+
+        $validator = $this->container->get('validator');
+
+        $data = new \stdClass();
+        $data->name = 'Lo';
+        $data->id = $entity->getId();
+
+        $repo->updateTag($data, $validator);
+    }
+
+    public function testUpdateTagEntityNotFound() {
+
+        $this->setExpectedException('Doctrine\ORM\NoResultException');
+
+        $repo = $this->em->getRepository('AppBundle:Tag');
+
+        $validator = $this->container->get('validator');
+
+        $data = new \stdClass();
+        $data->name = 'test-tag-update';
+        $data->id = '1';
+
+        $repo->updateTag($data, $validator);
     }
     
     /**

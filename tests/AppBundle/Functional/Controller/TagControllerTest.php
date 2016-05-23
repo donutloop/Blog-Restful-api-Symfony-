@@ -3,6 +3,7 @@ namespace Tests\AppBundle\Functional\Controller;
 
 use FOS\RestBundle\Util\Codes;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\DataFixtures\ORM\LoadOneTagData;
 use Tests\AppBundle\DataFixtures\ORM\LoadTagData;
 
 class TagControllerTest extends WebTestCase
@@ -188,6 +189,119 @@ class TagControllerTest extends WebTestCase
 
         $client->request('Post',
             '/tag/create',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testUpdateTagAction() {
+
+        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
+        $this->loadFixtures($fixtures);
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawTagData();
+        $entityRaw['tag']['name'] = 'test-tag-update';
+        $entityRaw['tag']['id'] = LoadOneTagData::$entity->getId();
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Patch',
+            '/tag/update',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
+    }
+
+    public function testUpdateTagEntityNotFoundAction() {
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawTagData();
+        $entityRaw['tag']['name'] = 'test-tag-update';
+        $entityRaw['tag']['id'] = '1';
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Patch',
+            '/tag/update',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testUpdateTagUnvaildMinAction() {
+
+        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
+        $this->loadFixtures($fixtures);
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawTagData();
+        $entityRaw['tag']['name'] = 'lo';
+        $entityRaw['tag']['id'] = LoadOneTagData::$entity->getId();
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Patch',
+            '/tag/update',
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $entityJson
+        );
+
+        $response = $client->getResponse();
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testUpdateTagUnvaildMaxAction() {
+
+        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
+        $this->loadFixtures($fixtures);
+
+        $client = static::createClient();
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityRaw = $this->getRawTagData();
+        $entityRaw['tag']['name'] = 'Lorem ipsum dolor sit amet, com';
+        $entityRaw['tag']['id'] = LoadOneTagData::$entity->getId();
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $client->request('Patch',
+            '/tag/update',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),

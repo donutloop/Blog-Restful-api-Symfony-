@@ -58,7 +58,6 @@ class TagRepository extends EntityRepository
      * @return Tag
      */
     public function createTag(\stdClass $data, ValidatorInterface $validator) {
-        $em = $this->getEntityManager();
 
         $entity = new Tag();
         $entity->setName($data->name);
@@ -69,6 +68,36 @@ class TagRepository extends EntityRepository
             throw new ValidatorException((string) $errors);
         }
 
+        $em = $this->getEntityManager();
+        $em->persist($entity);
+        $em->flush();
+
+        return $entity;
+    }
+
+    /**
+     * @param \stdClass $data
+     * @param ValidatorInterface $validator
+     * @return null|object
+     * @throws NoResultException
+     */
+    public function updateTag(\stdClass $data, ValidatorInterface $validator) {
+
+        $entity = $this->findOneBy(array('id' => $data->id));
+
+        if (!$entity) {
+            throw new NoResultException(sprintf('Dataset not found (id:%d)', $data->id));
+        }
+
+        $entity->setName($data->name);
+
+        $errors = $validator->validate($entity);
+
+        if (count($errors) > 0) {
+              throw new ValidatorException((string) $errors);
+        }
+
+        $em = $this->getEntityManager();
         $em->persist($entity);
         $em->flush();
 
