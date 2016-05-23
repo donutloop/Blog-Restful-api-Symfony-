@@ -180,9 +180,6 @@ class TagControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
-        $this->loadFixtures($fixtures);
-
         $serializer = $this->getContainer()->get('jms_serializer');
 
         $entityJson = $serializer->serialize(array(), 'json');
