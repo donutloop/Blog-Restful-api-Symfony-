@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleContent;
+use Doctrine\ORM\NoResultException;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -46,11 +47,11 @@ class ArticleController extends FOSRestController
         $limit = $paramFetcher->get('limit');
         $offset = $paramFetcher->get('offset');
         
-        $entities = $this->getDoctrine()
-                         ->getRepository("AppBundle:Article")
-                         ->findAllArticlesByTag($tag, $limit, $offset);
+        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
 
-        if (!$entities) {
+        try{
+            $entities = $repo->findAllArticlesByTag($tag, $limit, $offset);
+        } catch (NoResultException $e) {
             throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Datasets not found (tag: %d)', $tag));
         }
 
@@ -88,12 +89,13 @@ class ArticleController extends FOSRestController
         $limit = $paramFetcher->get('limit');
         $offset = $paramFetcher->get('offset');
 
-        $entities = $this->getDoctrine()
-                         ->getRepository("AppBundle:Article")
-                         ->findAllArticles($limit, $offset);
 
-        if (!$entities) {
-            throw new HttpException(Codes::HTTP_NOT_FOUND, 'Datasets not found');
+        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
+
+        try{
+            $entities = $repo->findAllArticles($limit, $offset);
+        }catch (NoResultException $e) {
+            throw new HttpException(Codes::HTTP_NOT_FOUND, $e->getMessage());
         }
 
         $data = array(

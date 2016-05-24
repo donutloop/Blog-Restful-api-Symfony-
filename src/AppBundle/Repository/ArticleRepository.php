@@ -21,6 +21,7 @@ class ArticleRepository extends EntityRepository
      * @param $maxResults
      * @param $firstResult
      * @return array
+     * @throws NoResultException
      */
     public function findAllArticlesByTag($name, $maxResults, $firstResult) {
 
@@ -37,10 +38,10 @@ class ArticleRepository extends EntityRepository
             $query->setFirstResult($firstResult);
         }
 
-        try{
-            $result = $query->getArrayResult();
-        }catch (NoResultException $e){
-            return array($e->getMessage());
+        $result = $query->getArrayResult();
+
+        if (!$result) {
+            throw new NoResultException('no result');
         }
 
         return $result;
@@ -50,6 +51,7 @@ class ArticleRepository extends EntityRepository
      * @param $maxResults
      * @param $firstResult
      * @return array
+     * @throws NoResultException
      */
     public function findAllArticles($maxResults, $firstResult) {
 
@@ -65,10 +67,10 @@ class ArticleRepository extends EntityRepository
             $query->setFirstResult($firstResult);
         }
 
-        try{
-            $result = $query->getArrayResult();
-        }catch (NoResultException $e){
-            return array($e->getMessage());
+        $result = $query->getArrayResult();
+
+        if (!$result) {
+            throw new NoResultException('no result');
         }
 
         return $result;
