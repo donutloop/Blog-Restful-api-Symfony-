@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Doctrine\ORM\NoResultException;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -28,12 +29,12 @@ class TagController extends FOSRestController{
      */
    public function getTagsAction() {
 
-       $entities = $this->getDoctrine()
-                       ->getRepository('AppBundle:Tag')
-                       ->findAllNames();
+       $repo = $this->getDoctrine()->getRepository('AppBundle:Tag');
 
-       if (!$entities) {
-           throw new HttpException(Codes::HTTP_NOT_FOUND, 'Datasets not found');
+       try{
+           $entities = $repo->findAllNames();
+       }catch (NoResultException $e){
+           throw new HttpException(Codes::HTTP_NOT_FOUND, $e->getMessage());
        }
 
        $data = array(
