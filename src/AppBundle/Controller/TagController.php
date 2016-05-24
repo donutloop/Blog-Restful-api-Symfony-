@@ -170,6 +170,10 @@ class TagController extends FOSRestController{
      */
     private function tagProcess($request, $callback, $message) {
 
+        if (!is_callable($callback)) {
+            throw new \InvalidArgumentException("callback parameter isn't a method or function");
+        }
+
         $data = json_decode($request->getContent());
 
         if (!isset($data->tag)) {
