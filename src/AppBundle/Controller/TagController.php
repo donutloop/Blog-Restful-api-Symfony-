@@ -36,7 +36,7 @@ class TagController extends MainController{
        $repo = $this->getDoctrine()->getRepository("AppBundle:Tag");
 
        $callback = function($repo, $offset, $limit, $queryParam) {
-           return $entities = $repo->findAllNames($queryParam, $limit, $offset);
+           return $entities = $repo->findAllNames($offset, $limit);
        };
 
        return $this->getWrapper($repo, $callback, $paramFetcher);

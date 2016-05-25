@@ -23,7 +23,7 @@ class TagRepository extends EntityRepository
      * @return array
      * @throws NoResultException
      */
-    public function findAllNames($firstResult = 0, $maxResults = 10) {
+    public function findAllNames(int $firstResult = 0, int $maxResults = 10) {
         
         $query = $this->createQueryBuilder('t')
             ->select('t.name')
@@ -49,7 +49,7 @@ class TagRepository extends EntityRepository
      *
      *  TODO write test cases
      */
-    public function link($tag_id, Article $article) {
+    public function link(int $tag_id, Article $article) {
         $entity = $this->find($tag_id);
 
         if ($entity) {
@@ -116,7 +116,7 @@ class TagRepository extends EntityRepository
      * @param $name
      * @return mixed
      */
-    public function findIdByName($name) {
+    public function findIdByName(string $name) {
         return $this->createQueryBuilder('t')
             ->select('t.id')
             ->where('t.name = :name')
