@@ -59,6 +59,13 @@ It comes pre-configured with the following bundles:
 
   * [**DoctrineFixturesBundle**][19] - Adds functionality for fixtures features
 
+Requirements
+------------
+
+  * PHP 7.0 or higher;
+  * PDO-Pgsql PHP extension enabled;
+  * and the [usual Symfony application requirements](http://symfony.com/doc/current/reference/requirements.html).
+
 All libraries and bundles included in the Blog Restful Api (Based on Symfony 3) are
 released under the MIT or BSD license.
 
