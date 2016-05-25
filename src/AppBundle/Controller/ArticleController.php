@@ -44,25 +44,11 @@ class ArticleController extends FOSRestController
      */
     public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher) {
 
-        $limit = $paramFetcher->get('limit');
-        $offset = $paramFetcher->get('offset');
-        
-        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
+        $callback = function ($repo, $offset, $limit, $queryParam){
+            return $entities = $repo->findAllArticlesByTag($queryParam, $limit, $offset);
+        };
 
-        try{
-            $entities = $repo->findAllArticlesByTag($tag, $limit, $offset);
-        } catch (NoResultException $e) {
-            throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Datasets not found (tag: %d)', $tag));
-        }
-
-        $data = array(
-            'articles' => $entities,
-            'offset' => $offset,
-            'limit' => $limit,
-            'statusCode' => Codes::HTTP_OK
-        );
-
-        return $data;
+        return $this->getArticlesWrapper($callback, $paramFetcher, $tag);
     }
 
     /**
@@ -86,26 +72,11 @@ class ArticleController extends FOSRestController
      */
     public function getArticlesAction(ParamFetcher $paramFetcher) {
 
-        $limit = $paramFetcher->get('limit');
-        $offset = $paramFetcher->get('offset');
-
-
-        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
-
-        try{
-            $entities = $repo->findAllArticles($limit, $offset);
-        }catch (NoResultException $e) {
-            throw new HttpException(Codes::HTTP_NOT_FOUND, $e->getMessage());
-        }
-
-        $data = array(
-            'articles' => $entities,
-            'offset' => $offset,
-            'limit' => $limit,
-            'statusCode' => Codes::HTTP_OK
-        );
-
-        return $data;
+        $callback = function ($repo, $offset, $limit, $queryParam){
+            return $repo->findAllArticles($limit, $offset);
+        };
+        
+        return $this->getArticlesWrapper($callback, $paramFetcher);
     }
 
     /**
@@ -250,5 +221,40 @@ class ArticleController extends FOSRestController
             'message' => sprintf('Dataset succesfully created (id: %d)', $mainEntity->getId()),
             'statusCode' => Codes::HTTP_OK
         );
+    }
+
+    /**
+     * @param $callback
+     * @param $paramFetcher
+     * @param null $queryParam
+     * @return array
+     */
+    public function getArticlesWrapper($callback, $paramFetcher, $queryParam = null) {
+
+        if (!is_callable($callback)) {
+            throw new \InvalidArgumentException("callback parameter isn't a method or function");
+        }
+
+        $limit = $paramFetcher->get('limit');
+        $offset = $paramFetcher->get('offset');
+
+        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
+
+        try{
+            $entities = $callback($repo, $offset, $limit, $queryParam);
+        }catch (NoResultException $e) {
+            throw new HttpException(Codes::HTTP_NOT_FOUND, $e->getMessage());
+        }catch( \Exception $e){
+            throw new HttpException(Codes::HTTP_BAD_REQUEST, $e->getMessage());
+        }
+
+        $data = array(
+            'articles' => $entities,
+            'offset' => $offset,
+            'limit' => $limit,
+            'statusCode' => Codes::HTTP_OK
+        );
+
+        return $data;
     }
 }
