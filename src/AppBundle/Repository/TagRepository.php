@@ -18,14 +18,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class TagRepository extends EntityRepository
 {
     /**
+     * @param $firstResult
+     * @param int $maxResults
      * @return array
      * @throws NoResultException
      */
-    public function findAllNames() {
+    public function findAllNames($firstResult = 0, $maxResults = 10) {
         
         $query = $this->createQueryBuilder('t')
             ->select('t.name')
+            ->setMaxResults($maxResults)
             ->getQuery();
+
+        if ($firstResult) {
+            $query->setFirstResult($firstResult);
+        }
 
         $result = $query->getArrayResult();
 

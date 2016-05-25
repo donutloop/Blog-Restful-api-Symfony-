@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleContent;
 use Doctrine\ORM\NoResultException;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
@@ -13,7 +12,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class ArticleController extends FOSRestController
+class ArticleController extends MainController
 {
     /**
      * @ApiDoc(
@@ -44,11 +43,13 @@ class ArticleController extends FOSRestController
      */
     public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher) {
 
-        $callback = function ($repo, $offset, $limit, $queryParam){
+        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
+
+        $callback = function($repo, $offset, $limit, $queryParam) {
             return $entities = $repo->findAllArticlesByTag($queryParam, $limit, $offset);
         };
 
-        return $this->getArticlesWrapper($callback, $paramFetcher, $tag);
+        return $this->getWrapper($repo, $callback, $paramFetcher, $tag);
     }
 
     /**
@@ -72,11 +73,13 @@ class ArticleController extends FOSRestController
      */
     public function getArticlesAction(ParamFetcher $paramFetcher) {
 
-        $callback = function ($repo, $offset, $limit, $queryParam){
+        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
+
+        $callback = function($repo, $offset, $limit, $queryParam) {
             return $repo->findAllArticles($limit, $offset);
         };
         
-        return $this->getArticlesWrapper($callback, $paramFetcher);
+        return $this->getWrapper($repo, $callback, $paramFetcher);
     }
 
     /**
@@ -221,36 +224,5 @@ class ArticleController extends FOSRestController
             'message' => sprintf('Dataset succesfully created (id: %d)', $mainEntity->getId()),
             'statusCode' => Codes::HTTP_OK
         );
-    }
-
-    /**
-     * @param $callback
-     * @param $paramFetcher
-     * @param null $queryParam
-     * @return array
-     */
-    public function getArticlesWrapper(callable $callback, ParamFetcher $paramFetcher, $queryParam = null) {
-        
-        $limit = $paramFetcher->get('limit');
-        $offset = $paramFetcher->get('offset');
-
-        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
-
-        try{
-            $entities = $callback($repo, $offset, $limit, $queryParam);
-        }catch (NoResultException $e) {
-            throw new HttpException(Codes::HTTP_NOT_FOUND, $e->getMessage());
-        }catch( \Exception $e){
-            throw new HttpException(Codes::HTTP_BAD_REQUEST, $e->getMessage());
-        }
-
-        $data = array(
-            'articles' => $entities,
-            'offset' => $offset,
-            'limit' => $limit,
-            'statusCode' => Codes::HTTP_OK
-        );
-
-        return $data;
     }
 }

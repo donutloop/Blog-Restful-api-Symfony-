@@ -282,7 +282,7 @@ class ArticleControllerTest extends WebTestCase
         $response = $client->getResponse();
         $content = $response->getContent();
         $entities = json_decode($content);
-        $acutal = count($entities->articles) > 0;
+        $acutal = count($entities->items) > 0;
 
         $this->assertEquals(true, $acutal);
     }
@@ -296,7 +296,7 @@ class ArticleControllerTest extends WebTestCase
         $response = $client->getResponse();
         $content = $response->getContent();
         $entities = json_decode($content);
-        $actual = count($entities->articles);
+        $actual = count($entities->items);
 
         $this->assertEquals(1, $actual);
     }

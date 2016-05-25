@@ -25,11 +25,12 @@ class TagControllerTest extends WebTestCase
        $this->loadFixtures($fixtures);
 
        $client->request('GET', '/tags', array('ACCEPT' => 'application/json'));
+       
        $response = $client->getResponse();
        $content = $response->getContent();
        
        $entities = json_decode($content);
-       $acutal = count($entities->tags) > 0;
+       $acutal = count($entities->items) > 0;
 
        $this->assertEquals(true, $acutal);
    }

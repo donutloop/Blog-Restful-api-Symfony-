@@ -3,14 +3,14 @@
 namespace AppBundle\Controller;
 
 use Doctrine\ORM\NoResultException;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
+use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\RestBundle\Util\Codes;
 
-class TagController extends FOSRestController{
+class TagController extends MainController{
 
     /**
      * @ApiDoc(
@@ -23,26 +23,23 @@ class TagController extends FOSRestController{
      *   }
      * )
      *
-     * RestAnnotaions\Get("\tags")
+     * @RestAnnotaions\Get("\tags")
+     * @RestAnnotaions\QueryParam(name="limit", default="5")
+     * @RestAnnotaions\QueryParam(name="offset", default="0")
+     *
+     * @param ParamFetcher $paramFetcher
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-   public function getTagsAction() {
+   public function getTagsAction(ParamFetcher $paramFetcher) {
 
-       $repo = $this->getDoctrine()->getRepository('AppBundle:Tag');
+       $repo = $this->getDoctrine()->getRepository("AppBundle:Tag");
 
-       try{
-           $entities = $repo->findAllNames();
-       }catch (NoResultException $e){
-           throw new HttpException(Codes::HTTP_NOT_FOUND, $e->getMessage());
-       }
+       $callback = function($repo, $offset, $limit, $queryParam) {
+           return $entities = $repo->findAllNames($queryParam, $limit, $offset);
+       };
 
-       $data = array(
-           'tags' => $entities,
-           'statusCode' => Codes::HTTP_OK
-       );
-
-       return $data;
+       return $this->getWrapper($repo, $callback, $paramFetcher);
    }
 
     /**
