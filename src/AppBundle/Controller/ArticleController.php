@@ -229,12 +229,8 @@ class ArticleController extends FOSRestController
      * @param null $queryParam
      * @return array
      */
-    public function getArticlesWrapper($callback, $paramFetcher, $queryParam = null) {
-
-        if (!is_callable($callback)) {
-            throw new \InvalidArgumentException("callback parameter isn't a method or function");
-        }
-
+    public function getArticlesWrapper(callable $callback, ParamFetcher $paramFetcher, $queryParam = null) {
+        
         $limit = $paramFetcher->get('limit');
         $offset = $paramFetcher->get('offset');
 
