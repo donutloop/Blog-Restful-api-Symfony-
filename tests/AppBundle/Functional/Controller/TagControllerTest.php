@@ -18,7 +18,34 @@ class TagControllerTest extends MainController
        );
    }
 
-   public function testTagsAction() {
+    /**
+     * @param $entityRaw
+     */
+    private function createTagErrorWrapper($entityRaw) {
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $data = $this->postJson('/tag/create', $entityJson);
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    /**
+     * @param $entityRaw
+     */
+    private function updateTagErrorWrapper($entityRaw) {
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $data = $this->patchJson('/tag/update', $entityJson);
+
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    }
+
+    public function testTagsAction() {
        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadTagData');
        $this->loadFixtures($fixtures);
 
@@ -56,44 +83,19 @@ class TagControllerTest extends MainController
     }
 
     public function testCreateTagEmptyNameAction(){
-        
-        $serializer = $this->getContainer()->get('jms_serializer');
-
         $entityRaw = $this->getRawTagData();
-
-        $entityJson = $serializer->serialize($entityRaw, 'json');
-
-        $data = $this->postJson('/tag/create', $entityJson);
-        
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->createTagErrorWrapper($entityRaw);
     }
 
     public function testCreateTagUnvaildMinAction(){
-        
-        $serializer = $this->getContainer()->get('jms_serializer');
-
         $entityRaw = $this->getRawTagData();
         $entityRaw['tag']['name'] = 'te';
-
-        $entityJson = $serializer->serialize($entityRaw, 'json');
-
-        $data = $this->postJson('/tag/create', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->createTagErrorWrapper($entityRaw);
     }
 
     public function testCreateTagUnvaildMaxAction(){
-
-        $serializer = $this->getContainer()->get('jms_serializer');
-
         $entityRaw = $this->getRawTagData();
-        $entityRaw['tag']['name'] = 'Lorem ipsum dolor sit amet, com';
-
-        $entityJson = $serializer->serialize($entityRaw, 'json');
-        
-        $data = $this->postJson('/tag/create', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->createTagErrorWrapper($entityRaw);
     }
 
     public function testCreateTagUniqueAction() {
@@ -101,27 +103,13 @@ class TagControllerTest extends MainController
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
         $this->loadFixtures($fixtures);
 
-        $serializer = $this->getContainer()->get('jms_serializer');
-
         $entityRaw = $this->getRawTagData();
         $entityRaw['tag']['name'] = 'test-tag';
-
-        $entityJson = $serializer->serialize($entityRaw, 'json');
-
-        $data = $this->postJson('/tag/create', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->createTagErrorWrapper($entityRaw);
     }
 
     public function testCreateTagBadFormatAction() {
-
-        $serializer = $this->getContainer()->get('jms_serializer');
-
-        $entityJson = $serializer->serialize(array(), 'json');
-
-        $data = $this->postJson('/tag/create', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->createTagErrorWrapper(array());
     }
 
     public function testUpdateTagAction() {
@@ -143,18 +131,10 @@ class TagControllerTest extends MainController
     }
 
     public function testUpdateTagEntityNotFoundAction() {
-
-        $serializer = $this->getContainer()->get('jms_serializer');
-
         $entityRaw = $this->getRawTagData();
         $entityRaw['tag']['name'] = 'test-tag-update';
         $entityRaw['tag']['id'] = '1';
-
-        $entityJson = $serializer->serialize($entityRaw, 'json');
-
-        $data = $this->patchJson('/tag/update', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->updateTagErrorWrapper($entityRaw);
     }
 
     public function testUpdateTagUnvaildMinAction() {
@@ -162,35 +142,23 @@ class TagControllerTest extends MainController
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
         $this->loadFixtures($fixtures);
 
-        $serializer = $this->getContainer()->get('jms_serializer');
-
         $entityRaw = $this->getRawTagData();
         $entityRaw['tag']['name'] = 'lo';
         $entityRaw['tag']['id'] = LoadOneTagData::$entity->getId();
 
-        $entityJson = $serializer->serialize($entityRaw, 'json');
-
-        $data = $this->patchJson('/tag/update', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->updateTagErrorWrapper($entityRaw);
     }
 
     public function testUpdateTagUnvaildMaxAction() {
 
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
         $this->loadFixtures($fixtures);
-        
-        $serializer = $this->getContainer()->get('jms_serializer');
 
         $entityRaw = $this->getRawTagData();
         $entityRaw['tag']['name'] = 'Lorem ipsum dolor sit amet, com';
         $entityRaw['tag']['id'] = LoadOneTagData::$entity->getId();
 
-        $entityJson = $serializer->serialize($entityRaw, 'json');
-
-        $data = $this->patchJson('/tag/update', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->updateTagErrorWrapper($entityRaw);
     }
 
     public function testUpdateTagUniqueAction() {
@@ -198,16 +166,10 @@ class TagControllerTest extends MainController
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadTagData');
         $this->loadFixtures($fixtures);
 
-        $serializer = $this->getContainer()->get('jms_serializer');
-
         $entityRaw = $this->getRawTagData();
         $entityRaw['tag']['name'] = 'GOlang';
         $entityRaw['tag']['id'] = LoadTagData::$tags[0]->getId();
 
-        $entityJson = $serializer->serialize($entityRaw, 'json');
-
-        $data = $this->patchJson('/tag/update', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->updateTagErrorWrapper($entityRaw);
     }
 }
