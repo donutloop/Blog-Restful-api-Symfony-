@@ -7,7 +7,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\DataFixtures\ORM\LoadArticleData;
 
 
-class ArticleControllerTest extends WebTestCase
+class ArticleControllerTest extends MainController
 {
 
     /**
@@ -48,18 +48,7 @@ class ArticleControllerTest extends WebTestCase
         $serializer = $this->getContainer()->get('jms_serializer');
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $client = static::createClient();
-
-        $client->request('Post',
-            '/article/create',
-            array(),
-            array(),
-            array('CONTENT_TYPE' => 'application/json'),
-            $entityJson
-        );
-
-        $response = $client->getResponse();
-        $data = json_decode($response->getContent());
+        $data = $this->postJson('/article/create', $entityJson);
 
         $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
     }
@@ -80,17 +69,8 @@ class ArticleControllerTest extends WebTestCase
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $client->request('Post',
-            '/article/create',
-            array(),
-            array(),
-            array('CONTENT_TYPE' => 'application/json'),
-            $entityJson
-        );
+        $data = $this->postJson('/article/create', $entityJson);
 
-        $response = $client->getResponse();
-        $data = json_decode($response->getContent());
-        
         $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
     }
 
@@ -134,71 +114,39 @@ class ArticleControllerTest extends WebTestCase
         $this->createArticleErrorWrapper($entityRaw);
     }
     
-    public function testCreateArticleNotValid() {
-
-        $client = static::createClient();
-
-        $entity = array(
-            'title' =>  null
-        );
-
-        $serializer = $this->getContainer()->get('jms_serializer');
-        $jsonContent = $serializer->serialize($entity, 'json');
-
-        $client->request('Post',
-            '/article/create',
-            array(),
-            array(),
-            array('CONTENT_TYPE' => 'application/json'),
-            $jsonContent
-        );
-
-        $response = $client->getResponse();
-        $data = json_decode($response->getContent());
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+    public function testCreateArticleBlank() {
+        $entityRaw = $this->getRawArticleData();
+        $entityRaw['article']['title'] = '';
+        $this->createArticleErrorWrapper($entityRaw);
     }
     
     public function testArticlesAction() {
-        $client = static::createClient();
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
         $this->loadFixtures($fixtures);
 
-        $client->request('GET', '/articles', array('ACCEPT' => 'application/json'));
-        $response = $client->getResponse();
-        $content = $response->getContent();
-        $entities = json_decode($content);
+        $entities = $this->getJson('/articles');
         $acutal = count($entities->items) > 0;
 
         $this->assertEquals(true, $acutal);
     }
 
     public function testArticleByTagAction() {
-        $client = static::createClient();
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
         $this->loadFixtures($fixtures);
 
-        $client->request('GET', '/articles/test-tag?limit=1', array('ACCEPT' => 'application/json'));
-        $response = $client->getResponse();
-        $content = $response->getContent();
-        $entities = json_decode($content);
+        $entities = $this->getJson('/articles/test-tag?limit=1');
+        
         $actual = count($entities->items);
-
         $this->assertEquals(1, $actual);
     }
     
     public function testDeleteArticle() {
-        $client = static::createClient();
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
         $this->loadFixtures($fixtures);
 
         $entity = LoadArticleData::$articles[0];
-
         $url = sprintf('/article/%d', $entity->getId());
-        $client->request('DELETE', $url, array('ACCEPT' => 'application/json'));
-        $response = $client->getResponse();
-        $content = $response->getContent();
-        $data = json_decode($content);
+        $data = $this->deleteJson($url);
 
         $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
     }
@@ -206,10 +154,7 @@ class ArticleControllerTest extends WebTestCase
     public function testDeleteArticleNotFound() {
         $client = static::createClient();
 
-        $client->request('DELETE', '/article/99999', array('ACCEPT' => 'application/json'));
-        $response = $client->getResponse();
-        $content = $response->getContent();
-        $data = json_decode($content);
+        $data = $this->deleteJson('/article/99999');
         
         $this->assertEquals(Codes::HTTP_NOT_FOUND, $data->error->code);
     }
