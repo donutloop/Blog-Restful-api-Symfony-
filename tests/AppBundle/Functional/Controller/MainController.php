@@ -20,6 +20,10 @@ class MainController extends WebTestCase {
         $this->client = static::createClient();
     }
 
+    protected function tearDown() {
+        $this->client = null;
+    }
+
     /**
      * @param string $url
      * @param string $jsonData
