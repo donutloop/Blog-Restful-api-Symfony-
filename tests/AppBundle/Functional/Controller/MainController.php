@@ -9,6 +9,7 @@ class MainController extends WebTestCase {
     const DELETE = 'Delete';
     const POST = 'Post';
     const GET = 'Get';
+    const PATCH = 'Patch';
     
     /**
      * @var $client
@@ -58,5 +59,24 @@ class MainController extends WebTestCase {
         $response = $this->client->getResponse();
         $content = $response->getContent();
         return json_decode($content);
+    }
+
+    /**
+     * @param string $url
+     * @param string $jsonData
+     * @return mixed
+     */
+    public function patchJson(string $url, string $jsonData){
+
+        $this->client->request(self::PATCH,
+            $url,
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $jsonData
+        );
+
+        $response = $this->client->getResponse();
+        return json_decode($response->getContent());
     }
 }
