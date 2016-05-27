@@ -86,8 +86,8 @@ class TagRepository extends EntityRepository
     /**
      * @param \stdClass $data
      * @param ValidatorInterface $validator
-     * @return null|object
-     * @throws NoResultException
+     * @return Tag
+     * @throws NoResultException | ValidatorException
      */
     public function updateTag(\stdClass $data, ValidatorInterface $validator): Tag {
 

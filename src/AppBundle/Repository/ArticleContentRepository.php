@@ -19,7 +19,7 @@ class ArticleContentRepository extends EntityRepository
      * @param \stdClass $data
      * @param ValidatorInterface $validator
      * @return ArticleContent
-     * @throws \Exception
+     * @throws ValidatorException
      */
     public function createArticleContent(Article $mainEntity, \stdClass $data, ValidatorInterface $validator): ArticleContent {
 

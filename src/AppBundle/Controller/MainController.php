@@ -16,6 +16,7 @@ class MainController extends FOSRestController {
      * @param callable $callback
      * @param ParamFetcher $paramFetcher
      * @param null $queryParam
+     * @throws NoResultException | \Exception
      * @return array
      */
     public function getWrapper(ObjectRepository $repo, callable $callback, ParamFetcher $paramFetcher, $queryParam = null): array {

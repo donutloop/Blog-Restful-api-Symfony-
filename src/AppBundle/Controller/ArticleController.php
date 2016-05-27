@@ -8,6 +8,7 @@ use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 class ArticleController extends MainController
 {
@@ -100,7 +101,7 @@ class ArticleController extends MainController
      * @RestAnnotaions\Delete("/article/{id}")
      *
      * @param $id
-     *
+     * @throws HttpException
      * @return array
      */
     public function deleteArticleAction(int $id): array {
@@ -139,6 +140,7 @@ class ArticleController extends MainController
      *
      * @RestAnnotaions\Post("/article/create")
      *
+     * @throws HttpException
      * @return array
      */
     public function createArticleAction(Request $request): array {

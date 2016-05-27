@@ -81,7 +81,7 @@ class ArticleRepository extends EntityRepository
      * @param User $user
      * @param ValidatorInterface $validator
      * @return Article
-     * @throws \Exception
+     * @throws ValidatorException
      */
     public function createArticle(\stdClass $data, User $user , ValidatorInterface $validator): Article {
 

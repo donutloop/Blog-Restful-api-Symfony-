@@ -28,7 +28,7 @@ class TagController extends MainController{
      *
      * @param ParamFetcher $paramFetcher
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
      */
    public function getTagsAction(ParamFetcher $paramFetcher): array {
 
@@ -62,7 +62,7 @@ class TagController extends MainController{
      * @RestAnnotaions\Delete("/tag/{id}")
      *
      * @param $id
-     *
+     * @throws HttpException
      * @return array
      */
     public function deleteTagAction(int $id): array {
@@ -163,6 +163,7 @@ class TagController extends MainController{
      * @param $request
      * @param $callback
      * @param $message
+     * @throws HttpException
      * @return array
      */
     private function tagProcess(Request $request, callable $callback, string $message): array {
