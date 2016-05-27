@@ -36,9 +36,9 @@ class ArticleController extends MainController
      * @param $tag
      * @param $paramFetcher
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
      */
-    public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher) {
+    public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): array {
 
         $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
 
@@ -66,9 +66,9 @@ class ArticleController extends MainController
      *
      * @param $paramFetcher
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
      */
-    public function getArticlesAction(ParamFetcher $paramFetcher) {
+    public function getArticlesAction(ParamFetcher $paramFetcher): array {
 
         $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
 
@@ -101,9 +101,9 @@ class ArticleController extends MainController
      *
      * @param $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
      */
-    public function deleteArticleAction($id) {
+    public function deleteArticleAction(int $id): array {
 
         $doctrine = $this->getDoctrine();
         $repo = $doctrine->getRepository("AppBundle:Article");
@@ -139,9 +139,9 @@ class ArticleController extends MainController
      *
      * @RestAnnotaions\Post("/article/create")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
      */
-    public function createArticleAction(Request $request) {
+    public function createArticleAction(Request $request): array {
 
         $data = json_decode($request->getContent());
 

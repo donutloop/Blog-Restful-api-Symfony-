@@ -18,7 +18,7 @@ class MainController extends FOSRestController {
      * @param null $queryParam
      * @return array
      */
-    public function getWrapper(ObjectRepository $repo, callable $callback, ParamFetcher $paramFetcher, $queryParam = null) {
+    public function getWrapper(ObjectRepository $repo, callable $callback, ParamFetcher $paramFetcher, $queryParam = null): array {
 
         $limit = $paramFetcher->get('limit');
         $offset = $paramFetcher->get('offset');

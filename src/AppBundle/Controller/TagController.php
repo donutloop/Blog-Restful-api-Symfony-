@@ -30,7 +30,7 @@ class TagController extends MainController{
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-   public function getTagsAction(ParamFetcher $paramFetcher) {
+   public function getTagsAction(ParamFetcher $paramFetcher): array {
 
        $repo = $this->getDoctrine()->getRepository("AppBundle:Tag");
 
@@ -63,9 +63,9 @@ class TagController extends MainController{
      *
      * @param $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
      */
-    public function deleteTagAction($id) {
+    public function deleteTagAction(int $id): array {
 
         $doctrine = $this->getDoctrine();
 
@@ -112,7 +112,7 @@ class TagController extends MainController{
       *
       * @return array
      **/
-    public function createTagAction(Request $request) {
+    public function createTagAction(Request $request): array {
 
         $callback = function($repo, $data, $validator) {
             return $repo->createTag($data->tag, $validator);
@@ -150,7 +150,7 @@ class TagController extends MainController{
      *
      * @return array
      **/
-    public function updateTagAction(Request $request) {
+    public function updateTagAction(Request $request): array {
 
         $callback = function($repo, $data, $validator) {
             return $repo->updateTag($data->tag, $validator);
@@ -165,7 +165,7 @@ class TagController extends MainController{
      * @param $message
      * @return array
      */
-    private function tagProcess(Request $request, callable $callback, string $message) {
+    private function tagProcess(Request $request, callable $callback, string $message): array {
 
         $data = json_decode($request->getContent());
 

@@ -23,7 +23,7 @@ class TagRepository extends EntityRepository
      * @return array
      * @throws NoResultException
      */
-    public function findAllNames(int $firstResult = 0, int $maxResults = 10) {
+    public function findAllNames(int $firstResult = 0, int $maxResults = 10): array {
         
         $query = $this->createQueryBuilder('t')
             ->select('t.name')
@@ -65,7 +65,7 @@ class TagRepository extends EntityRepository
      * @param ValidatorInterface $validator
      * @return Tag
      */
-    public function createTag(\stdClass $data, ValidatorInterface $validator) {
+    public function createTag(\stdClass $data, ValidatorInterface $validator): Tag {
 
         $entity = new Tag();
         $entity->setName($data->name);
@@ -89,7 +89,7 @@ class TagRepository extends EntityRepository
      * @return null|object
      * @throws NoResultException
      */
-    public function updateTag(\stdClass $data, ValidatorInterface $validator) {
+    public function updateTag(\stdClass $data, ValidatorInterface $validator): Tag {
 
         $entity = $this->findOneBy(array('id' => $data->id));
 
@@ -116,7 +116,7 @@ class TagRepository extends EntityRepository
      * @param $name
      * @return mixed
      */
-    public function findIdByName(string $name) {
+    public function findIdByName(string $name): int {
         return $this->createQueryBuilder('t')
             ->select('t.id')
             ->where('t.name = :name')

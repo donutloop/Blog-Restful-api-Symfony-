@@ -23,7 +23,7 @@ class ArticleRepository extends EntityRepository
      * @return array
      * @throws NoResultException
      */
-    public function findAllArticlesByTag(string $name, int $maxResults, int $firstResult) {
+    public function findAllArticlesByTag(string $name, int $maxResults, int $firstResult): array {
 
         $query = $this->createQueryBuilder('a')
                      ->select('a.id, a.title, a.createdAt, t.name as tags, ac.content, ac.contentType, u.username')
@@ -53,7 +53,7 @@ class ArticleRepository extends EntityRepository
      * @return array
      * @throws NoResultException
      */
-    public function findAllArticles(int $maxResults, int $firstResult) {
+    public function findAllArticles(int $maxResults, int $firstResult): array {
 
         $query = $this->createQueryBuilder('a')
             ->select('a.id, a.title, a.createdAt, t.name as tags, ac.content, ac.contentType, u.username')
@@ -83,7 +83,7 @@ class ArticleRepository extends EntityRepository
      * @return Article
      * @throws \Exception
      */
-    public function createArticle(\stdClass $data, User $user , ValidatorInterface $validator) {
+    public function createArticle(\stdClass $data, User $user , ValidatorInterface $validator): Article {
 
         $entity = new Article();
 

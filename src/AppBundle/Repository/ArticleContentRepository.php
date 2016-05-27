@@ -21,7 +21,7 @@ class ArticleContentRepository extends EntityRepository
      * @return ArticleContent
      * @throws \Exception
      */
-    public function createArticleContent(Article $mainEntity, \stdClass $data, ValidatorInterface $validator) {
+    public function createArticleContent(Article $mainEntity, \stdClass $data, ValidatorInterface $validator): ArticleContent {
 
         $em = $this->getEntityManager();
 
