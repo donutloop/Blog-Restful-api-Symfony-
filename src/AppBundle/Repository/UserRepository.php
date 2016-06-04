@@ -20,9 +20,7 @@ class UserRepository extends EntityRepository
      * @param ValidatorInterface $validator
      * @return User
      */
-    public function createUser(\stdClass $data, ValidatorInterface $validator): User
-    {
-
+    public function createUser(\stdClass $data, ValidatorInterface $validator): User {
         $entity = new User();
         $entity->setUsername($data->username);
         $entity->setEmail($data->email);

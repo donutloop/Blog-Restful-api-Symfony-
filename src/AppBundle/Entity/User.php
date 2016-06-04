@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Hateoas\Configuration\Annotation as Hateoas;
 
@@ -24,6 +25,29 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var string
+     * @Assert\NotNull()
+     * @Assert\Length(min=3, max=255)
+     * @Assert\NotBlank()
+     */
+    protected $username;
+
+    /**
+     * @var string
+     * @Assert\NotNull()
+     * @Assert\Length(min=6, max=255)
+     * @Assert\NotBlank()
+     */
+    protected $email;
+
+    /**
+     * @var string
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     */
+    protected $password;
 
     /**
      * @var string
