@@ -57,9 +57,9 @@ It comes pre-configured with the following bundles:
 
   * [**FunctionalTestBundle**][19] - Adds functionality for functional test features
 
-  * [**DoctrineFixturesBundle**][19] - Adds functionality for fixtures features
+  * [**DoctrineFixturesBundle**][20] - Adds functionality for fixtures features
 
-  * [**BazingaHateoasBundle**][19] - Adds additional functionality for rest APIs
+  * [**BazingaHateoasBundle**][21] - Adds additional functionality for rest APIs
 
 
 Requirements
