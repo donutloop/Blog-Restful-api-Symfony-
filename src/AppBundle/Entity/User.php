@@ -5,11 +5,16 @@ namespace AppBundle\Entity;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
+use Hateoas\Configuration\Annotation as Hateoas;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
  * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")#
+ * @Hateoas\Relation("self", href = "expr('/user/get' ~ object.getId())")
+ * @Hateoas\Relation("update", href = "expr('/user/update/' ~ object.getId())")
+ * @Hateoas\Relation("delete", href = "expr('/user/delete/' ~ object.getId())")
  */
 class User extends BaseUser
 {

@@ -5,3 +5,7 @@ articles:
 tags:
     type:     rest
     resource: AppBundle\Controller\TagController
+
+user:
+    type:     rest
+    resource: AppBundle\Controller\UserController

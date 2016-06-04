@@ -59,6 +59,9 @@ It comes pre-configured with the following bundles:
 
   * [**DoctrineFixturesBundle**][19] - Adds functionality for fixtures features
 
+  * [**BazingaHateoasBundle**][19] - Adds additional functionality for rest APIs
+
+
 Requirements
 ------------
 
@@ -86,3 +89,4 @@ Enjoy!
 [18]: http://symfony.com/doc/current/bundles/FOSRestBundle/index.html
 [19]: https://github.com/liip/LiipFunctionalTestBundle
 [20]: http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
+[21]: https://github.com/willdurand/BazingaHateoasBundle
