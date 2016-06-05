@@ -1,17 +1,10 @@
 imports:
-    - { resource: config.yml }
+    - { resource: '../common/config.yml' }
+    - { resource: parameters.yml }
 
-#framework:
-#    validation:
-#        cache: validator.mapping.cache.doctrine.apc
-#    serializer:
-#        cache: serializer.mapping.cache.doctrine.apc
-
-#doctrine:
-#    orm:
-#        metadata_cache_driver: apc
-#        result_cache_driver: apc
-#        query_cache_driver: apc
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/prod/routing.yml"
 
 monolog:
     handlers:

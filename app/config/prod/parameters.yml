@@ -1,8 +1,9 @@
+# This file is auto-generated during the composer install
 parameters:
     database_host: 127.0.0.1
     database_port: null
-    database_name: blog_api_dev
-    database_user: root
+    database_name: blog_api
+    database_user: postgres
     database_password: stellatarum
     mailer_transport: smtp
     mailer_host: 127.0.0.1

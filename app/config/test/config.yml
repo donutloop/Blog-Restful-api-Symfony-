@@ -1,6 +1,6 @@
 imports:
-    - { resource: config.yml }
-    - { resource: parameters_test.yml }
+    - { resource: '../common/config.yml' }
+    - { resource: parameters.yml }
 
 framework:
     test: ~
@@ -10,7 +10,7 @@ framework:
         collect: false
         only_exceptions: false
     router:
-        resource: "%kernel.root_dir%/config/routing_dev.yml"
+        resource: "%kernel.root_dir%/config/test/routing.yml"
         strict_requirements: true
 
 web_profiler:
