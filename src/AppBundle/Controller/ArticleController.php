@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Library\ViewData;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
@@ -37,9 +38,9 @@ class ArticleController extends MainController
      * @param $tag
      * @param $paramFetcher
      *
-     * @return array
+     * @return ViewData
      */
-    public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): array {
+    public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): ViewData {
 
         $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
 
@@ -67,9 +68,9 @@ class ArticleController extends MainController
      *
      * @param $paramFetcher
      *
-     * @return array
+     * @return ViewData
      */
-    public function getArticlesAction(ParamFetcher $paramFetcher): array {
+    public function getArticlesAction(ParamFetcher $paramFetcher): ViewData {
 
         $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
 
@@ -102,9 +103,9 @@ class ArticleController extends MainController
      *
      * @param $id
      * @throws HttpException
-     * @return array
+     * @return ViewData
      */
-    public function deleteArticleAction(int $id): array {
+    public function deleteArticleAction(int $id): ViewData {
 
         $doctrine = $this->getDoctrine();
         $repo = $doctrine->getRepository("AppBundle:Article");
@@ -118,13 +119,10 @@ class ArticleController extends MainController
 
         $em->remove($entity);
         $em->flush();
-
-        $data = array(
-            'message' => sprintf('Dataset succesfully removed (id: %d)', $id),
-            'statusCode' => Codes::HTTP_OK
-        );
         
-        return $data;
+        $viewData = new ViewData(Codes::HTTP_OK, array(), array(), sprintf('Dataset succesfully removed (id: %d)', $id));
+
+        return $viewData;
     }
 
     /**
@@ -140,10 +138,11 @@ class ArticleController extends MainController
      *
      * @RestAnnotaions\Post("/article/create")
      *
+     * @param Request $request
      * @throws HttpException
-     * @return array
+     * @return ViewData
      */
-    public function createArticleAction(Request $request): array {
+    public function createArticleAction(Request $request): ViewData {
 
         $data = json_decode($request->getContent());
 
@@ -219,9 +218,8 @@ class ArticleController extends MainController
              throw new HttpException(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
         }
 
-        return  array(
-            'message' => sprintf('Dataset succesfully created (id: %d)', $mainEntity->getId()),
-            'statusCode' => Codes::HTTP_OK
-        );
+        $viewData = new ViewData(Codes::HTTP_OK);
+        $viewData->setMessage(sprintf('Dataset succesfully created (id: %d)', $mainEntity->getId()));
+        return $viewData;
     }
 }

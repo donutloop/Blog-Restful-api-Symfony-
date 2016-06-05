@@ -71,7 +71,7 @@ class ArticleControllerTest extends MainController
 
         $data = $this->postJson('/article/create', $entityJson);
 
-        $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
+        $this->assertEquals(Codes::HTTP_OK, $data->code);
     }
 
     public function testCreateArticleDataEmpty() {
@@ -124,8 +124,8 @@ class ArticleControllerTest extends MainController
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
         $this->loadFixtures($fixtures);
 
-        $entities = $this->getJson('/articles');
-        $acutal = count($entities->items) > 0;
+        $view = $this->getJson('/articles');
+        $acutal = count($view->data) > 0;
 
         $this->assertEquals(true, $acutal);
     }
@@ -134,9 +134,9 @@ class ArticleControllerTest extends MainController
         $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
         $this->loadFixtures($fixtures);
 
-        $entities = $this->getJson('/articles/test-tag?limit=1');
+        $view = $this->getJson('/articles/test-tag?limit=1');
         
-        $actual = count($entities->items);
+        $actual = count($view->data);
         $this->assertEquals(1, $actual);
     }
     
@@ -148,7 +148,7 @@ class ArticleControllerTest extends MainController
         $url = sprintf('/article/%d', $entity->getId());
         $data = $this->deleteJson($url);
 
-        $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
+        $this->assertEquals(Codes::HTTP_OK, $data->code);
     }
 
     public function testDeleteArticleNotFound() {

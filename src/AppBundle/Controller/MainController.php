@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Library\ViewData;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
 use Doctrine\ORM\NoResultException;
@@ -17,9 +18,9 @@ class MainController extends FOSRestController {
      * @param ParamFetcher $paramFetcher
      * @param null $queryParam
      * @throws NoResultException | \Exception
-     * @return array
+     * @return ViewData
      */
-    public function getWrapper(ObjectRepository $repo, callable $callback, ParamFetcher $paramFetcher, $queryParam = null): array {
+    public function getWrapper(ObjectRepository $repo, callable $callback, ParamFetcher $paramFetcher, $queryParam = null): ViewData {
 
         $limit = $paramFetcher->get('limit');
         $offset = $paramFetcher->get('offset');
@@ -32,13 +33,6 @@ class MainController extends FOSRestController {
             throw new HttpException(Codes::HTTP_BAD_REQUEST, $e->getMessage());
         }
 
-        $data = array(
-            'items' => $entities,
-            'offset' => $offset,
-            'limit' => $limit,
-            'statusCode' => Codes::HTTP_OK
-        );
-
-        return $data;
+        return new ViewData(Codes::HTTP_OK, $entities, array('offset' => $offset, 'limit' => $limit));
     }
 }

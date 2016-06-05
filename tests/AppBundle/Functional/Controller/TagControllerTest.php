@@ -26,9 +26,9 @@ class TagControllerTest extends MainController
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $data = $this->postJson('/tag/create', $entityJson);
+        $view = $this->postJson('/tag/create', $entityJson);
 
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->error->code);
     }
 
     /**
@@ -40,18 +40,18 @@ class TagControllerTest extends MainController
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $data = $this->patchJson('/tag/update', $entityJson);
+        $view = $this->patchJson('/tag/update', $entityJson);
 
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->error->code);
     }
 
     public function testTagsAction() {
        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadTagData');
        $this->loadFixtures($fixtures);
 
-       $entities = $this->getJson('/tags');
+       $view = $this->getJson('/tags');
 
-       $acutal = count($entities->items) > 0;
+       $acutal = count($view->data) > 0;
 
        $this->assertEquals(true, $acutal);
    }
@@ -63,9 +63,9 @@ class TagControllerTest extends MainController
         $entity = LoadTagData::$tags[0];
         $url = sprintf("/tag/%d", $entity->getId());
 
-        $data = $this->deleteJson($url);
+        $view = $this->deleteJson($url);
 
-        $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
+        $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
     public function testCreateTagAction(){
@@ -77,9 +77,9 @@ class TagControllerTest extends MainController
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $data = $this->postJson('/tag/create', $entityJson);
+        $view = $this->postJson('/tag/create', $entityJson);
         
-        $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
+        $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
     public function testCreateTagEmptyNameAction(){
@@ -125,9 +125,9 @@ class TagControllerTest extends MainController
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $data = $this->patchJson('/tag/update', $entityJson);
+        $view = $this->patchJson('/tag/update', $entityJson);
 
-        $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
+        $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
     public function testUpdateTagEntityNotFoundAction() {

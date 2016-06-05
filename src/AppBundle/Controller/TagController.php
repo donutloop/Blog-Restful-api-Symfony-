@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Library\ViewData;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -28,9 +29,9 @@ class TagController extends MainController{
      *
      * @param ParamFetcher $paramFetcher
      *
-     * @return array
+     * @return ViewData
      */
-   public function getTagsAction(ParamFetcher $paramFetcher): array {
+   public function getTagsAction(ParamFetcher $paramFetcher): ViewData {
 
        $repo = $this->getDoctrine()->getRepository("AppBundle:Tag");
 
@@ -63,9 +64,9 @@ class TagController extends MainController{
      *
      * @param $id
      * @throws HttpException
-     * @return array
+     * @return ViewData
      */
-    public function deleteTagAction(int $id): array {
+    public function deleteTagAction(int $id): ViewData {
 
         $doctrine = $this->getDoctrine();
 
@@ -79,13 +80,10 @@ class TagController extends MainController{
 
         $em->remove($entity);
         $em->flush();
-
-        $data = array(
-            'message' => sprintf('Dataset successfully removed (id: %d)', $id),
-            'statusCode' => Codes::HTTP_OK
-        );
-
-        return $data;
+        
+        $viewData = new ViewData(Codes::HTTP_OK);
+        $viewData->setMessage(sprintf('Dataset successfully removed (id: %d)', $id));
+        return $viewData;  
     }
 
      /**
@@ -110,9 +108,9 @@ class TagController extends MainController{
       *
       * @param $request
       *
-      * @return array
+      * @return ViewData
      **/
-    public function createTagAction(Request $request): array {
+    public function createTagAction(Request $request): ViewData {
 
         $callback = function($repo, $data, $validator) {
             return $repo->createTag($data->tag, $validator);
@@ -148,9 +146,9 @@ class TagController extends MainController{
      *
      * @param $request
      *
-     * @return array
+     * @return ViewData
      **/
-    public function updateTagAction(Request $request): array {
+    public function updateTagAction(Request $request): ViewData {
 
         $callback = function($repo, $data, $validator) {
             return $repo->updateTag($data->tag, $validator);
@@ -164,9 +162,9 @@ class TagController extends MainController{
      * @param $callback
      * @param $message
      * @throws HttpException
-     * @return array
+     * @return ViewData
      */
-    private function tagProcess(Request $request, callable $callback, string $message): array {
+    private function tagProcess(Request $request, callable $callback, string $message): ViewData {
 
         $data = json_decode($request->getContent());
 
@@ -182,12 +180,9 @@ class TagController extends MainController{
         }catch (\Exception $e){
             throw new HttpException(Codes::HTTP_BAD_REQUEST, $message . sprintf(' (Name: %d)', $data->tag->name));
         }
-
-        $data = array(
-            'message' => sprintf('Dataset successfully created (Name: %d)', $entity->getName()),
-            'statusCode' => Codes::HTTP_OK
-        );
-
-        return $data;
+        
+        $viewData = new ViewData(Codes::HTTP_OK);
+        $viewData->setMessage(sprintf('Dataset successfully created (Name: %d)', $entity->getName()));
+        return $viewData;
     }
 }

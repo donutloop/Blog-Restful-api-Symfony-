@@ -31,9 +31,9 @@ class UserControllerTest extends MainController
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $data = $this->postJson('/user/create', $entityJson);
+        $view = $this->postJson('/user/create', $entityJson);
 
-        $this->assertEquals(Codes::HTTP_OK, $data->statusCode);
+        $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
 }

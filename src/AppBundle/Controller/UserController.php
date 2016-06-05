@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Library\ViewData;
 use AppBundle\Repository\UserRepository;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -36,15 +37,14 @@ class UserController extends MainController {
      *
      * @param integer $id
      *
-     * @return array
+     * @return ViewData
      */
-    public function getUserAction(int $id): array {
+    public function getUserAction(int $id): ViewData {
 
         /**
          * @var UserRepository $repo
          */
         $repo = $this->getDoctrine()->getRepository("AppBundle:User");
-
 
         $entity = $repo->find($id);
         
@@ -52,12 +52,8 @@ class UserController extends MainController {
             throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Dataset not found (ID: %d)', $id));
         }
 
-        $data = array(
-            'item' => $entity,
-            'statusCode' => Codes::HTTP_OK
-        );
-
-        return $data;
+        $viewData = new ViewData(Codes::HTTP_OK, $entity);
+        return $viewData;
     }
 
     /**
@@ -74,9 +70,9 @@ class UserController extends MainController {
      * @RestAnnotaions\Post("/user/create", name="user_create")
      *
      * @param Request $request
-     * @return array
+     * @return ViewData
      */
-    public function postUserAction(Request $request): array{
+    public function postUserAction(Request $request): ViewData{
         
         $data = json_decode($request->getContent());
 
@@ -95,12 +91,9 @@ class UserController extends MainController {
 
             $entity = $repo->createUser($data->user, $validator);
 
-            $data = array(
-                'message' => sprintf('Dataset successfully created (Name: %d)', $entity->getUsername()),
-                'statusCode' => Codes::HTTP_OK
-            );
-
-            return $data;
+            $viewData = new ViewData(Codes::HTTP_OK);
+            $viewData->setMessage(sprintf('Dataset successfully created (Name: %d)', $entity->getUsername()));
+            return $viewData;
         }else{
             throw new HttpException(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
         }
