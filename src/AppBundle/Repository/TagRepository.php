@@ -4,7 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Tag;
-use Doctrine\ORM\EntityRepository;
+use BaseBundle\Library\Repository;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * Class TagRepository
  * @package AppBundle\Repository
  */
-class TagRepository extends EntityRepository
+class TagRepository extends Repository
 {
     /**
      * @param $firstResult

@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\User;
+use BaseBundle\Library\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * Class ArticleRepository
  * @package AppBundle\Repository
  */
-class ArticleRepository extends EntityRepository
+class ArticleRepository extends Repository
 {
     /**
      * @param $name
@@ -54,7 +55,6 @@ class ArticleRepository extends EntityRepository
      * @throws NoResultException
      */
     public function findAllArticles(int $maxResults, int $firstResult): array {
-
         $query = $this->createQueryBuilder('a')
             ->select('a.id, a.title, a.createdAt, t.name as tags, ac.content, ac.contentType, u.username')
             ->join('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.article_id')
