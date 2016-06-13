@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Functional\Controller;
 use FOS\RestBundle\Util\Codes;
 use JMS\Serializer\Serializer;
 
-class UserControllerTest extends MainController
+class UserControllerTest extends ControllerTestCase
 {
     /**
      * @return array

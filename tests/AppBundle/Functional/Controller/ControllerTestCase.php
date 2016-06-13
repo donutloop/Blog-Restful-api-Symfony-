@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Functional\Controller;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-class MainController extends WebTestCase {
+class ControllerTestCase extends WebTestCase {
 
     const DELETE = 'Delete';
     const POST = 'Post';

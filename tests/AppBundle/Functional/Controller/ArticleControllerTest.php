@@ -3,11 +3,10 @@
 namespace Tests\AppBundle\Functional\Controller;
 
 use FOS\RestBundle\Util\Codes;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\DataFixtures\ORM\LoadArticleData;
 
 
-class ArticleControllerTest extends MainController
+class ArticleControllerTest extends ControllerTestCase
 {
 
     /**

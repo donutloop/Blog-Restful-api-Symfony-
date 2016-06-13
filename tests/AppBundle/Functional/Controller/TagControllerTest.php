@@ -5,7 +5,7 @@ use FOS\RestBundle\Util\Codes;
 use Tests\AppBundle\DataFixtures\ORM\LoadOneTagData;
 use Tests\AppBundle\DataFixtures\ORM\LoadTagData;
 
-class TagControllerTest extends MainController
+class TagControllerTest extends ControllerTestCase
 {
     /**
      * @return array
