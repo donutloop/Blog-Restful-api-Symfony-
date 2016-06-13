@@ -173,7 +173,7 @@ abstract class DatabaseWorkflow implements ContainerAwareInterface{
         $em = $this->getEntityManager();
         $processCallback($em, $entity);
         $em->flush();
-
+        
         if (is_callable($afterCallback)) {
             $entity = $afterCallback($entity, $extraData);
         }

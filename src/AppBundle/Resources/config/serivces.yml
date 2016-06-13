@@ -5,3 +5,10 @@ services:
         calls:
           - [setContainer, ["@service_container"]]
           - [setRepositoryName, ["AppBundle:Article"]]
+
+    appbundle.articlecontent.workflow:
+        class: AppBundle\Library\Workflow\ArticleContentWorkflow
+        public: true
+        calls:
+          - [setContainer, ["@service_container"]]
+          - [setRepositoryName, ["AppBundle:ArticleContent"]]

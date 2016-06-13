@@ -18,7 +18,7 @@ class ArticleWorkflow extends DatabaseWorkflow{
     protected function checkType(DatabaseWorkflowEntityInterface $entity)
     {
         if(!($entity instanceof Article)){
-
+            
         }
     }
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Library\ViewData;
+use AppBundle\Library\Workflow\ArticleContentWorkflow;
 use AppBundle\Library\Workflow\ArticleWorkflow;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -190,15 +191,18 @@ class ArticleController extends MainController
             
             if (!empty($data->article->contents)) {
 
-                $repo = $doctrine->getRepository('AppBundle:ArticleContent');
+                /**
+                 * @var ArticleContentWorkflow $workflow
+                 */
+                $workflow = $this->get('appbundle.articlecontent.workflow');
 
                 foreach($data->article->contents as $content) {
 
                     $content->content = $content->content ??  null;
                     $content->contentType = $content->contentType ??  null;
-
                     try{
-                        $repo->createArticleContent($mainEntity, $content, $validator);
+                        $entity = $workflow->prepareEntity($content, $mainEntity);
+                        $workflow->create($entity);
                     }catch(\Exception $e){
                         throw new HttpException(Codes::HTTP_BAD_REQUEST, $e->getMessage());
                     };
