@@ -173,8 +173,6 @@ class ArticleController extends MainController
                 throw new HttpException(Codes::HTTP_BAD_REQUEST, 'User not set');
             }
             
-            $validator = $this->get('validator');
-
             $data->article->title = $data->article->title ?? null;
 
             /**
