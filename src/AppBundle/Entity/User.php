@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,7 +18,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @Hateoas\Relation("update", href = "expr('/user/update/' ~ object.getId())")
  * @Hateoas\Relation("delete", href = "expr('/user/delete/' ~ object.getId())")
  */
-class User extends BaseUser
+class User extends BaseUser implements DatabaseWorkflowEntityInterface
 {
     /**
      * @ORM\Id
@@ -98,5 +99,29 @@ class User extends BaseUser
      */
     public function getUpdateAt(){
         return $this->updateAt;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralType()
+    {
+        return 'User';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralName()
+    {
+        return $this->getUsername();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIdentifier()
+    {
+        return $this->getId();
     }
 }

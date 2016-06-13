@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\User;
+use BaseBundle\Library\DatabaseWorkflowRepositoryInterface;
 use BaseBundle\Library\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * Class ArticleRepository
  * @package AppBundle\Repository
  */
-class ArticleRepository extends Repository
+class ArticleRepository extends Repository implements DatabaseWorkflowRepositoryInterface
 {
     /**
      * @param $name

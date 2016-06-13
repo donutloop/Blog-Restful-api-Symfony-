@@ -28,4 +28,29 @@ class AccessToken extends BaseAccessToken
      * @ORM\ManyToOne(targetEntity="User")
      */
     protected $user;
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralType()
+    {
+        return 'AccessToken';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralName()
+    {
+        return $this->getId();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIdentifier()
+    {
+        return $this->getId();
+    }
 }

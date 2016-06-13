@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Article
+class Article implements DatabaseWorkflowEntityInterface
 {
     /**
      * @var int
@@ -190,5 +191,30 @@ class Article
      */
     public function getUpdateAt(){
         return $this->updateAt;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralType()
+    {
+        return 'Article';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralName()
+    {
+        return $this->getTitle();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIdentifier()
+    {
+        return $this->getId();
     }
 }

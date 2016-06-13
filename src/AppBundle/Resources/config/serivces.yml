@@ -1,0 +1,7 @@
+services:
+    appbundle.article.workflow:
+        class: AppBundle\Library\Workflow\ArticleWorkflow
+        public: true
+        calls:
+          - [setContainer, ["@service_container"]]
+          - [setRepositoryName, ["AppBundle:Article"]]

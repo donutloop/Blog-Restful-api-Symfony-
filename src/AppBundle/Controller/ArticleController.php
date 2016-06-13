@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Library\ViewData;
+use AppBundle\Library\Workflow\ArticleWorkflow;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
@@ -42,7 +43,9 @@ class ArticleController extends MainController
      */
     public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): ViewData {
 
-        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
+        $workflow = $this->get('appbundle.article.workflow');
+
+        $repo = $workflow->getRepository();
 
         $callback = function($repo, $offset, $limit, $queryParam) {
             return $entities = $repo->findAllArticlesByTag($queryParam, $limit, $offset);
@@ -72,7 +75,12 @@ class ArticleController extends MainController
      */
     public function getArticlesAction(ParamFetcher $paramFetcher): ViewData {
 
-        $repo = $this->getDoctrine()->getRepository("AppBundle:Article");
+        /**
+         * @var ArticleWorkflow $workflow
+         */
+        $workflow = $this->get('appbundle.article.workflow');
+
+        $repo = $workflow->getRepository();
 
         $callback = function($repo, $offset, $limit, $queryParam) {
             return $repo->findAllArticles($limit, $offset);
@@ -108,7 +116,9 @@ class ArticleController extends MainController
     public function deleteArticleAction(int $id): ViewData {
 
         $doctrine = $this->getDoctrine();
-        $repo = $doctrine->getRepository("AppBundle:Article");
+        $workflow = $this->get('appbundle.article.workflow');
+        $repo = $workflow->getRepository();
+
         $em = $doctrine->getManager();
 
         $entity = $repo->find($id);
@@ -166,10 +176,14 @@ class ArticleController extends MainController
 
             $data->article->title = $data->article->title ?? null;
 
-            $repo = $doctrine->getRepository('AppBundle:Article');
+            /**
+             * @var ArticleWorkflow $workflow
+             */
+            $workflow = $this->get('appbundle.article.workflow');
 
             try{
-                $mainEntity = $repo->createArticle($data->article, $user, $validator);
+                $mainEntity = $workflow->prepareEntity($data->article, $user);
+                $workflow->create($mainEntity);
             }catch(\Exception $e){
                 throw new HttpException(Codes::HTTP_BAD_REQUEST, $e->getMessage());
             };

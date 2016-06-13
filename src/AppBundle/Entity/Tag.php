@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Entity\Article;
@@ -17,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("name")
  *
  */
-class Tag
+class Tag implements DatabaseWorkflowEntityInterface
 {
     /**
      * @var int
@@ -165,6 +166,30 @@ class Tag
      */
     public function getUpdateAt(){
         return $this->updateAt;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralType()
+    {
+        return 'Tag';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralName()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIdentifier()
+    {
+        return $this->getId();
     }
 }
 

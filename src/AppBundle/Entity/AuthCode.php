@@ -28,4 +28,28 @@ class AuthCode extends BaseAuthCode
      * @ORM\ManyToOne(targetEntity="User")
      */
     protected $user;
+    
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralType()
+    {
+        return 'AuthCode';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLiteralName()
+    {
+        return $this->getId();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIdentifier()
+    {
+        return $this->getId();
+    }
 }
