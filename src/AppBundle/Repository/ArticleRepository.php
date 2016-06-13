@@ -76,35 +76,4 @@ class ArticleRepository extends Repository implements DatabaseWorkflowRepository
 
         return $result;
     }
-
-    /**
-     * @param \stdClass $data
-     * @param User $user
-     * @param ValidatorInterface $validator
-     * @return Article
-     * @throws ValidatorException
-     */
-    public function createArticle(\stdClass $data, User $user , ValidatorInterface $validator): Article {
-
-        $entity = new Article();
-
-        $entity->setTitle($data->title);
-
-        $entity->setUser($user);
-
-        $errors = $validator->validate($entity);
-
-        if (count($errors) > 0) {
-
-            $errors = (string) $errors;
-
-            throw new ValidatorException($errors);
-        }
-
-        $em = $this->getEntityManager();
-        $em->persist($entity);
-        $em->flush();
-
-        return $entity;
-    }
 }
