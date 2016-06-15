@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
+ */
+
 namespace BaseBundle\Library;
 
 use Doctrine\ORM\EntityRepository;

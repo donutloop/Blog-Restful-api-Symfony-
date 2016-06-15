@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
+ */
 
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;

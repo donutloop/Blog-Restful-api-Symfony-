@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
+ */
 namespace Tests\AppBundle\Functional\Controller;
 
 use FOS\RestBundle\Util\Codes;

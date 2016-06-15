@@ -1,13 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: user
- * Date: 13.06.16
- * Time: 19:21
+ * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
  */
-
 namespace BaseBundle\Library;
-
 
 class DatabaseWorkflowCollection
 {

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
+ */
+
 namespace Tests\AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ArticleContent;

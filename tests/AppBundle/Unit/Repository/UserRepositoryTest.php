@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
+ */
 
 namespace Tests\AppBundle\Unit\Repository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;

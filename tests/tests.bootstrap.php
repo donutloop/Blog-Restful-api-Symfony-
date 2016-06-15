@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
+ */
 
 function runCommand($command){
     passthru($command, $result);

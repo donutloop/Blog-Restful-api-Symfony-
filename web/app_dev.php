@@ -1,4 +1,7 @@
 <?php
+/**
+ * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
+ */
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;

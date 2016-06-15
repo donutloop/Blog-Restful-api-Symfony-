@@ -7,6 +7,10 @@ namespace Tests\BaseBundle\Library;
 
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 
+/**
+ * Class DatabaseWorkflowTestEntity2
+ * @package Tests\BaseBundle\Library
+ */
 class DatabaseWorkflowTestEntity2 implements DatabaseWorkflowEntityInterface{
     
     /**
