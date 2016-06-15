@@ -6,7 +6,10 @@ use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Tests\BaseBundle\Library\DatabaseWorkflowTestEntity;
 use Tests\BaseBundle\Library\DatabaseWorkflowTestEntity2;
 
-
+/**
+ * Class DatabaseWorkflowCollectionTest
+ * @package Tests\BaseBundle\Unit\Library
+ */
 class DatabaseWorkflowCollectionTest extends \PHPUnit_Framework_TestCase
 {
    public function getEntity(): DatabaseWorkflowEntityInterface{
