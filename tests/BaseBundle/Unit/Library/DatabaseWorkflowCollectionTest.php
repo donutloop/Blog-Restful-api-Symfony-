@@ -9,7 +9,6 @@ use Tests\BaseBundle\Library\DatabaseWorkflowTestEntity2;
 
 class DatabaseWorkflowCollectionTest extends \PHPUnit_Framework_TestCase
 {
-
    public function getEntity(): DatabaseWorkflowEntityInterface{
       return new DatabaseWorkflowTestEntity();
    }

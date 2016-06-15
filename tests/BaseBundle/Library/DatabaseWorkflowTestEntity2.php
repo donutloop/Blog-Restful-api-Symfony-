@@ -9,10 +9,7 @@ use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 
 class DatabaseWorkflowTestEntity2 implements DatabaseWorkflowEntityInterface{
 
-    /**
-     * @var
-     */
-    private $identifier;
+
 
     /**
      * @inheritDoc
