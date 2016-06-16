@@ -5,7 +5,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Library\ViewData;
+use BaseBundle\Library\ViewData;
 use AppBundle\Library\Workflow\ArticleContentWorkflow;
 use AppBundle\Library\Workflow\ArticleWorkflow;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
