@@ -3,7 +3,7 @@
  * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
  */
 
-namespace AppBundle\Library;
+namespace BaseBundle\Library;
 
 /**
  * Class ViewData

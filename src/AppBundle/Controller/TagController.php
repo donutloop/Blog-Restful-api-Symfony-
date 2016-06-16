@@ -5,7 +5,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Library\ViewData;
+use BaseBundle\Library\ViewData;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;

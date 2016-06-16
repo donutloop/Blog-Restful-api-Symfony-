@@ -6,7 +6,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use AppBundle\Library\ViewData;
+use BaseBundle\Library\ViewData;
 use AppBundle\Repository\UserRepository;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
