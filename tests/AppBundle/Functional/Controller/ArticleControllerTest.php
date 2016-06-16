@@ -50,9 +50,9 @@ class ArticleControllerTest extends ControllerTestCase
         $serializer = $this->getContainer()->get('jms_serializer');
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $data = $this->postJson('/article/create', $entityJson);
+        $view = $this->postJson('/article/create', $entityJson);
 
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $data->error->code);
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->code);
     }
 
     public function testCreateArticle() {
@@ -71,9 +71,9 @@ class ArticleControllerTest extends ControllerTestCase
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $data = $this->postJson('/article/create', $entityJson);
+        $view = $this->postJson('/article/create', $entityJson);
 
-        $this->assertEquals(Codes::HTTP_OK, $data->code);
+        $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
     public function testCreateArticleDataEmpty() {
@@ -148,16 +148,16 @@ class ArticleControllerTest extends ControllerTestCase
 
         $entity = LoadArticleData::$articles[0];
         $url = sprintf('/article/%d', $entity->getId());
-        $data = $this->deleteJson($url);
+        $view = $this->deleteJson($url);
 
-        $this->assertEquals(Codes::HTTP_OK, $data->code);
+        $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
     public function testDeleteArticleNotFound() {
         $client = static::createClient();
 
-        $data = $this->deleteJson('/article/99999');
+        $view = $this->deleteJson('/article/99999');
         
-        $this->assertEquals(Codes::HTTP_NOT_FOUND, $data->error->code);
+        $this->assertEquals(Codes::HTTP_NOT_FOUND, $view->code);
     }
 }

@@ -10,7 +10,6 @@ use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\RestBundle\Util\Codes;
 
 class TagController extends MainController{
@@ -66,7 +65,6 @@ class TagController extends MainController{
      * @RestAnnotaions\Delete("/tag/{id}")
      *
      * @param $id
-     * @throws HttpException
      * @return ViewData
      */
     public function deleteTagAction(int $id): ViewData {
@@ -76,7 +74,7 @@ class TagController extends MainController{
         $entity = $doctrine->getRepository('AppBundle:Tag')->find($id);
 
         if (!$entity) {
-            throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Dataset not found (id: %d)', $id));
+           return $this->handleNotFound(sprintf('Dataset not found (id: %d)', $id));
         }
 
         $em = $doctrine->getManager();
@@ -164,7 +162,6 @@ class TagController extends MainController{
      * @param $request
      * @param $callback
      * @param $message
-     * @throws HttpException
      * @return ViewData
      */
     private function tagProcess(Request $request, callable $callback, string $message): ViewData {
@@ -172,7 +169,7 @@ class TagController extends MainController{
         $data = json_decode($request->getContent());
 
         if (!isset($data->tag)) {
-            throw new HttpException(Codes::HTTP_BAD_REQUEST, $message . '(Bad format)');
+           return $this->handleError(Codes::HTTP_BAD_REQUEST, $message .'(Bad format)');
         }
 
         $repo = $this->getDoctrine()->getRepository('AppBundle:Tag');
@@ -181,7 +178,7 @@ class TagController extends MainController{
         try{
               $entity = $callback($repo, $data, $validator);
         }catch (\Exception $e){
-            throw new HttpException(Codes::HTTP_BAD_REQUEST, $message . sprintf(' (Name: %d)', $data->tag->name));
+            return $this->handleError(Codes::HTTP_BAD_REQUEST, $message . sprintf(' (Name: %d)', $data->tag->name));
         }
         
         $viewData = new ViewData(Codes::HTTP_OK);

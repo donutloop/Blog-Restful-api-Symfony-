@@ -30,8 +30,8 @@ class TagControllerTest extends ControllerTestCase
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
         $view = $this->postJson('/tag/create', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->error->code);
+        
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->code);
     }
 
     /**
@@ -45,7 +45,7 @@ class TagControllerTest extends ControllerTestCase
 
         $view = $this->patchJson('/tag/update', $entityJson);
 
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->error->code);
+        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->code);
     }
 
     public function testTagsAction() {

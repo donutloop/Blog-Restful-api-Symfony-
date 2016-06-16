@@ -52,7 +52,7 @@ class UserController extends MainController {
         $entity = $repo->find($id);
         
         if (!$id) {
-            throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Dataset not found (ID: %d)', $id));
+            return $this->handleNotFound(sprintf('Dataset not found (ID: %d)', $id));
         }
 
         $viewData = new ViewData(Codes::HTTP_OK, $entity);
@@ -98,7 +98,7 @@ class UserController extends MainController {
             $viewData->setMessage(sprintf('Dataset successfully created (Name: %d)', $entity->getUsername()));
             return $viewData;
         }else{
-            throw new HttpException(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
+            return $this->handleError(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
         }
     }
 }

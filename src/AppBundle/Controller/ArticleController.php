@@ -13,8 +13,6 @@ use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 class ArticleController extends MainController
 {
@@ -114,7 +112,6 @@ class ArticleController extends MainController
      * @RestAnnotaions\Delete("/article/{id}")
      *
      * @param $id
-     * @throws HttpException
      * @return ViewData
      */
     public function deleteArticleAction(int $id): ViewData {
@@ -128,7 +125,7 @@ class ArticleController extends MainController
         $entity = $repo->find($id);
 
         if (!$entity) {
-            throw new HttpException(Codes::HTTP_NOT_FOUND, sprintf('Dataset not found (id: %d)', $id));
+            return $this->handleNotFound(sprintf('Dataset not found (id: %d)', $id));
         }
 
         $em->remove($entity);
@@ -153,7 +150,6 @@ class ArticleController extends MainController
      * @RestAnnotaions\Post("/article/create")
      *
      * @param Request $request
-     * @throws HttpException
      * @return ViewData
      */
     public function createArticleAction(Request $request): ViewData {
@@ -169,11 +165,11 @@ class ArticleController extends MainController
                 $user = $doctrine->getRepository('AppBundle:User')->findOneBy(array('username' =>$data->article->username));
 
                 if (!$user) {
-                    throw new HttpException(Codes::HTTP_BAD_REQUEST, sprintf('User not found (%w)', $data->article->username));
+                    return $this->handleError(Codes::HTTP_BAD_REQUEST,sprintf('Dataset not found (id: %d)', $data->article->username));
                 }
 
             }else{
-                throw new HttpException(Codes::HTTP_BAD_REQUEST, 'User not set');
+                return $this->handleError(Codes::HTTP_BAD_REQUEST,'User not set');
             }
             
             $data->article->title = $data->article->title ?? null;
@@ -187,7 +183,7 @@ class ArticleController extends MainController
                 $mainEntity = $workflow->prepareEntity($data->article, $user);
                 $workflow->create($mainEntity);
             }catch(\Exception $e){
-                throw new HttpException(Codes::HTTP_BAD_REQUEST, $e->getMessage());
+                return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
             };
             
             if (!empty($data->article->contents)) {
@@ -205,11 +201,11 @@ class ArticleController extends MainController
                         $entity = $workflow->prepareEntity($content, $mainEntity);
                         $workflow->create($entity);
                     }catch(\Exception $e){
-                        throw new HttpException(Codes::HTTP_BAD_REQUEST, $e->getMessage());
+                        return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
                     };
                 }
             } else {
-                throw new HttpException(Codes::HTTP_BAD_REQUEST, 'Content not set');
+                return $this->handleError(Codes::HTTP_BAD_REQUEST, 'Content not set');
             }
 
             if (!empty($data->article->tags)) {
@@ -234,7 +230,7 @@ class ArticleController extends MainController
             }
         }
         else{
-             throw new HttpException(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
+            return $this->handleError(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
         }
 
         $viewData = new ViewData(Codes::HTTP_OK);

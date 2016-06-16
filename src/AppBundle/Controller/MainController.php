@@ -38,4 +38,25 @@ class MainController extends FOSRestController {
 
         return new ViewData(Codes::HTTP_OK, $entities, array('offset' => $offset, 'limit' => $limit));
     }
+
+    /**
+     * @param int $code
+     * @param string $message
+     * @return ViewData
+     */
+    public function handleError(int $code, string $message): ViewData{
+        $viewData = new ViewData(Codes::HTTP_BAD_REQUEST);
+        $viewData->setErrors(array($message));
+        return $viewData;
+    }
+
+    /**
+     * @param string $message
+     * @return ViewData
+     */
+    public function handleNotFound(string $message): ViewData{
+        $viewData = new ViewData(Codes::HTTP_NOT_FOUND);
+        $viewData->setWarnings(array($message));
+        return $viewData;
+    }
 }
