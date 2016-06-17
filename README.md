@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/donutloop/Blog-Restful-api-Symfony-.svg?branch=master)](https://travis-ci.org/donutloop/Blog-Restful-api-Symfony-)
+
 Blog Restful API Symfony 3 Edition (Alpha)
 ========================
 
