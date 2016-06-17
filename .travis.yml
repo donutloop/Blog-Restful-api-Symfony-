@@ -1,14 +1,24 @@
+language: php
+
 php:
     - 7.0
 
+services:
+  - postgresql
+
 before_script:
-  - cp app/config/parameters.yml.travis app/config/test/parameters.yml
+  - psql -c 'CREATE DATABASE blog_api_test;' -U postgres
+  - psql -c 'CREATE DATABASE  blog_api_dev;' -U postgres
+  - psql -c 'CREATE DATABASE  blog_api;' -U postgres
+  - psql -c 'CREATE USER build123456 WITH PASSWORD "build123456"'
+  - psql -c 'GRANT ALL PRIVILEGES ON DATABASE jerry to build123456'
+  - composer self-update
   - composer install
-  - php app/console doctrine:database:create --env=test
-  - php app/console doctrine:schema:create --env=test
+  - composer dump-autoload -o
+  - php bin/console doctrine:schema:create --env=test
 
 script:
-  - phpunit -c app
+  phpunit --configuration="phpunit.xml"
 
 notifications:
   email:
