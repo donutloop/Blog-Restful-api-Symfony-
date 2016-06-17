@@ -1,8 +1,8 @@
 {
-  "name": "symfony/framework-standard-edition",
+  "name": "",
   "license": "MIT",
   "type": "project",
-  "description": "The \"Symfony Standard Edition\" distribution",
+  "description": "",
   "autoload": {
     "psr-4": { "": "src/" },
     "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
@@ -20,7 +20,6 @@
     "symfony/monolog-bundle": "^2.8",
     "sensio/distribution-bundle": "^5.0",
     "sensio/framework-extra-bundle": "^3.0.2",
-    "incenteev/composer-parameter-handler": "^2.0",
     "nelmio/api-doc-bundle": "^2.12",
     "friendsofsymfony/user-bundle": "~2.0@dev",
     "friendsofsymfony/oauth-server-bundle": "^1.5",
@@ -36,7 +35,6 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -44,7 +42,6 @@
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
     ],
     "post-update-cmd": [
-      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -54,7 +51,7 @@
   },
   "config": {
     "platform": {
-      "php": "5.5.9"
+      "php": "7.0"
     }
   },
   "extra": {
@@ -64,9 +61,6 @@
     "symfony-web-dir": "web",
     "symfony-tests-dir": "tests",
     "symfony-assets-install": "relative",
-    "incenteev-parameters": {
-      "file": "app/config/parameters.yml"
-    },
     "branch-alias": {
       "dev-master": "3.0-dev"
     }
