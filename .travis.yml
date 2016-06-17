@@ -1,0 +1,15 @@
+php:
+    - 7.0
+
+before_script:
+  - cp app/config/parameters.yml.travis app/config/test/parameters.yml
+  - composer install
+  - php app/console doctrine:database:create --env=test
+  - php app/console doctrine:schema:create --env=test
+
+script:
+  - phpunit -c app
+
+notifications:
+  email:
+    -  info@marcel-edmund-franke.de
