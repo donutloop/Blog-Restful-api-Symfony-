@@ -10,8 +10,6 @@ before_script:
   - psql -c 'CREATE DATABASE blog_api_test;' -U postgres
   - psql -c 'CREATE DATABASE  blog_api_dev;' -U postgres
   - psql -c 'CREATE DATABASE  blog_api;' -U postgres
-  - psql -c 'CREATE USER build123456 WITH PASSWORD "build123456"'
-  - psql -c 'GRANT ALL PRIVILEGES ON DATABASE jerry to build123456'
   - composer self-update
   - composer install
   - composer dump-autoload -o
