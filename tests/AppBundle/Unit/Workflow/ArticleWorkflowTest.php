@@ -54,4 +54,17 @@ class ArticleWorkflowTest extends AbstractWorkflowTest
         static::assertEquals(null, $entity);
     }
 
+    public function testCreateInvalidTitle(){
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+        $entity = $this->getEntity();
+        $entity->setTitle('');
+        $this->getWorkflow()->create($entity);
+    }
+
+    public function testValidateInvalidTitle(){
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+        $entity = $this->getEntity();
+        $entity->setTitle('');
+        $this->getWorkflow()->validate($entity);
+    }
 }

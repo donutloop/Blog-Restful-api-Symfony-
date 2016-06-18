@@ -37,7 +37,7 @@ abstract class AbstractWorkflowTest extends WebTestCase
         $repo = $this->getContainer()->get('doctrine')->getRepository($this->getRepositoryName());
 
         $actualEntity = $repo->find($expectedEntity->getId());
-        
+
         static::assertEquals($expectedEntity->getId(), $actualEntity->getId());
     }
 }
