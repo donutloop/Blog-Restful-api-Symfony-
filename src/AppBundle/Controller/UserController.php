@@ -11,6 +11,7 @@ use AppBundle\Repository\UserRepository;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -55,8 +56,7 @@ class UserController extends MainController {
             return $this->handleNotFound(sprintf('Dataset not found (ID: %d)', $id));
         }
 
-        $viewData = new ViewData(Codes::HTTP_OK, $entity);
-        return $viewData;
+        return $this->prepareView(new ViewData(Codes::HTTP_OK, $entity));
     }
 
     /**
@@ -73,9 +73,9 @@ class UserController extends MainController {
      * @RestAnnotaions\Post("/user/create", name="user_create")
      *
      * @param Request $request
-     * @return ViewData
+     * @return View
      */
-    public function postUserAction(Request $request): ViewData{
+    public function postUserAction(Request $request): View{
         
         $data = json_decode($request->getContent());
 
@@ -94,9 +94,7 @@ class UserController extends MainController {
 
             $entity = $repo->createUser($data->user, $validator);
 
-            $viewData = new ViewData(Codes::HTTP_OK);
-            $viewData->setMessage(sprintf('Dataset successfully created (Name: %d)', $entity->getUsername()));
-            return $viewData;
+            return $this->handleSuccess(sprintf('Dataset successfully created (Name: %d)', $entity->getUsername()));
         }else{
             return $this->handleError(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
         }
