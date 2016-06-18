@@ -73,7 +73,7 @@ class ArticleControllerTest extends ControllerTestCase
 
         $view = $this->postJson('/article/create', $entityJson);
 
-        $this->assertEquals(Codes::HTTP_OK, $view->code);
+        $this->assertEquals(Codes::HTTP_CREATED, $view->code);
     }
 
     public function testCreateArticleDataEmpty() {

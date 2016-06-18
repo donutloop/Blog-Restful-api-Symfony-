@@ -11,6 +11,7 @@ use AppBundle\Library\Workflow\ArticleWorkflow;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,9 +42,9 @@ class ArticleController extends MainController
      * @param $tag
      * @param $paramFetcher
      *
-     * @return ViewData
+     * @return View
      */
-    public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): ViewData {
+    public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): View {
 
         $workflow = $this->get('appbundle.article.workflow');
 
@@ -73,9 +74,9 @@ class ArticleController extends MainController
      *
      * @param $paramFetcher
      *
-     * @return ViewData
+     * @return View
      */
-    public function getArticlesAction(ParamFetcher $paramFetcher): ViewData {
+    public function getArticlesAction(ParamFetcher $paramFetcher): View {
 
         /**
          * @var ArticleWorkflow $workflow
@@ -112,9 +113,9 @@ class ArticleController extends MainController
      * @RestAnnotaions\Delete("/article/{id}")
      *
      * @param $id
-     * @return ViewData
+     * @return View
      */
-    public function deleteArticleAction(int $id): ViewData {
+    public function deleteArticleAction(int $id): View {
 
         $doctrine = $this->getDoctrine();
         $workflow = $this->get('appbundle.article.workflow');
@@ -130,10 +131,8 @@ class ArticleController extends MainController
 
         $em->remove($entity);
         $em->flush();
-        
-        $viewData = new ViewData(Codes::HTTP_OK, array(), array(), sprintf('Dataset succesfully removed (id: %d)', $id));
 
-        return $viewData;
+        return $this->handleSuccess(sprintf('Dataset succesfully removed (id: %d)', $id));
     }
 
     /**
@@ -150,9 +149,9 @@ class ArticleController extends MainController
      * @RestAnnotaions\Post("/article/create")
      *
      * @param Request $request
-     * @return ViewData
+     * @return View
      */
-    public function createArticleAction(Request $request): ViewData {
+    public function createArticleAction(Request $request): View {
 
         $data = json_decode($request->getContent());
 
@@ -233,8 +232,6 @@ class ArticleController extends MainController
             return $this->handleError(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
         }
 
-        $viewData = new ViewData(Codes::HTTP_OK);
-        $viewData->setMessage(sprintf('Dataset succesfully created (id: %d)', $mainEntity->getId()));
-        return $viewData;
+        return $this->handleSuccess(sprintf('Dataset succesfully created (id: %d)', $mainEntity->getId()), Codes::HTTP_CREATED);
     }
 }
