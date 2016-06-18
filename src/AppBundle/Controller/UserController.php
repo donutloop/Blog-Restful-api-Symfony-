@@ -6,7 +6,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use BaseBundle\Library\ViewData;
 use AppBundle\Repository\UserRepository;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -14,8 +13,6 @@ use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 class UserController extends MainController {
     
@@ -41,9 +38,9 @@ class UserController extends MainController {
      *
      * @param integer $id
      *
-     * @return ViewData
+     * @return View
      */
-    public function getUserAction(int $id): ViewData {
+    public function getUserAction(int $id): View {
 
         /**
          * @var UserRepository $repo
