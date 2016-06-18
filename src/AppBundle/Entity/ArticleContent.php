@@ -31,6 +31,7 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      * @var string
      *
      * @Assert\NotNull()
+     * @Assert\NotBlank()
      *
      * @ORM\Column(name="content", type="text")
      */
@@ -40,6 +41,7 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      * @var string
      *
      * @Assert\NotNull()
+     * @Assert\NotBlank()
      *
      * @ORM\Column(name="content_type", type="string", length=255)
      */

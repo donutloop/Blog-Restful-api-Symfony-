@@ -37,4 +37,31 @@ class ArticleContentWorkflowTest extends AbstractWorkflowTest
         return $this->getContainer()->get('appbundle.articlecontent.workflow');
     }
 
+    public function testCreateInvalidConetentType(){
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+        $entity = $this->getEntity();
+        $entity->setContentType('');
+        $this->getWorkflow()->create($entity);
+    }
+
+    public function testValidateInvalidConentType(){
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+        $entity = $this->getEntity();
+        $entity->setContentType('');
+        $this->getWorkflow()->validate($entity);
+    }
+
+    public function testCreateInvalidConetent(){
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+        $entity = $this->getEntity();
+        $entity->setContent('');
+        $this->getWorkflow()->create($entity);
+    }
+
+    public function testValidateInvalidConent(){
+        $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
+        $entity = $this->getEntity();
+        $entity->setContent('');
+        $this->getWorkflow()->validate($entity);
+    }
 }
