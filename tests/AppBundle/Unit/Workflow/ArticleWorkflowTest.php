@@ -6,40 +6,34 @@
 namespace Tests\AppBundle\Unit\Workflow;
 
 use AppBundle\Entity\Article;
-use AppBundle\Library\Workflow\ArticleWorkflow;
+use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\DataFixtures\ORM\LoadOneArticleData;
 
-class TagRepositoryTest extends WebTestCase
+class ArticleWorkflowTest extends AbstractWorkflowTest
 {
+
+    /**
+     * @return string
+     */
+    protected function getRepositoryName(): string{
+        return 'AppBundle:Article';
+    }
 
     /**
      * @return DatabaseWorkflowEntityInterface
      */
-    private function getEntity(): DatabaseWorkflowEntityInterface{
+    protected function getEntity(): DatabaseWorkflowEntityInterface{
         $entity = new Article();
         $entity->setTitle(sprintf('test-title-%s', uniqid()));
         return $entity;
     }
 
     /**
-     * @return ArticleWorkflow
+     * @return DatabaseWorkflow
      */
-    private function getWorkflow(): ArticleWorkflow {
+    protected function getWorkflow(): DatabaseWorkflow {
         return $this->getContainer()->get('appbundle.article.workflow');
-    }
-
-    public function testCreateArticle() {
-        $workflow = $this->getWorkflow();
-
-        $entity = $workflow->create($this->getEntity());
-
-        $repo = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Article');
-
-        $actualEntity = $repo->find($entity->getId());
-
-        static::assertEquals($entity->getId(), $actualEntity->getId());
     }
 
     public function testDeleteArticle() {
