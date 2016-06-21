@@ -6,6 +6,7 @@
 namespace BaseBundle\Library;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -100,9 +101,17 @@ abstract class DatabaseWorkflow implements ContainerAwareInterface{
     /**
      * @param int $id
      * @return DatabaseWorkflowEntityInterface
+     * @throws EntityNotFoundException
      */
-    public function get(int $id): DatabaseWorkflowEntityInterface{
-        return $this->getRepository()->find($id);
+    public function get(int $id): DatabaseWorkflowEntityInterface {
+
+        $entity = $this->getRepository()->find($id);
+
+        if (!$entity) {
+            throw new EntityNotFoundException(sprintf('Dataset not found (id: %d)', $id));
+        }
+
+        return $entity;
     }
 
     /**
