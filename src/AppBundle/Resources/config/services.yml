@@ -12,3 +12,10 @@ services:
         calls:
           - [setContainer, ["@service_container"]]
           - [setRepositoryName, ["AppBundle:ArticleContent"]]
+
+    appbundle.user.workflow:
+            class: AppBundle\Library\Workflow\UserWorkflow
+            public: true
+            calls:
+              - [setContainer, ["@service_container"]]
+              - [setRepositoryName, ["AppBundle:User"]]
