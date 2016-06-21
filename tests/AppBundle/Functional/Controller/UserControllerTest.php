@@ -6,6 +6,7 @@ namespace Tests\AppBundle\Functional\Controller;
 
 use FOS\RestBundle\Util\Codes;
 use JMS\Serializer\Serializer;
+use Tests\AppBundle\DataFixtures\ORM\LoadUserData;
 
 class UserControllerTest extends ControllerTestCase
 {
@@ -36,4 +37,17 @@ class UserControllerTest extends ControllerTestCase
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
+    public function testGetUserAction()
+    {
+        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadUserData');
+        $this->loadFixtures($fixtures);
+        $view = $this->getJson(sprintf('/user/get/%d',LoadUserData::$entity->getId()));
+        $this->assertEquals(Codes::HTTP_OK, $view->code);
+    }
+
+    public function testGetUserNotFoundAction()
+    {
+        $view = $this->getJson('/user/get/9999');
+        $this->assertEquals(Codes::HTTP_NOT_FOUND, $view->code);
+    }
 }
