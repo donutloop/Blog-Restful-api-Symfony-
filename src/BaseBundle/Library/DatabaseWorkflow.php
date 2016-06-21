@@ -98,6 +98,14 @@ abstract class DatabaseWorkflow implements ContainerAwareInterface{
     }
 
     /**
+     * @param int $id
+     * @return DatabaseWorkflowEntityInterface
+     */
+    public function get(int $id): DatabaseWorkflowEntityInterface{
+        return $this->getRepository()->find($id);
+    }
+
+    /**
      * @param DatabaseWorkflowEntityInterface $entity
      * @param array $extraData
      * @param callable|null $beforeCreateCallback

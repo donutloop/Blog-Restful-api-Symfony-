@@ -5,14 +5,15 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\User;
-use AppBundle\Repository\UserRepository;
+use AppBundle\Library\Entries\UserEntry;
+use AppBundle\Library\Workflow\UserWorkflow;
+use BaseBundle\Library\ViewData;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
-use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Exception\ValidatorException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class UserController extends MainController {
     
@@ -43,11 +44,11 @@ class UserController extends MainController {
     public function getUserAction(int $id): View {
 
         /**
-         * @var UserRepository $repo
+         * @var UserWorkflow $entity 
          */
-        $repo = $this->getDoctrine()->getRepository("AppBundle:User");
+        $workflow = $this->get('appbundle.user.workflow');
 
-        $entity = $repo->find($id);
+        $entity = $workflow->get($id);
         
         if (!$id) {
             return $this->handleNotFound(sprintf('Dataset not found (ID: %d)', $id));
@@ -68,32 +69,25 @@ class UserController extends MainController {
      * )
      *
      * @RestAnnotaions\Post("/user/create", name="user_create")
+     * @ParamConverter("post", class="AppBundle\Library\Entries\UserEntry", converter="fos_rest.request_body")
      *
-     * @param Request $request
      * @return View
      */
-    public function postUserAction(Request $request): View{
-        
-        $data = json_decode($request->getContent());
+    public function postUserAction(UserEntry $userEntry): View{
 
-        if (isset($data->user)) {
+        /**
+         * @var UserWorkflow $workflow
+         */
+        $workflow = $this->get('appbundle.user.workflow');
 
-            $data->user->username = $data->user->username ?? null;
-            $data->user->password = $data->user->password ?? null;
-            $data->user->email = $data->user->email ?? null;
+        $entity = $workflow->prepareEntity($userEntry);
 
-            /**
-             * @var UserRepository $repo
-             */
-            $repo = $this->getDoctrine()->getRepository("AppBundle:User");
-
-            $validator = $this->get('validator');
-
-            $entity = $repo->createUser($data->user, $validator);
-
-            return $this->handleSuccess(sprintf('Dataset successfully created (Name: %d)', $entity->getUsername()));
-        }else{
-            return $this->handleError(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
+        try{
+            $entity = $workflow->create($entity);
+        }catch (ValidatorException $e){
+            return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
         }
+
+        return $this->handleSuccess(sprintf('Dataset successfully created (Name: %d)', $entity->getUsername()));
     }
 }

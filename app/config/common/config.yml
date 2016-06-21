@@ -28,6 +28,9 @@ framework:
     http_method_override: true
     assets: ~
 
+sensio_framework_extra:
+    request: { converters: true }
+
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
@@ -71,6 +74,8 @@ fos_rest:
     param_fetcher_listener: true
     view:
         view_response_listener: 'force'
+    body_converter:
+            enabled: true
 
 # FOSUser Configuration
 fos_user:
