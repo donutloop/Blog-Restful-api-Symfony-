@@ -19,3 +19,10 @@ services:
             calls:
               - [setContainer, ["@service_container"]]
               - [setRepositoryName, ["AppBundle:User"]]
+
+    appbundle.tag.workflow:
+            class: AppBundle\Library\Workflow\TagWorkflow
+            public: true
+            calls:
+              - [setContainer, ["@service_container"]]
+              - [setRepositoryName, ["AppBundle:Tag"]]

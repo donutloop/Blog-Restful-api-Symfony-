@@ -5,12 +5,15 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Library\Entries\TagEntry;
+use BaseBundle\Library\DatabaseWorkflow;
+use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Util\Codes;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class TagController extends MainController{
 
@@ -68,16 +71,14 @@ class TagController extends MainController{
      * @return View
      */
     public function deleteTagAction(int $id): View {
-
-        $doctrine = $this->getDoctrine();
-
-        $entity = $doctrine->getRepository('AppBundle:Tag')->find($id);
-
-        if (!$entity) {
-           return $this->handleNotFound(sprintf('Dataset not found (id: %d)', $id));
+        
+        try{
+            $entity = $this->get('appbundle.tag.workflow')->get($id);
+        }catch (EntityNotFoundException $e){
+            $this->handleNotFound($e->getMessage());
         }
-
-        $em = $doctrine->getManager();
+      
+        $em = $this->getDoctrine()->getManager();
 
         $em->remove($entity);
         $em->flush();
@@ -104,18 +105,19 @@ class TagController extends MainController{
       * )
       *
       * @RestAnnotaions\Post("/tag/create")
+      * @ParamConverter("post", class="AppBundle\Library\Entries\TagEntry", converter="fos_rest.request_body")
       *
-      * @param $request
+      * @param $tagEntry
       *
       * @return View
      **/
-    public function createTagAction(Request $request): View {
+    public function createTagAction(TagEntry $tagEntry): View {
 
-        $callback = function($repo, $data, $validator) {
-            return $repo->createTag($data->tag, $validator);
+        $callback = function(DatabaseWorkflow $workflow, $tagEntry) {
+            return $workflow->create($workflow->prepareEntity($tagEntry));
         };
 
-        return $this->tagProcess($request, $callback , 'Dataset unsuccessfully created');
+        return $this->tagProcess($tagEntry, $callback , 'Dataset unsuccessfully created');
     }
 
     /**
@@ -142,41 +144,35 @@ class TagController extends MainController{
      * )
      *
      * @RestAnnotaions\Patch("/tag/update")
+     * @ParamConverter("post", class="AppBundle\Library\Entries\TagEntry", converter="fos_rest.request_body")
      *
-     * @param $request
+     * @param $tagEntry
      *
      * @return View
      **/
-    public function updateTagAction(Request $request): View {
+    public function updateTagAction(TagEntry $tagEntry): View {
 
-        $callback = function($repo, $data, $validator) {
-            return $repo->updateTag($data->tag, $validator);
+        $callback = function(DatabaseWorkflow $workflow, $tagEntry) {
+            return $workflow->update($workflow->prepareEntity($tagEntry));
         };
 
-        return $this->tagProcess($request, $callback , 'Dataset unsuccessfully updated');
+        return $this->tagProcess($tagEntry, $callback , 'Dataset unsuccessfully updated');
     }
 
     /**
-     * @param $request
+     * @param $tagEntry
      * @param $callback
      * @param $message
      * @return View
      */
-    private function tagProcess(Request $request, callable $callback, string $message): View {
+    private function tagProcess(TagEntry $tagEntry, callable $callback, string $message): View {
 
-        $data = json_decode($request->getContent());
-
-        if (!isset($data->tag)) {
-           return $this->handleError(Codes::HTTP_BAD_REQUEST, $message .'(Bad format)');
-        }
-
-        $repo = $this->getDoctrine()->getRepository('AppBundle:Tag');
-        $validator = $this->get('validator');
+        $workflow = $this->get('appbundle.tag.workflow');
 
         try{
-              $entity = $callback($repo, $data, $validator);
+            $entity = $callback($workflow, $tagEntry);
         }catch (\Exception $e){
-            return $this->handleError(Codes::HTTP_BAD_REQUEST, $message . sprintf(' (Name: %d)', $data->tag->name));
+            return $this->handleError(Codes::HTTP_BAD_REQUEST, $message . sprintf(' (Name: %d)', $tagEntry->getName()));
         }
 
         return $this->handleSuccess(sprintf($message . '(Name: %d)', $entity->getName()));
