@@ -17,26 +17,24 @@ class ArticleControllerTest extends ControllerTestCase
      */
     private function getRawArticleData() {
         return array(
-            'article' => array(
-                'title' => 'Test Eintrag',
-                'username' => 'test-user',
-                'tags' => array(
-                    array(
-                        'name' => 'Python2'
-                    ),
-                    array(
-                        'name' => 'Python3'
-                    )
+            'title' => 'Test Eintrag',
+            'username' => 'test-user',
+            'tags' => array(
+                array(
+                    'name' => 'Python2'
                 ),
-                'contents' => array(
-                    array(
-                        'contentType' => 'code',
-                        'content' => 'lorem ipsum'
-                    ),
-                    array(
-                        'contentType' => 'code',
-                        'content' => 'lorem ipsum'
-                    )
+                array(
+                    'name' => 'Python3'
+                )
+            ),
+            'contents' => array(
+                array(
+                    'content' => 'lorem ipsum',
+                    'type' => 'code11'
+                ),
+                array(
+                    'type' => 'code11',
+                    'content' => 'lorem ipsum'
                 )
             )
         );
@@ -45,19 +43,17 @@ class ArticleControllerTest extends ControllerTestCase
     /**
      * @param $entityRaw
      */
-    private function createArticleErrorWrapper($entityRaw) {
+    private function createArticleErrorWrapper($entityRaw, $code = Codes::HTTP_BAD_REQUEST) {
 
         $serializer = $this->getContainer()->get('jms_serializer');
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
         $view = $this->postJson('/article/create', $entityJson);
-
-        $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->code);
+        $this->assertEquals($code, $view->code);
     }
 
     public function testCreateArticle() {
 
-        $client = static::createClient();
         $fixtures = array(
             'Tests\AppBundle\DataFixtures\ORM\LoadUserData',
             'Tests\AppBundle\DataFixtures\ORM\LoadTagData'
@@ -72,7 +68,6 @@ class ArticleControllerTest extends ControllerTestCase
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
         $view = $this->postJson('/article/create', $entityJson);
-
         $this->assertEquals(Codes::HTTP_CREATED, $view->code);
     }
 
@@ -82,43 +77,43 @@ class ArticleControllerTest extends ControllerTestCase
 
     public function testCreateArticleUserNotSet() {
         $entityRaw = $this->getRawArticleData();
-        $entityRaw['article']['username'] = null;
+        $entityRaw['username'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
 
     public function testCreateArticleUserNotFound() {
         $entityRaw = $this->getRawArticleData();
-        $entityRaw['article']['username'] = 'test-user-x';
-        $this->createArticleErrorWrapper($entityRaw);
+        $entityRaw['username'] = 'test-user-x';
+        $this->createArticleErrorWrapper($entityRaw, Codes::HTTP_NOT_FOUND);
     }
 
     public function testCreateArticleTitleEmpty() {
         $entityRaw = $this->getRawArticleData();
-        $entityRaw['article']['title'] = null;
+        $entityRaw['title'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
 
     public function testCreateArticleContentNotSet() {
         $entityRaw = $this->getRawArticleData();
-        $entityRaw['article']['contents'] = null;
+        $entityRaw['contents'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
     
     public function testCreateArticleContentTypeEmpty() {
         $entityRaw = $this->getRawArticleData();
-        $entityRaw['article']['contents'][0]['contentType'] = null;
+        $entityRaw['contents'][0]['type'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
 
     public function testCreateArticleContentEmpty() {
         $entityRaw = $this->getRawArticleData();
-        $entityRaw['article']['contents'][0]['content'] = null;
+        $entityRaw['contents'][0]['content'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
     
     public function testCreateArticleBlank() {
         $entityRaw = $this->getRawArticleData();
-        $entityRaw['article']['title'] = '';
+        $entityRaw['title'] = '';
         $this->createArticleErrorWrapper($entityRaw);
     }
     

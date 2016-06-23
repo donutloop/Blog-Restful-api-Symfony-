@@ -5,14 +5,18 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Library\Entries\ArticleEntry;
 use AppBundle\Library\Workflow\ArticleContentWorkflow;
 use AppBundle\Library\Workflow\ArticleWorkflow;
+use AppBundle\Library\Workflow\UserWorkflow;
+use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ArticleController extends MainController
 {
@@ -116,18 +120,15 @@ class ArticleController extends MainController
      */
     public function deleteArticleAction(int $id): View {
 
-        $doctrine = $this->getDoctrine();
         $workflow = $this->get('appbundle.article.workflow');
-        $repo = $workflow->getRepository();
 
-        $em = $doctrine->getManager();
-
-        $entity = $repo->find($id);
-
-        if (!$entity) {
-            return $this->handleNotFound(sprintf('Dataset not found (id: %d)', $id));
+        try{
+            $entity = $workflow->get($id);
+        }catch(EntityNotFoundException $e){
+            return $this->handleNotFound($e->getMessage());
         }
 
+        $em = $workflow->getEntityManager();
         $em->remove($entity);
         $em->flush();
 
@@ -146,91 +147,82 @@ class ArticleController extends MainController
      * )
      *
      * @RestAnnotaions\Post("/article/create")
+     * @ParamConverter("post", class="AppBundle\Library\Entries\ArticleEntry", converter="fos_rest.request_body")
      *
-     * @param Request $request
+     * @param ArticleEntry $articleEntry
      * @return View
      */
-    public function createArticleAction(Request $request): View {
+    public function createArticleAction(ArticleEntry $articleEntry): View {
 
-        $data = json_decode($request->getContent());
-
-        if (!empty($data->article)) {
-
-            $doctrine = $this->getDoctrine();
-
-            if (!empty($data->article->username)) {
-
-                $user = $doctrine->getRepository('AppBundle:User')->findOneBy(array('username' =>$data->article->username));
-
-                if (!$user) {
-                    return $this->handleError(Codes::HTTP_BAD_REQUEST,sprintf('Dataset not found (id: %d)', $data->article->username));
-                }
-
-            }else{
-                return $this->handleError(Codes::HTTP_BAD_REQUEST,'User not set');
-            }
-            
-            $data->article->title = $data->article->title ?? null;
+        if (!empty($articleEntry->getUsername())) {
 
             /**
-             * @var ArticleWorkflow $workflow
+             * @var UserWorkflow $workflow
              */
-            $workflow = $this->get('appbundle.article.workflow');
+            $workflow = $this->get('appbundle.user.workflow');
 
             try{
-                $mainEntity = $workflow->prepareEntity($data->article, $user);
-                $workflow->create($mainEntity);
-            }catch(\Exception $e){
-                return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
-            };
+                $user = $workflow->getBy($articleEntry->getUsername());
+            }catch (EntityNotFoundException $e){
+                return $this->handleNotFound($e->getMessage());
+            }
+
+        }else{
+            return $this->handleError(Codes::HTTP_BAD_REQUEST,'User not set');
+        }
+
+        /**
+         * @var ArticleWorkflow $workflow
+         */
+        $workflow = $this->get('appbundle.article.workflow');
+
+        $mainEntity = $workflow->prepareEntity($articleEntry, $user);
+        try{
+            $workflow->create($mainEntity);
+        }catch(\Exception $e){
+            return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
+        };
             
-            if (!empty($data->article->contents)) {
+        if (!empty($articleEntry->getContents())) {
 
-                /**
-                 * @var ArticleContentWorkflow $workflow
-                 */
-                $workflow = $this->get('appbundle.articlecontent.workflow');
+            /**
+             * @var ArticleContentWorkflow $workflow
+             */
+            $workflow = $this->get('appbundle.articlecontent.workflow');
 
-                foreach($data->article->contents as $content) {
+            foreach($articleEntry->getContents() as $content) {
 
-                    $content->content = $content->content ??  null;
-                    $content->contentType = $content->contentType ??  null;
-                    try{
-                        $entity = $workflow->prepareEntity($content, $mainEntity);
-                        $workflow->create($entity);
-                    }catch(\Exception $e){
-                        return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
-                    };
-                }
-            } else {
-                return $this->handleError(Codes::HTTP_BAD_REQUEST, 'Content not set');
+                $entity = $workflow->prepareEntity($content, $mainEntity);
+                try{
+                    $workflow->create($entity);
+                }catch(\Exception $e){
+                    return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
+                };
             }
+        } else {
+            return $this->handleError(Codes::HTTP_BAD_REQUEST, 'Content not set');
+        }
 
-            if (!empty($data->article->tags)) {
+        if (!empty($articleEntry->getTags())) {
 
-                $repo = $doctrine->getRepository('AppBundle:Tag');
+            $repo = $this->getDoctrine()->getRepository('AppBundle:Tag');
 
-                $tags_linked = array();
+            $tagsLinked = array();
                 
-                foreach($data->article->tags as $item) {
-                    
-                    if (!empty($item->name)) {
-                        continue;
-                    }
-                    
-                    $id = $repo->findIdByName($item->name);
+            foreach($articleEntry->getTags() as $tag) {
 
-                    if ($id && !in_array($id, $tags_linked)) {
-                        $repo->link($id, $mainEntity);
-                        array_push($tags_linked, $id);
-                    }
+                if (!empty($tag->getName())) {
+                    continue;
+                }
+                    
+                $id = $repo->findIdByName($tag->getName());
+
+                if ($id && !in_array($id, $tagsLinked)) {
+                    $repo->link($id, $mainEntity);
+                    array_push($tagsLinked, $id);
                 }
             }
         }
-        else{
-            return $this->handleError(Codes::HTTP_BAD_REQUEST, "Dataset format isn't correct");
-        }
-
         return $this->handleSuccess(sprintf('Dataset succesfully created (id: %d)', $mainEntity->getId()), Codes::HTTP_CREATED);
     }
 }
