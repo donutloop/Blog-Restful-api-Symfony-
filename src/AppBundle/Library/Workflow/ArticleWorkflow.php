@@ -5,7 +5,6 @@
 
 namespace AppBundle\Library\Workflow;
 
-
 use AppBundle\Entity\Article;
 use AppBundle\Library\Entries\ArticleEntry;
 use BaseBundle\Library\DatabaseWorkflow;

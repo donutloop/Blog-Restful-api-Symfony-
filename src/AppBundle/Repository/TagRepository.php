@@ -6,11 +6,10 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Article;
-use AppBundle\Entity\Tag;
+use BaseBundle\Library\DatabaseWorkflowRepositoryInterface;
 use BaseBundle\Library\Repository;
 use Doctrine\ORM\NoResultException;
-use Symfony\Component\Validator\Exception\ValidatorException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 /**
  * TagRepository
@@ -18,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * Class TagRepository
  * @package AppBundle\Repository
  */
-class TagRepository extends Repository
+class TagRepository extends Repository implements DatabaseWorkflowRepositoryInterface
 {
     /**
      * @param $firstResult
@@ -61,58 +60,6 @@ class TagRepository extends Repository
             $em->persist($entity);
             $em->flush();
         }
-    }
-
-    /**
-     * @param \stdClass $data
-     * @param ValidatorInterface $validator
-     * @return Tag
-     */
-    public function createTag(\stdClass $data, ValidatorInterface $validator): Tag {
-
-        $entity = new Tag();
-        $entity->setName($data->name);
-
-        $errors = $validator->validate($entity);
-
-        if (count($errors) > 0) {
-            throw new ValidatorException((string) $errors);
-        }
-
-        $em = $this->getEntityManager();
-        $em->persist($entity);
-        $em->flush();
-
-        return $entity;
-    }
-
-    /**
-     * @param \stdClass $data
-     * @param ValidatorInterface $validator
-     * @return Tag
-     * @throws NoResultException | ValidatorException
-     */
-    public function updateTag(\stdClass $data, ValidatorInterface $validator): Tag {
-
-        $entity = $this->findOneBy(array('id' => $data->id));
-
-        if (!$entity) {
-            throw new NoResultException(sprintf('Dataset not found (id:%d)', $data->id));
-        }
-
-        $entity->setName($data->name);
-
-        $errors = $validator->validate($entity);
-
-        if (count($errors) > 0) {
-              throw new ValidatorException((string) $errors);
-        }
-
-        $em = $this->getEntityManager();
-        $em->persist($entity);
-        $em->flush();
-
-        return $entity;
     }
 
     /**

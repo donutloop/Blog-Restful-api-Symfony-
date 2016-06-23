@@ -15,9 +15,7 @@ class TagControllerTest extends ControllerTestCase
      */
    private function getRawTagData(){
        return array(
-           'tag' => array(
-               'name' => ''
-           )
+           'name' => ''
        );
    }
 
@@ -76,7 +74,7 @@ class TagControllerTest extends ControllerTestCase
         $serializer = $this->getContainer()->get('jms_serializer');
 
         $entityRaw = $this->getRawTagData();
-        $entityRaw['tag']['name'] = 'test-create-tag';
+        $entityRaw['name'] = 'test-create-tag';
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
@@ -92,7 +90,7 @@ class TagControllerTest extends ControllerTestCase
 
     public function testCreateTagUnvaildMinAction(){
         $entityRaw = $this->getRawTagData();
-        $entityRaw['tag']['name'] = 'te';
+        $entityRaw['name'] = 'te';
         $this->createTagErrorWrapper($entityRaw);
     }
 
@@ -107,7 +105,7 @@ class TagControllerTest extends ControllerTestCase
         $this->loadFixtures($fixtures);
 
         $entityRaw = $this->getRawTagData();
-        $entityRaw['tag']['name'] = 'test-tag';
+        $entityRaw['name'] = 'test-tag';
         $this->createTagErrorWrapper($entityRaw);
     }
 
@@ -123,8 +121,8 @@ class TagControllerTest extends ControllerTestCase
         $serializer = $this->getContainer()->get('jms_serializer');
 
         $entityRaw = $this->getRawTagData();
-        $entityRaw['tag']['name'] = 'test-tag-update';
-        $entityRaw['tag']['id'] = LoadOneTagData::$entity->getId();
+        $entityRaw['name'] = 'test-tag-update';
+        $entityRaw['id'] = LoadOneTagData::$entity->getId();
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
@@ -135,8 +133,8 @@ class TagControllerTest extends ControllerTestCase
 
     public function testUpdateTagEntityNotFoundAction() {
         $entityRaw = $this->getRawTagData();
-        $entityRaw['tag']['name'] = 'test-tag-update';
-        $entityRaw['tag']['id'] = '1';
+        $entityRaw['name'] = 'test-tag-update';
+        $entityRaw['id'] = '1';
         $this->updateTagErrorWrapper($entityRaw);
     }
 
@@ -146,8 +144,8 @@ class TagControllerTest extends ControllerTestCase
         $this->loadFixtures($fixtures);
 
         $entityRaw = $this->getRawTagData();
-        $entityRaw['tag']['name'] = 'lo';
-        $entityRaw['tag']['id'] = LoadOneTagData::$entity->getId();
+        $entityRaw['name'] = 'lo';
+        $entityRaw['id'] = LoadOneTagData::$entity->getId();
 
         $this->updateTagErrorWrapper($entityRaw);
     }
@@ -158,8 +156,8 @@ class TagControllerTest extends ControllerTestCase
         $this->loadFixtures($fixtures);
 
         $entityRaw = $this->getRawTagData();
-        $entityRaw['tag']['name'] = 'Lorem ipsum dolor sit amet, com';
-        $entityRaw['tag']['id'] = LoadOneTagData::$entity->getId();
+        $entityRaw['name'] = 'Lorem ipsum dolor sit amet, com';
+        $entityRaw['id'] = LoadOneTagData::$entity->getId();
 
         $this->updateTagErrorWrapper($entityRaw);
     }
@@ -170,8 +168,8 @@ class TagControllerTest extends ControllerTestCase
         $this->loadFixtures($fixtures);
 
         $entityRaw = $this->getRawTagData();
-        $entityRaw['tag']['name'] = 'GOlang';
-        $entityRaw['tag']['id'] = LoadTagData::$tags[0]->getId();
+        $entityRaw['name'] = 'GOlang';
+        $entityRaw['id'] = LoadTagData::$tags[0]->getId();
 
         $this->updateTagErrorWrapper($entityRaw);
     }

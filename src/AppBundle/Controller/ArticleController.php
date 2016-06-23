@@ -10,12 +10,12 @@ use AppBundle\Library\Workflow\ArticleContentWorkflow;
 use AppBundle\Library\Workflow\ArticleWorkflow;
 use AppBundle\Library\Workflow\UserWorkflow;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\NoResultException;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ArticleController extends MainController
@@ -205,7 +205,7 @@ class ArticleController extends MainController
 
         if (!empty($articleEntry->getTags())) {
 
-            $repo = $this->getDoctrine()->getRepository('AppBundle:Tag');
+            $workflow = $this->get('appbundle.tag.workflow');
 
             $tagsLinked = array();
                 
@@ -214,12 +214,16 @@ class ArticleController extends MainController
                 if (!empty($tag->getName())) {
                     continue;
                 }
-                    
-                $id = $repo->findIdByName($tag->getName());
 
-                if ($id && !in_array($id, $tagsLinked)) {
-                    $repo->link($id, $mainEntity);
-                    array_push($tagsLinked, $id);
+                try{
+                    $entity = $workflow->getBy($tag->getName());
+                }catch (NoResultException $e){
+                    continue;
+                }
+                
+                if ($entity->getId() && !in_array($entity->getId(), $tagsLinked)) {
+                    $workflow->getRepository()->link($entity->getId(), $mainEntity);
+                    array_push($tagsLinked, $entity->getId());
                 }
             }
         }
