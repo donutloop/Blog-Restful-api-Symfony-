@@ -7,6 +7,7 @@ namespace AppBundle\Library\Workflow;
 
 
 use AppBundle\Entity\ArticleContent;
+use AppBundle\Library\Entries\ArticleContentEntry;
 use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 
@@ -27,10 +28,10 @@ class ArticleContentWorkflow extends DatabaseWorkflow{
      * @param $mainEntity
      * @return ArticleContent
      */
-    public function prepareEntity($data, $mainEntity){
+    public function prepareEntity(ArticleContentEntry $data, $mainEntity){
         $entity = new ArticleContent();
-        $entity->setContent($data->content);
-        $entity->setContentType($data->contentType);
+        $entity->setContent($data->getContent());
+        $entity->setContentType($data->getType());
         $entity->setArticle($mainEntity);
         return $entity;
     }
