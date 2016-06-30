@@ -6,16 +6,22 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Library\Entries\TagEntry;
+use BaseBundle\Controller\AbstractWorkflowController;
 use BaseBundle\Library\DatabaseWorkflow;
-use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use FOS\RestBundle\Util\Codes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-class TagController extends MainController{
+class TagController extends AbstractWorkflowController{
+
+    /**
+     * @return DatabaseWorkflow
+     */
+    public function getWorkflow(): DatabaseWorkflow {
+        return $this->get('appbundle.tag.workflow');
+    }
 
     /**
      * @ApiDoc(
@@ -71,19 +77,7 @@ class TagController extends MainController{
      * @return View
      */
     public function deleteTagAction(int $id): View {
-        
-        try{
-            $entity = $this->get('appbundle.tag.workflow')->get($id);
-        }catch (EntityNotFoundException $e){
-            $this->handleNotFound($e->getMessage());
-        }
-      
-        $em = $this->getDoctrine()->getManager();
-
-        $em->remove($entity);
-        $em->flush();
-
-        return $this->handleSuccess(sprintf('Dataset successfully removed (id: %d)', $id));
+        return $this->handleDelete($id);
     }
 
      /**
@@ -112,12 +106,7 @@ class TagController extends MainController{
       * @return View
      **/
     public function createTagAction(TagEntry $tagEntry): View {
-
-        $callback = function(DatabaseWorkflow $workflow, $tagEntry) {
-            return $workflow->create($workflow->prepareEntity($tagEntry));
-        };
-
-        return $this->tagProcess($tagEntry, $callback , 'Dataset unsuccessfully created');
+        return $this->handleCreate($tagEntry);
     }
 
     /**
@@ -151,30 +140,6 @@ class TagController extends MainController{
      * @return View
      **/
     public function updateTagAction(TagEntry $tagEntry): View {
-
-        $callback = function(DatabaseWorkflow $workflow, $tagEntry) {
-            return $workflow->update($workflow->prepareEntity($tagEntry));
-        };
-
-        return $this->tagProcess($tagEntry, $callback , 'Dataset unsuccessfully updated');
-    }
-
-    /**
-     * @param $tagEntry
-     * @param $callback
-     * @param $message
-     * @return View
-     */
-    private function tagProcess(TagEntry $tagEntry, callable $callback, string $message): View {
-
-        $workflow = $this->get('appbundle.tag.workflow');
-
-        try{
-            $entity = $callback($workflow, $tagEntry);
-        }catch (\Exception $e){
-            return $this->handleError(Codes::HTTP_BAD_REQUEST, $message . sprintf(' (Name: %d)', $tagEntry->getName()));
-        }
-
-        return $this->handleSuccess(sprintf($message . '(Name: %d)', $entity->getName()));
+        return $this->handleUpdate($tagEntry);
     }
 }

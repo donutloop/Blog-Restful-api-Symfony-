@@ -3,7 +3,7 @@
  * @author Marcel Edmund Franke <info@marcel-edmund-franke.de>
  */
 
-namespace AppBundle\Controller;
+namespace BaseBundle\Controller;
 
 use BaseBundle\Library\ViewData;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -14,7 +14,7 @@ use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\RestBundle\View\View;
 
-class MainController extends FOSRestController {
+class ApiController extends FOSRestController {
 
     /**
      * @param ObjectRepository $repo

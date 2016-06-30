@@ -5,9 +5,10 @@
 
 namespace AppBundle\Library\Entries;
 
+use BaseBundle\Library\DatabaseEntryInterface;
 use JMS\Serializer\Annotation\Type;
 
-class TagEntry{
+class TagEntry implements DatabaseEntryInterface{
 
     /**
      * @Type("string")
@@ -32,4 +33,8 @@ class TagEntry{
         return $this;
     }
 
+    public function getIdentifier()
+    {
+        return $this->name;
+    }
 }

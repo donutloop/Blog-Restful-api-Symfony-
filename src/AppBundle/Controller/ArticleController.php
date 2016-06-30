@@ -9,6 +9,8 @@ use AppBundle\Library\Entries\ArticleEntry;
 use AppBundle\Library\Workflow\ArticleContentWorkflow;
 use AppBundle\Library\Workflow\ArticleWorkflow;
 use AppBundle\Library\Workflow\UserWorkflow;
+use BaseBundle\Controller\AbstractWorkflowController;
+use BaseBundle\Library\DatabaseWorkflow;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NoResultException;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
@@ -18,8 +20,14 @@ use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-class ArticleController extends MainController
+class ArticleController extends AbstractWorkflowController
 {
+
+    public function getWorkflow(): DatabaseWorkflow
+    {
+        return $this->get('appbundle.article.workflow');
+    }
+
     /**
      * @ApiDoc(
      *  resource=true,
@@ -119,20 +127,7 @@ class ArticleController extends MainController
      * @return View
      */
     public function deleteArticleAction(int $id): View {
-
-        $workflow = $this->get('appbundle.article.workflow');
-
-        try{
-            $entity = $workflow->get($id);
-        }catch(EntityNotFoundException $e){
-            return $this->handleNotFound($e->getMessage());
-        }
-
-        $em = $workflow->getEntityManager();
-        $em->remove($entity);
-        $em->flush();
-
-        return $this->handleSuccess(sprintf('Dataset succesfully removed (id: %d)', $id));
+      return $this->handleDelete($id);
     }
 
     /**
