@@ -7,11 +7,13 @@ namespace AppBundle\Library\Workflow;
 
 use AppBundle\Entity\Tag;
 use AppBundle\Library\Entries\TagEntry;
+use BaseBundle\Library\DatabaseEntryInterface;
 use BaseBundle\Library\DatabaseWorkflow;
+use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\EntityNotFoundException;
 
-class TagWorkflow extends DatabaseWorkflow{
+class TagWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface{
 
     /**
      * @inheritDoc
@@ -24,10 +26,10 @@ class TagWorkflow extends DatabaseWorkflow{
     }
 
     /**
-     * @param TagEntry $tagEntry
+     * @param DatabaseEntryInterface $tagEntry
      * @return Tag
      */
-    public function prepareEntity(TagEntry $tagEntry): Tag{
+    public function prepareEntity(DatabaseEntryInterface $tagEntry): Tag{
         $entity = new Tag();
         $entity->setName($tagEntry->getName());
         return $entity;

@@ -7,17 +7,23 @@ namespace AppBundle\Controller;
 
 use AppBundle\Library\Entries\UserEntry;
 use AppBundle\Library\Workflow\UserWorkflow;
+use BaseBundle\Controller\AbstractWorkflowController;
+use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\ViewData;
 use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\Validator\Exception\ValidatorException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-class UserController extends MainController {
-    
+class UserController extends AbstractWorkflowController {
+
+    public function getWorkflow(): DatabaseWorkflow
+    {
+        return $this->get('appbundle.user.workflow');
+    }
+
     /**
      * @ApiDoc(
      *  resource=true,
@@ -77,20 +83,6 @@ class UserController extends MainController {
      * @return View
      */
     public function postUserAction(UserEntry $userEntry): View{
-
-        /**
-         * @var UserWorkflow $workflow
-         */
-        $workflow = $this->get('appbundle.user.workflow');
-
-        $entity = $workflow->prepareEntity($userEntry);
-
-        try{
-            $entity = $workflow->create($entity);
-        }catch (ValidatorException $e){
-            return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
-        }
-
-        return $this->handleSuccess(sprintf('Dataset successfully created (Name: %d)', $entity->getUsername()));
+      return $this->handleUpdate($userEntry);
     }
 }

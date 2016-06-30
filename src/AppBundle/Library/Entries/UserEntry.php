@@ -5,9 +5,10 @@
 
 namespace AppBundle\Library\Entries;
 
+use BaseBundle\Library\DatabaseEntryInterface;
 use JMS\Serializer\Annotation\Type;
 
-class UserEntry{
+class UserEntry implements DatabaseEntryInterface{
 
     /**
      * @Type("string")
@@ -70,5 +71,13 @@ class UserEntry{
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return null
+     */
+    public function getIdentifier()
+    {
+        return $this->username;
     }
 }
