@@ -228,4 +228,12 @@ abstract class DatabaseWorkflow implements ContainerAwareInterface{
      * @return mixed
      */
     abstract protected function checkType(DatabaseWorkflowEntityInterface $entity);
+
+    /**
+     * @param $offset
+     * @param $limit
+     * @param null $queryParam
+     * @return mixed
+     */
+    abstract public function findAll($offset, $limit, $queryParam = null);
 };
