@@ -4,14 +4,11 @@
  */
 
 namespace AppBundle\Repository;
-use AppBundle\Entity\Article;
-use AppBundle\Entity\User;
+
 use BaseBundle\Library\DatabaseWorkflowRepositoryInterface;
 use BaseBundle\Library\Repository;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
-use Symfony\Component\Validator\Exception\ValidatorException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Doctrine\ORM\Query;
 
 /**
  * ArticleRepository
@@ -53,12 +50,12 @@ class ArticleRepository extends Repository implements DatabaseWorkflowRepository
     }
 
     /**
-     * @param $maxResults
-     * @param $firstResult
-     * @return array
-     * @throws NoResultException
+     * @param int $maxResults
+     * @param int $firstResult
+     * @return Query
      */
-    public function findAllArticles(int $maxResults, int $firstResult): array {
+    public function createFindAllQuery(int $firstResult, int $maxResults, $queryParam): Query {
+        
         $query = $this->createQueryBuilder('a')
             ->select('a.id, a.title, a.createdAt, t.name as tags, ac.content, ac.contentType, u.username')
             ->join('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.article_id')
@@ -71,12 +68,6 @@ class ArticleRepository extends Repository implements DatabaseWorkflowRepository
             $query->setFirstResult($firstResult);
         }
 
-        $result = $query->getArrayResult();
-
-        if (!$result) {
-            throw new NoResultException('no result');
-        }
-
-        return $result;
+        return $query;
     }
 }

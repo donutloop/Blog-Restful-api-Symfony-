@@ -6,12 +6,12 @@
 namespace AppBundle\Library\Workflow;
 
 use AppBundle\Entity\Tag;
-use AppBundle\Library\Entries\TagEntry;
 use BaseBundle\Library\DatabaseEntryInterface;
 use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\NoResultException;
 
 class TagWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface{
 
@@ -49,5 +49,21 @@ class TagWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInter
         }
 
         return $entity;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAll($offset, $limit, $queryParam = null)
+    {
+        $query = $this->getRepository()->createFindAllQuery($offset, $limit, $queryParam);
+
+        $result = $query->getArrayResult();
+
+        if (!$result) {
+            throw new NoResultException("no result");
+        }
+
+        return $result;
     }
 }

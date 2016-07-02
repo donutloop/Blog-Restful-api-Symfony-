@@ -6,13 +6,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Library\Entries\UserEntry;
-use AppBundle\Library\Workflow\UserWorkflow;
 use BaseBundle\Controller\AbstractWorkflowController;
 use BaseBundle\Library\DatabaseWorkflow;
-use BaseBundle\Library\ViewData;
-use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
-use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -49,19 +45,7 @@ class UserController extends AbstractWorkflowController {
      * @return View
      */
     public function getUserAction(int $id): View {
-
-        /**
-         * @var UserWorkflow $entity 
-         */
-        $workflow = $this->get('appbundle.user.workflow');
-
-        try{
-            $entity = $workflow->get($id);
-        }catch (EntityNotFoundException $e){
-            return $this->handleNotFound($e->getMessage());
-        }
-
-        return $this->prepareView(new ViewData(Codes::HTTP_OK, $entity));
+        return $this->handleGetOne($id);
     }
 
     /**

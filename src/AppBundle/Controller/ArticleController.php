@@ -22,7 +22,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ArticleController extends AbstractWorkflowController
 {
-
+    /**
+     * @return DatabaseWorkflow
+     */
     public function getWorkflow(): DatabaseWorkflow
     {
         return $this->get('appbundle.article.workflow');
@@ -56,16 +58,12 @@ class ArticleController extends AbstractWorkflowController
      * @return View
      */
     public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): View {
-
-        $workflow = $this->get('appbundle.article.workflow');
-
-        $repo = $workflow->getRepository();
-
-        $callback = function($repo, $offset, $limit, $queryParam) {
-            return $entities = $repo->findAllArticlesByTag($queryParam, $limit, $offset);
+        
+        $callback = function($workflow, $offset, $limit, $queryParam) {
+            return $workflow->getRepository()->findAllArticlesByTag($queryParam, $limit, $offset);
         };
 
-        return $this->getWrapper($repo, $callback, $paramFetcher, $tag);
+        return $this->getWrapper($callback, $paramFetcher, $tag);
     }
 
     /**
@@ -88,19 +86,7 @@ class ArticleController extends AbstractWorkflowController
      * @return View
      */
     public function getArticlesAction(ParamFetcher $paramFetcher): View {
-
-        /**
-         * @var ArticleWorkflow $workflow
-         */
-        $workflow = $this->get('appbundle.article.workflow');
-
-        $repo = $workflow->getRepository();
-
-        $callback = function($repo, $offset, $limit, $queryParam) {
-            return $repo->findAllArticles($limit, $offset);
-        };
-        
-        return $this->getWrapper($repo, $callback, $paramFetcher);
+        return $this->handleFindAll($paramFetcher);
     }
 
     /**

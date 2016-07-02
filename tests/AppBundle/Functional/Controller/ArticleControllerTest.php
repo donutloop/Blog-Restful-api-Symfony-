@@ -122,6 +122,7 @@ class ArticleControllerTest extends ControllerTestCase
         $this->loadFixtures($fixtures);
 
         $view = $this->getJson('/articles');
+        
         $acutal = count($view->data) > 0;
 
         $this->assertEquals(true, $acutal);

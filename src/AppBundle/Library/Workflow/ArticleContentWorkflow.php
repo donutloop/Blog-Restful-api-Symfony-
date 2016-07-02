@@ -34,4 +34,12 @@ class ArticleContentWorkflow extends DatabaseWorkflow{
         $entity->setArticle($mainEntity);
         return $entity;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAll($offset, $limit, $queryParam = null)
+    {
+       return false;
+    }
 }

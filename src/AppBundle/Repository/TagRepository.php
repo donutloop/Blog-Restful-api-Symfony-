@@ -9,6 +9,7 @@ use AppBundle\Entity\Article;
 use BaseBundle\Library\DatabaseWorkflowRepositoryInterface;
 use BaseBundle\Library\Repository;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query;
 
 
 /**
@@ -22,10 +23,10 @@ class TagRepository extends Repository implements DatabaseWorkflowRepositoryInte
     /**
      * @param $firstResult
      * @param int $maxResults
-     * @return array
+     * @return Query
      * @throws NoResultException
      */
-    public function findAllNames(int $firstResult = 0, int $maxResults = 10): array {
+    public function createFindAllQuery(int $firstResult = 0, int $maxResults = 10, $queryParam): Query {
         
         $query = $this->createQueryBuilder('t')
             ->select('t.name')
@@ -35,14 +36,8 @@ class TagRepository extends Repository implements DatabaseWorkflowRepositoryInte
         if ($firstResult) {
             $query->setFirstResult($firstResult);
         }
-
-        $result = $query->getArrayResult();
-
-        if (!$result) {
-            throw new NoResultException("no result");
-        }
-
-        return $result;
+        
+        return $query;
     }
 
     /**

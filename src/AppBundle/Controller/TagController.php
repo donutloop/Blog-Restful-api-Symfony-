@@ -43,14 +43,7 @@ class TagController extends AbstractWorkflowController{
      * @return View
      */
    public function getTagsAction(ParamFetcher $paramFetcher): View {
-
-       $repo = $this->getDoctrine()->getRepository("AppBundle:Tag");
-
-       $callback = function($repo, $offset, $limit, $queryParam) {
-           return $entities = $repo->findAllNames($offset, $limit);
-       };
-
-       return $this->getWrapper($repo, $callback, $paramFetcher);
+      return $this->handleFindAll($paramFetcher);
    }
 
     /**

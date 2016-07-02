@@ -50,4 +50,14 @@ class UserWorkflow extends DatabaseWorkflow{
 
         return $entity;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function findAll($offset, $limit, $queryParam = null)
+    {
+        // TODO: Implement findAll() method.
+    }
+
+
 }
