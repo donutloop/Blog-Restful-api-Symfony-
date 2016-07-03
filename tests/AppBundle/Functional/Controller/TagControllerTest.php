@@ -127,7 +127,7 @@ class TagControllerTest extends ControllerTestCase
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
         $view = $this->patchJson('/tag/update', $entityJson);
-
+        
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 

@@ -10,7 +10,7 @@ use AppBundle\Library\Workflow\ArticleContentWorkflow;
 use AppBundle\Library\Workflow\ArticleWorkflow;
 use AppBundle\Library\Workflow\UserWorkflow;
 use BaseBundle\Controller\AbstractWorkflowController;
-use BaseBundle\Library\DatabaseWorkflow;
+use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NoResultException;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
@@ -23,9 +23,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class ArticleController extends AbstractWorkflowController
 {
     /**
-     * @return DatabaseWorkflow
+     * @return DatabaseWorkflowAwareInterface
      */
-    public function getWorkflow(): DatabaseWorkflow
+    public function getWorkflow(): DatabaseWorkflowAwareInterface
     {
         return $this->get('appbundle.article.workflow');
     }
@@ -147,6 +147,8 @@ class ArticleController extends AbstractWorkflowController
             }catch (EntityNotFoundException $e){
                 return $this->handleNotFound($e->getMessage());
             }
+            
+            $articleEntry->setUser($user);
 
         }else{
             return $this->handleError(Codes::HTTP_BAD_REQUEST,'User not set');
@@ -156,8 +158,8 @@ class ArticleController extends AbstractWorkflowController
          * @var ArticleWorkflow $workflow
          */
         $workflow = $this->get('appbundle.article.workflow');
-
-        $mainEntity = $workflow->prepareEntity($articleEntry, $user);
+        
+        $mainEntity = $workflow->prepareEntity($articleEntry);
         try{
             $workflow->create($mainEntity);
         }catch(\Exception $e){

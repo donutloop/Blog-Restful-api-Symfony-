@@ -7,6 +7,7 @@ namespace BaseBundle\Controller;
 
 use BaseBundle\Library\DatabaseEntryInterface;
 use BaseBundle\Library\DatabaseWorkflow;
+use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use BaseBundle\Library\ViewData;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -19,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 abstract class AbstractWorkflowController extends ApiController {
 
-    abstract public function getWorkflow(): DatabaseWorkflow;
+    abstract public function getWorkflow(): DatabaseWorkflowAwareInterface;
 
     /**
      * @return View
@@ -43,16 +44,15 @@ abstract class AbstractWorkflowController extends ApiController {
      */
     public function handleDelete(int $id) {
 
+        $workflow = $this->getWorkflow();
+
         try{
-            $entity = $this->getWorkflow()->get($id);
+            $entity = $workflow->get($id);
         }catch (EntityNotFoundException $e){
             return $this->handleNotFound($e->getMessage());
         }
 
-        $em = $this->getDoctrine()->getManager();
-
-        $em->remove($entity);
-        $em->flush();
+        $workflow->delete($entity);
 
         return $this->handleSuccess(sprintf('Dataset successfully removed (id: %d)', $id));
     }
@@ -63,11 +63,11 @@ abstract class AbstractWorkflowController extends ApiController {
      */
     public function handleCreate(DatabaseEntryInterface $entry){
 
-        $callback = function(DatabaseWorkflow $workflow, DatabaseEntryInterface $entry) {
+        $callback = function(DatabaseWorkflowAwareInterface $workflow, DatabaseEntryInterface $entry) {
             return $workflow->create($workflow->prepareEntity($entry));
         };
 
-        return $this->process($entry, $callback , 'Dataset unsuccessfully updated');
+        return $this->process($entry, $callback , 'Dataset unsuccessfully created');
     }
 
     /**
@@ -76,8 +76,8 @@ abstract class AbstractWorkflowController extends ApiController {
      */
     public function handleUpdate(DatabaseEntryInterface $entry): View {
 
-        $callback = function(DatabaseWorkflow $workflow, DatabaseEntryInterface $entry) {
-            return $workflow->update($workflow->prepareEntity($entry));
+        $callback = function(DatabaseWorkflowAwareInterface $workflow, DatabaseEntryInterface $entry) {
+            return $workflow->update($workflow->prepareUpdateEntity($entry));
         };
 
         return $this->process($entry, $callback , 'Dataset unsuccessfully updated');
@@ -89,7 +89,7 @@ abstract class AbstractWorkflowController extends ApiController {
      */
     public function handleFindAll($paramFetcher) {
 
-        $callback = function($workflow, $offset, $limit, $queryParam) {
+        $callback = function(DatabaseWorkflowAwareInterface $workflow, $offset, $limit, $queryParam) {
             return $workflow->findAll($offset, $limit, $queryParam);
         };
 

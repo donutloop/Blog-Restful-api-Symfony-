@@ -7,11 +7,13 @@ namespace AppBundle\Library\Workflow;
 
 use AppBundle\Entity\User;
 use AppBundle\Library\Entries\UserEntry;
+use BaseBundle\Library\DatabaseEntryInterface;
 use BaseBundle\Library\DatabaseWorkflow;
+use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\EntityNotFoundException;
 
-class UserWorkflow extends DatabaseWorkflow{
+class UserWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface{
 
     /**
      * @inheritDoc
@@ -24,11 +26,28 @@ class UserWorkflow extends DatabaseWorkflow{
     }
 
     /**
-     * @param UserEntry $userEntry
+     * @param DatabaseEntryInterface $userEntry
      * @return User
      */
-    public function prepareEntity(UserEntry $userEntry): User{
+    public function prepareEntity(DatabaseEntryInterface $userEntry): User{
         $entity = new User();
+        $entity->setUsername($userEntry->getUsername());
+        $entity->setEmail($userEntry->getEmail());
+        $entity->setPassword($userEntry->getPassword());
+        return $entity;
+    }
+
+    /**
+     * @param DatabaseEntryInterface $userEntry
+     * @return User
+     * @throws EntityNotFoundException
+     */
+    public function prepareUpdateEntity(DatabaseEntryInterface $userEntry): User{
+        /**
+         * @var User $entity
+         */
+        $entity = $this->get($userEntry->getId());
+
         $entity->setUsername($userEntry->getUsername());
         $entity->setEmail($userEntry->getEmail());
         $entity->setPassword($userEntry->getPassword());
@@ -56,8 +75,6 @@ class UserWorkflow extends DatabaseWorkflow{
      */
     public function findAll($offset, $limit, $queryParam = null)
     {
-        // TODO: Implement findAll() method.
+        return false;
     }
-
-
 }

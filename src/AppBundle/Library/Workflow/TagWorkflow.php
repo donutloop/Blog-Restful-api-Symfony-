@@ -66,4 +66,11 @@ class TagWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInter
 
         return $result;
     }
+
+    public function prepareUpdateEntity(DatabaseEntryInterface $entry)
+    {
+        $entity = $this->get($entry->getId());
+        $entity->setName($entry->getName());
+        return $entity;
+    }
 }
