@@ -6,12 +6,13 @@
 namespace AppBundle\Library\Workflow;
 
 use AppBundle\Entity\Article;
-use AppBundle\Library\Entries\ArticleEntry;
+use BaseBundle\Library\DatabaseEntryInterface;
 use BaseBundle\Library\DatabaseWorkflow;
+use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\NoResultException;
 
-class ArticleWorkflow extends DatabaseWorkflow{
+class ArticleWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface{
 
     /**
      * @inheritDoc
@@ -24,14 +25,13 @@ class ArticleWorkflow extends DatabaseWorkflow{
     }
     
     /**
-     * @param $data
-     * @param $user
+     * @param DatabaseEntryInterface $entry
      * @return Article
      */
-    public function prepareEntity(ArticleEntry $data, $user){
+    public function prepareEntity(DatabaseEntryInterface $entry){
         $entity = new Article();
-        $entity->setTitle($data->getTitle());
-        $entity->setUser($user);
+        $entity->setTitle($entry->getTitle());
+        $entity->setUser($entry->getUser());
         return $entity;
     }
 
@@ -49,5 +49,10 @@ class ArticleWorkflow extends DatabaseWorkflow{
         }
 
         return $result;
+    }
+
+    public function prepareUpdateEntity(DatabaseEntryInterface $entry)
+    {
+        // TODO: Implement prepareUpdateEntity() method.
     }
 }

@@ -13,6 +13,7 @@ class ControllerTestCase extends WebTestCase {
     const POST = 'Post';
     const GET = 'Get';
     const PATCH = 'Patch';
+    const PUT = 'PUT';
     
     /**
      * @var $client
@@ -76,6 +77,25 @@ class ControllerTestCase extends WebTestCase {
     public function patchJson(string $url, string $jsonData){
 
         $this->client->request(self::PATCH,
+            $url,
+            array(),
+            array(),
+            array('CONTENT_TYPE' => 'application/json'),
+            $jsonData
+        );
+
+        $response = $this->client->getResponse();
+        return json_decode($response->getContent());
+    }
+
+    /**
+     * @param string $url
+     * @param string $jsonData
+     * @return mixed
+     */
+    public function putJson(string $url, string $jsonData){
+
+        $this->client->request(self::PUT,
             $url,
             array(),
             array(),

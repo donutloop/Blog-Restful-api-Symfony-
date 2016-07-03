@@ -11,6 +11,11 @@ use JMS\Serializer\Annotation\Type;
 class UserEntry implements DatabaseEntryInterface{
 
     /**
+     * @Type("integer")
+     */
+    private $id;
+    
+    /**
      * @Type("string")
      */
     private $username = null;
@@ -25,6 +30,22 @@ class UserEntry implements DatabaseEntryInterface{
      */
     private $email = null;
 
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    
     /**
      * @return string
      */

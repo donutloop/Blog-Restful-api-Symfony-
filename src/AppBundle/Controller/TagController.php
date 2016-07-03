@@ -8,6 +8,7 @@ namespace AppBundle\Controller;
 use AppBundle\Library\Entries\TagEntry;
 use BaseBundle\Controller\AbstractWorkflowController;
 use BaseBundle\Library\DatabaseWorkflow;
+use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\View\View;
@@ -17,9 +18,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class TagController extends AbstractWorkflowController{
 
     /**
-     * @return DatabaseWorkflow
+     * @return DatabaseWorkflowAwareInterface
      */
-    public function getWorkflow(): DatabaseWorkflow {
+    public function getWorkflow(): DatabaseWorkflowAwareInterface {
         return $this->get('appbundle.tag.workflow');
     }
 

@@ -16,10 +16,28 @@ class UserControllerTest extends ControllerTestCase
     private function getRawTagData()
     {
         return array(
-                'username' => 'test-user',
+                'username' => sprintf('test-user-%s', uniqid()),
                 'password' => 'kfdjasjfd#832sfdsfds',
-                'email' => 'test@test.de'
+                'email' => sprintf('test-%s@test.de', uniqid())
         );
+    }
+
+    public function testUpdateUserAction() {
+
+        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadUserData');
+        $this->loadFixtures($fixtures);
+
+        $serializer = $this->getContainer()->get('jms_serializer');
+        
+
+        $entityRaw = $this->getRawTagData();
+        $entityRaw['id'] = LoadUserData::$entity->getId();
+
+        $entityJson = $serializer->serialize($entityRaw, 'json');
+
+        $view = $this->putJson('/user/update', $entityJson);
+
+        $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
     public function testCreateUserAction()
@@ -34,6 +52,7 @@ class UserControllerTest extends ControllerTestCase
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
         $view = $this->postJson('/user/create', $entityJson);
+        
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 

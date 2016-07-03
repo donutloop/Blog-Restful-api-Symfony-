@@ -5,9 +5,15 @@
 
 namespace AppBundle\Library\Entries;
 
+use BaseBundle\Library\DatabaseEntryInterface;
 use JMS\Serializer\Annotation\Type;
 
-class ArticleContentEntry{
+class ArticleContentEntry implements DatabaseEntryInterface{
+
+    /**
+     * @Type("integer")
+     */
+    private $id;
 
     /**
      * @Type("string")
@@ -18,6 +24,22 @@ class ArticleContentEntry{
      * @Type("string")
      */
     private $type = null;
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return string
@@ -53,5 +75,13 @@ class ArticleContentEntry{
     {
         $this->type = $type;
         return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getIdentifier()
+    {
+        return null;
     }
 }

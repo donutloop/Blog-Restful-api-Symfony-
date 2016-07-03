@@ -5,11 +5,18 @@
 
 namespace AppBundle\Library\Entries;
 
+use AppBundle\Entity\User;
+use BaseBundle\Library\DatabaseEntryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
 
-class ArticleEntry{
+class ArticleEntry implements DatabaseEntryInterface{
 
+    /**
+     * @Type("integer")
+     */
+    private $id;
+    
     /**
      * @Type("string")
      */
@@ -31,6 +38,27 @@ class ArticleEntry{
      */
     private $tags = null;
 
+    /**
+     * @var User
+     */
+    private $user = null;
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    
     /**
      * @return string
      */
@@ -102,4 +130,26 @@ class ArticleEntry{
         $this->tags = $tags;
         return $this;
     }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    public function getIdentifier()
+    {
+        return $this->getTitle();
+    }
+
 }

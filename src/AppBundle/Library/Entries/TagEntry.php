@@ -10,10 +10,32 @@ use JMS\Serializer\Annotation\Type;
 
 class TagEntry implements DatabaseEntryInterface{
 
+
+    /**
+     * @Type("integer")
+     */
+    private $id;
+
     /**
      * @Type("string")
      */
     private $name = null;
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return mixed
@@ -33,6 +55,9 @@ class TagEntry implements DatabaseEntryInterface{
         return $this;
     }
 
+    /**
+     * @return null
+     */
     public function getIdentifier()
     {
         return $this->name;
