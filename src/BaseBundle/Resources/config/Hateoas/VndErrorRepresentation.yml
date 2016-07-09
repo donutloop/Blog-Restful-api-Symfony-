@@ -1,0 +1,15 @@
+Hateoas\Representation\VndErrorRepresentation:
+    exclusion_policy: ALL
+    xml_root_name: resource
+    root_name: resource
+    properties:
+        message:
+            groups: ["viewdata_list", "viewdata_reverse_list"]
+            expose: true
+        logref:
+            groups: ["viewdata_list", "viewdata_reverse_list"]
+            expose: true
+            xml_attribute:  true
+    relation_providers:
+        - 'Class::getRelations'
+        - 'getRelations'

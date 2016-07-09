@@ -9,6 +9,7 @@ use BaseBundle\Library\ViewData;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
+use JMS\Serializer\SerializationContext;
 
 class ApiController extends FOSRestController {
 
@@ -47,14 +48,20 @@ class ApiController extends FOSRestController {
     /**
      * @param $content
      * @param int $code
-     * @return \FOS\RestBundle\View\View
+     * @param array $contextList
+     * @param bool $serializeNull
+     * @return View
      */
-    public function prepareView($content, int $code = Codes::HTTP_OK): View {
+    public function prepareView($content, array $contextList = ['viewdata'], int $code = Codes::HTTP_OK,  bool $serializeNull = false): View {
+
+        $context = SerializationContext::create()->setGroups($contextList);
+
+        $context->setSerializeNull($serializeNull);
 
         if($content instanceof ViewData) {
             $code = $content->getCode();
         }
 
-        return $this->view($content, $code);
+        return $this->view($content, $code)->setSerializationContext($context);
     }
 }

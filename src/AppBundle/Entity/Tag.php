@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Entity\Article;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMSAnnotation;
 
 /**
  * Tag
@@ -20,6 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("name")
  *
+ * @JMSAnnotation\ExclusionPolicy("all")
  */
 class Tag implements DatabaseWorkflowEntityInterface
 {
@@ -29,6 +31,9 @@ class Tag implements DatabaseWorkflowEntityInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $id;
 
@@ -40,6 +45,9 @@ class Tag implements DatabaseWorkflowEntityInterface
      * @Assert\NotBlank()
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $name;
 
@@ -47,6 +55,9 @@ class Tag implements DatabaseWorkflowEntityInterface
      * @var string
      *
      * @ORM\Column(name="created_at", type="string", length=255)
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata"})
      */
     private $createdAt;
 
@@ -54,11 +65,17 @@ class Tag implements DatabaseWorkflowEntityInterface
      * @var string
      *
      * @ORM\Column(name="update_at", type="string", length=255, nullable=true)
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata"})
      */
     private $updateAt;
 
     /**
      * @ORM\ManyToMany(targetEntity="Article", mappedBy="tags")
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_reverse_list"})
      */
     private $articles;
 

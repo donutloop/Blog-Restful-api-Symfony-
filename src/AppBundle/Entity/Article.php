@@ -9,6 +9,7 @@ use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMSAnnotation;
 
 /**
  * Article
@@ -16,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @JMSAnnotation\ExclusionPolicy("all")
  */
 class Article implements DatabaseWorkflowEntityInterface
 {
@@ -25,6 +28,9 @@ class Article implements DatabaseWorkflowEntityInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $id;
 
@@ -36,13 +42,20 @@ class Article implements DatabaseWorkflowEntityInterface
      * @Assert\NotBlank()
      *
      * @ORM\Column(name="title", type="string", length=255)
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
+
     private $title;
 
     /** 
      * @var string
      * 
-     * @ORM\Column(name="created_at", type="string", length=255) 
+     * @ORM\Column(name="created_at", type="string", length=255)
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata"})
      */
     private $createdAt;
 
@@ -50,6 +63,9 @@ class Article implements DatabaseWorkflowEntityInterface
      * @var string 
      * 
      * @ORM\Column(name="update_at", type="string", length=255, nullable=true)
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata"})
      */
     private $updateAt;
 
@@ -58,6 +74,9 @@ class Article implements DatabaseWorkflowEntityInterface
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $user_id;
 
@@ -66,6 +85,9 @@ class Article implements DatabaseWorkflowEntityInterface
      *
      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="articles")
      * @ORM\JoinTable(name="article_tag")
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata"})
      */
     private $tags;
 

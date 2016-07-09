@@ -49,8 +49,8 @@ class ArticleController extends AbstractWorkflowController
      * )
      *
      * @RestAnnotaions\Get("/articles/{tag}")
-     * @RestAnnotaions\QueryParam(name="limit", default="5")
-     * @RestAnnotaions\QueryParam(name="offset", default="0")
+     * @RestAnnotaions\QueryParam(name="limit", default="10")
+     * @RestAnnotaions\QueryParam(name="offset", default="1")
      *
      * @param $tag
      * @param $paramFetcher
@@ -58,12 +58,7 @@ class ArticleController extends AbstractWorkflowController
      * @return View
      */
     public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): View {
-        
-        $callback = function($workflow, $offset, $limit, $queryParam) {
-            return $workflow->getRepository()->findAllArticlesByTag($queryParam, $limit, $offset);
-        };
-
-        return $this->getWrapper($callback, $paramFetcher, $tag);
+        return $this->handleFindAllBy(['search' => $tag], $paramFetcher);
     }
 
     /**
@@ -78,8 +73,8 @@ class ArticleController extends AbstractWorkflowController
      * )
      *
      * @RestAnnotaions\Get("/articles")
-     * @RestAnnotaions\QueryParam(name="limit", default="5")
-     * @RestAnnotaions\QueryParam(name="offset", default="0")
+     * @RestAnnotaions\QueryParam(name="limit", default="10")
+     * @RestAnnotaions\QueryParam(name="offset", default="1")
      *
      * @param $paramFetcher
      *

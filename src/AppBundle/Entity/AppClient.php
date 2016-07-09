@@ -7,10 +7,13 @@ namespace AppBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMSAnnotation;
 
 /**
  * @ORM\Table("oauth2_clients")
  * @ORM\Entity
+ *
+ * @JMSAnnotation\ExclusionPolicy("all")
  */
 class AppClient extends BaseClient
 {

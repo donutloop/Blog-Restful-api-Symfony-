@@ -95,3 +95,17 @@ fos_oauth_server:
 
 #Nelmio Api Doc Configuration
 nelmio_api_doc: ~
+
+#Jms Serializer Doc Configuration
+jms_serializer:
+    metadata:
+        directories:
+            Hateoas:
+                namespace_prefix: "Hateoas\\Representation"
+                path: "@BaseBundle/Resources/config/Hateoas/"
+        auto_detection: true
+    visitors:
+        json:
+            options:
+                - JSON_UNESCAPED_SLASHES
+

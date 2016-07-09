@@ -10,10 +10,13 @@ use BaseBundle\Library\DatabaseEntryInterface;
 use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
+use BaseBundle\Library\TraitWorkflowUtility;
 use Doctrine\ORM\NoResultException;
 
 class ArticleWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface{
-
+    
+    use TraitWorkflowUtility;
+    
     /**
      * @inheritDoc
      */
@@ -41,14 +44,20 @@ class ArticleWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareI
      */
     public function findAll($offset, $limit, $queryParam = null)
     {
-        $query = $this->getRepository()->createFindAllQuery($offset, $limit, $queryParam);
-        
-        $result = $query->getArrayResult();
-        if (!$result) {
-            throw new NoResultException('no result');
-        }
+        $qb = $this->getRepository()->createBaseFindAllQuery();
 
-        return $result;
+        return $this->generatePaginateCollection($qb, 'get_articles', [], [], $offset, $limit);
+    }
+
+    /**
+     * @return mixed
+     * @throws NoResultException
+     */
+    public function findAllBy($queryParam, $offset, $limit)
+    {
+        $qb = $this->getRepository()->createBaseFindAllByQuery($queryParam);
+
+        return $this->generatePaginateCollection($qb, 'get_articles', [], [], $offset, $limit);
     }
 
     public function prepareUpdateEntity(DatabaseEntryInterface $entry)

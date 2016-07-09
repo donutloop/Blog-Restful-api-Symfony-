@@ -5,39 +5,63 @@
 
 namespace BaseBundle\Library;
 
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Groups;
+
 /**
+ *
  * Class ViewData
  * @package AppBundle\Library
+ *
+ * @ExclusionPolicy("all")
  */
 class ViewData {
 
     /**
      * @var mixed
+     *
+     * @Expose
+     * @Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $data;
 
     /**
      * @var integer
+     *
+     * @Expose
+     * @Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $code;
 
     /**
      * @var array
+     * @Expose
+     * @Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $errors;
 
     /**
      * @var array
+     *
+     * @Expose
+     * @Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $warnings;
 
     /**
      * @var string
+     *
+     * @Expose
+     * @Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $message;
 
     /**
      * @var array
+     *
+     * @Expose
+     * @Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $queryParam;
     
