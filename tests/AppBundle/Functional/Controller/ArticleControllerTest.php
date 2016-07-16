@@ -16,28 +16,28 @@ class ArticleControllerTest extends ControllerTestCase
      * @return array
      */
     private function getRawArticleData() {
-        return array(
+        return [
             'title' => 'Test Eintrag',
             'username' => 'test-user',
-            'tags' => array(
-                array(
+            'tags' => [
+                [
                     'name' => 'Python2'
-                ),
-                array(
+                ],
+                [
                     'name' => 'Python3'
-                )
-            ),
-            'contents' => array(
-                array(
+                ]
+            ],
+            'contents' => [
+                [
                     'content' => 'lorem ipsum',
                     'type' => 'code11'
-                ),
-                array(
+                ],
+                [
                     'type' => 'code11',
                     'content' => 'lorem ipsum'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -48,16 +48,16 @@ class ArticleControllerTest extends ControllerTestCase
         $serializer = $this->getContainer()->get('jms_serializer');
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $view = $this->postJson('/article/create', $entityJson);
+        $view = $this->postJson($this->getUrl('post_article'), $entityJson);
         $this->assertEquals($code, $view->code);
     }
 
     public function testCreateArticle() {
 
-        $fixtures = array(
+        $fixtures = [
             'Tests\AppBundle\DataFixtures\ORM\LoadUserData',
             'Tests\AppBundle\DataFixtures\ORM\LoadTagData'
-        );
+        ];
 
         $this->loadFixtures($fixtures);
 
@@ -67,12 +67,12 @@ class ArticleControllerTest extends ControllerTestCase
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $view = $this->postJson('/article/create', $entityJson);
+        $view = $this->postJson($this->getUrl('post_article'), $entityJson);
         $this->assertEquals(Codes::HTTP_CREATED, $view->code);
     }
 
     public function testCreateArticleDataEmpty() {
-        $this->createArticleErrorWrapper(array());
+        $this->createArticleErrorWrapper([]);
     }
 
     public function testCreateArticleUserNotSet() {
@@ -118,10 +118,10 @@ class ArticleControllerTest extends ControllerTestCase
     }
     
     public function testArticlesAction() {
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadArticleData'];
         $this->loadFixtures($fixtures);
 
-        $view = $this->getJson('/articles');
+        $view = $this->getJson($this->getUrl('get_articles'));
         
         $acutal = count($view->data) > 0;
 
@@ -129,22 +129,21 @@ class ArticleControllerTest extends ControllerTestCase
     }
 
     public function testArticleByTagAction() {
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadArticleData'];
         $this->loadFixtures($fixtures);
 
-        $view = $this->getJson('/articles/test-tag?limit=1');
+        $view = $this->getJson($this->getUrl('get_articles_by_tag', ['tag' => 'test-tag','limit' => '1']));
         
         $actual = count($view->data);
         $this->assertEquals(1, $actual);
     }
     
     public function testDeleteArticle() {
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadArticleData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadArticleData'];
         $this->loadFixtures($fixtures);
 
         $entity = LoadArticleData::$articles[0];
-        $url = sprintf('/article/%d', $entity->getId());
-        $view = $this->deleteJson($url);
+        $view = $this->deleteJson($this->getUrl('delete_article', ['id' => $entity->getId()]));
 
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
@@ -152,7 +151,7 @@ class ArticleControllerTest extends ControllerTestCase
     public function testDeleteArticleNotFound() {
         $client = static::createClient();
 
-        $view = $this->deleteJson('/article/99999');
+        $view = $this->deleteJson($this->getUrl('delete_article', ['id' => 999]));
         
         $this->assertEquals(Codes::HTTP_NOT_FOUND, $view->code);
     }

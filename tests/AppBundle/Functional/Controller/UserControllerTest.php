@@ -15,16 +15,16 @@ class UserControllerTest extends ControllerTestCase
      */
     private function getRawTagData()
     {
-        return array(
+        return [
                 'username' => sprintf('test-user-%s', uniqid()),
                 'password' => 'kfdjasjfd#832sfdsfds',
                 'email' => sprintf('test-%s@test.de', uniqid())
-        );
+        ];
     }
 
     public function testUpdateUserAction() {
 
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadUserData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadUserData'];
         $this->loadFixtures($fixtures);
 
         $serializer = $this->getContainer()->get('jms_serializer');
@@ -35,7 +35,7 @@ class UserControllerTest extends ControllerTestCase
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $view = $this->putJson('/user/update', $entityJson);
+        $view = $this->putJson($this->getUrl('put_user'), $entityJson);
 
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
@@ -51,22 +51,23 @@ class UserControllerTest extends ControllerTestCase
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $view = $this->postJson('/user/create', $entityJson);
+        $view = $this->postJson($this->getUrl('post_user'), $entityJson);
         
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
     public function testGetUserAction()
     {
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadUserData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadUserData'];
         $this->loadFixtures($fixtures);
-        $view = $this->getJson(sprintf('/user/get/%d',LoadUserData::$entity->getId()));
+
+        $view = $this->getJson($this->getUrl('get_user', ['id' => LoadUserData::$entity->getId()]));
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
     public function testGetUserNotFoundAction()
     {
-        $view = $this->getJson('/user/get/9999');
+        $view = $this->getJson( $this->getUrl('get_user', ['id' => '999']));
         $this->assertEquals(Codes::HTTP_NOT_FOUND, $view->code);
     }
 }

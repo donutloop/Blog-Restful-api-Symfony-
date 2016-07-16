@@ -35,7 +35,7 @@ class TagController extends AbstractWorkflowController{
      *   }
      * )
      *
-     * @RestAnnotaions\Get("\tags")
+     * @RestAnnotaions\Get("/tags")
      * @RestAnnotaions\QueryParam(name="limit", default="5")
      * @RestAnnotaions\QueryParam(name="offset", default="0")
      *
@@ -92,14 +92,14 @@ class TagController extends AbstractWorkflowController{
       *   }
       * )
       *
-      * @RestAnnotaions\Post("/tag/create")
+      * @RestAnnotaions\Post("/tag")
       * @ParamConverter("post", class="AppBundle\Library\Entries\TagEntry", converter="fos_rest.request_body")
       *
       * @param $tagEntry
       *
       * @return View
      **/
-    public function createTagAction(TagEntry $tagEntry): View {
+    public function postTagAction(TagEntry $tagEntry): View {
         return $this->handleCreate($tagEntry);
     }
 
@@ -126,14 +126,14 @@ class TagController extends AbstractWorkflowController{
      *   }
      * )
      *
-     * @RestAnnotaions\Patch("/tag/update")
+     * @RestAnnotaions\Patch("/tag")
      * @ParamConverter("post", class="AppBundle\Library\Entries\TagEntry", converter="fos_rest.request_body")
      *
      * @param $tagEntry
      *
      * @return View
      **/
-    public function updateTagAction(TagEntry $tagEntry): View {
+    public function putTagAction(TagEntry $tagEntry): View {
         return $this->handleUpdate($tagEntry);
     }
 }

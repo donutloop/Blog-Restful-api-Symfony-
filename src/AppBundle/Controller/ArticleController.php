@@ -122,13 +122,13 @@ class ArticleController extends AbstractWorkflowController
      *   }
      * )
      *
-     * @RestAnnotaions\Post("/article/create")
+     * @RestAnnotaions\Post("/article")
      * @ParamConverter("post", class="AppBundle\Library\Entries\ArticleEntry", converter="fos_rest.request_body")
      *
      * @param ArticleEntry $articleEntry
      * @return View
      */
-    public function createArticleAction(ArticleEntry $articleEntry): View {
+    public function postArticleAction(ArticleEntry $articleEntry): View {
 
         if (!empty($articleEntry->getUsername())) {
 
