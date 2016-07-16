@@ -96,10 +96,6 @@ $minorProblems = $symfonyRequirements->getFailedRecommendations();
             .sf-reset .ko {
                 background-color: #d66;
             }
-            .sf-reset p.help {
-                padding: 12px 16px;
-                word-break: break-word;
-            }
             .version {
                 text-align: right;
                 font-size: 10px;
@@ -163,9 +159,7 @@ $minorProblems = $symfonyRequirements->getFailedRecommendations();
                             <p>Major problems have been detected and <strong>must</strong> be fixed before continuing:</p>
                             <ol>
                                 <?php foreach ($majorProblems as $problem): ?>
-                                    <li><?php echo $problem->getTestMessage() ?>
-                                        <p class="help"><em><?php echo $problem->getHelpHtml() ?></em></p>
-                                    </li>
+                                    <li><?php echo $problem->getHelpHtml() ?></li>
                                 <?php endforeach; ?>
                             </ol>
                         <?php endif; ?>
@@ -178,9 +172,7 @@ $minorProblems = $symfonyRequirements->getFailedRecommendations();
                             </p>
                             <ol>
                                 <?php foreach ($minorProblems as $problem): ?>
-                                    <li><?php echo $problem->getTestMessage() ?>
-                                        <p class="help"><em><?php echo $problem->getHelpHtml() ?></em></p>
-                                    </li>
+                                    <li><?php echo $problem->getHelpHtml() ?></li>
                                 <?php endforeach; ?>
                             </ol>
                         <?php endif; ?>

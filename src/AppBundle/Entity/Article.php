@@ -87,7 +87,7 @@ class Article implements DatabaseWorkflowEntityInterface
      * @ORM\JoinTable(name="article_tag")
      *
      * @JMSAnnotation\Expose
-     * @JMSAnnotation\Groups({"viewdata"})
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_list"})
      */
     private $tags;
 
