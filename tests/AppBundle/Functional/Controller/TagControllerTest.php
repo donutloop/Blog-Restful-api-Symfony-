@@ -14,9 +14,9 @@ class TagControllerTest extends ControllerTestCase
      * @return array
      */
    private function getRawTagData(){
-       return array(
+       return [
            'name' => ''
-       );
+       ];
    }
 
     /**
@@ -27,7 +27,7 @@ class TagControllerTest extends ControllerTestCase
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $view = $this->postJson('/tag/create', $entityJson);
+        $view = $this->postJson($this->getUrl('post_tag'), $entityJson);
         
         $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->code);
     }
@@ -41,16 +41,16 @@ class TagControllerTest extends ControllerTestCase
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $view = $this->patchJson('/tag/update', $entityJson);
+        $view = $this->patchJson($this->getUrl('put_tag'), $entityJson);
 
         $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->code);
     }
 
     public function testTagsAction() {
-       $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadTagData');
+       $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadTagData'];
        $this->loadFixtures($fixtures);
 
-       $view = $this->getJson('/tags');
+       $view = $this->getJson($this->getUrl('get_tags'));
 
        $acutal = count($view->data) > 0;
 
@@ -58,13 +58,12 @@ class TagControllerTest extends ControllerTestCase
    }
 
     public function testDeleteTagAction() {
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadTagData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadTagData'];
         $this->loadFixtures($fixtures);
 
         $entity = LoadTagData::$tags[0];
-        $url = sprintf("/tag/%d", $entity->getId());
 
-        $view = $this->deleteJson($url);
+        $view = $this->deleteJson($this->getUrl('delete_tag', ['id' => $entity->getId()]));
 
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
@@ -78,7 +77,7 @@ class TagControllerTest extends ControllerTestCase
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $view = $this->postJson('/tag/create', $entityJson);
+        $view = $this->postJson($this->getUrl('post_tag'), $entityJson);
         
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
@@ -101,7 +100,7 @@ class TagControllerTest extends ControllerTestCase
 
     public function testCreateTagUniqueAction() {
         
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'];
         $this->loadFixtures($fixtures);
 
         $entityRaw = $this->getRawTagData();
@@ -110,12 +109,12 @@ class TagControllerTest extends ControllerTestCase
     }
 
     public function testCreateTagBadFormatAction() {
-        $this->createTagErrorWrapper(array());
+        $this->createTagErrorWrapper([]);
     }
 
     public function testUpdateTagAction() {
 
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'];
         $this->loadFixtures($fixtures);
         
         $serializer = $this->getContainer()->get('jms_serializer');
@@ -126,7 +125,7 @@ class TagControllerTest extends ControllerTestCase
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
-        $view = $this->patchJson('/tag/update', $entityJson);
+        $view = $this->patchJson($this->getUrl('put_tag'), $entityJson);
         
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
@@ -140,7 +139,7 @@ class TagControllerTest extends ControllerTestCase
 
     public function testUpdateTagUnvaildMinAction() {
 
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'];
         $this->loadFixtures($fixtures);
 
         $entityRaw = $this->getRawTagData();
@@ -152,7 +151,7 @@ class TagControllerTest extends ControllerTestCase
 
     public function testUpdateTagUnvaildMaxAction() {
 
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadOneTagData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'];
         $this->loadFixtures($fixtures);
 
         $entityRaw = $this->getRawTagData();
@@ -164,7 +163,7 @@ class TagControllerTest extends ControllerTestCase
 
     public function testUpdateTagUniqueAction() {
 
-        $fixtures = array('Tests\AppBundle\DataFixtures\ORM\LoadTagData');
+        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadTagData'];
         $this->loadFixtures($fixtures);
 
         $entityRaw = $this->getRawTagData();

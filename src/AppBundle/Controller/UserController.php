@@ -38,7 +38,7 @@ class UserController extends AbstractWorkflowController {
      *   }
      * )
      *
-     * @RestAnnotaions\Get("/user/get/{id}", name="user_get")
+     * @RestAnnotaions\Get("/user/get/{id}")
      *
      * @param integer $id
      *
@@ -59,7 +59,7 @@ class UserController extends AbstractWorkflowController {
      *   }
      * )
      *
-     * @RestAnnotaions\Post("/user/create", name="user_create")
+     * @RestAnnotaions\Post("/user")
      * @ParamConverter("post", class="AppBundle\Library\Entries\UserEntry", converter="fos_rest.request_body")
      *
      * @param $userEntry
@@ -81,7 +81,7 @@ class UserController extends AbstractWorkflowController {
      *   }
      * )
      *
-     * @RestAnnotaions\Put("/user/update", name="user_create")
+     * @RestAnnotaions\Put("/user")
      * @ParamConverter("post", class="AppBundle\Library\Entries\UserEntry", converter="fos_rest.request_body")
      *
      * @param $userEntry
