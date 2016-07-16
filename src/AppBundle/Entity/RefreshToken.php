@@ -8,10 +8,13 @@ namespace AppBundle\Entity;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMSAnnotation;
 
 /**
  * @ORM\Table("oauth2_refresh_tokens")
  * @ORM\Entity
+ * 
+ * @JMSAnnotation\ExclusionPolicy("all")
  */
 class RefreshToken extends BaseRefreshToken implements DatabaseWorkflowEntityInterface
 {

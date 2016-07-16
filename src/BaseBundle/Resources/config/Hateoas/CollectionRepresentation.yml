@@ -1,0 +1,11 @@
+Hateoas\Representation\CollectionRepresentation:
+    exclusion_policy: ALL
+    xml_root_name: collection
+    root_name: collection
+    properties:
+        resources:
+            groups: ["viewdata_list", "viewdata_reverse_list"]
+            expose: true
+            serialized_name: _embedded
+    relation_providers:
+        - 'getRelations'

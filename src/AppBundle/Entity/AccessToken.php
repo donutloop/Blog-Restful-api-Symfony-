@@ -7,10 +7,13 @@ namespace AppBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMSAnnotation;
 
 /**
  * @ORM\Table("oauth2_access_tokens")
  * @ORM\Entity
+ *
+ * @JMSAnnotation\ExclusionPolicy("all")
  */
 class AccessToken extends BaseAccessToken
 {

@@ -88,12 +88,26 @@ abstract class AbstractWorkflowController extends ApiController {
      * @return View
      */
     public function handleFindAll($paramFetcher) {
-
+        
         $callback = function(DatabaseWorkflowAwareInterface $workflow, $offset, $limit, $queryParam) {
             return $workflow->findAll($offset, $limit, $queryParam);
         };
 
-        return $this->getWrapper($callback, $paramFetcher);
+        return $this->getWrapper($callback, $paramFetcher, null, $context = ['viewdata_list']);
+    }
+
+    /**
+     * @param array $queryParam
+     * @param $paramFetcher
+     * @return View
+     */
+    public function handleFindAllBy(array $queryParam, $paramFetcher) {
+
+        $callback = function(DatabaseWorkflowAwareInterface $workflow, $offset, $limit, $queryParam) {
+            return $workflow->findAllBy($queryParam, $offset, $limit);
+        };
+
+        return $this->getWrapper($callback, $paramFetcher, $queryParam, $context = ['viewdata_list']);
     }
 
     /**
@@ -125,19 +139,21 @@ abstract class AbstractWorkflowController extends ApiController {
      * @throws NoResultException | \Exception
      * @return View
      */
-    public function getWrapper(callable $callback, ParamFetcher $paramFetcher, $queryParam = null): View {
+    public function getWrapper(callable $callback, ParamFetcher $paramFetcher, $queryParam = null, $context): View {
 
         $limit = $paramFetcher->get('limit');
         $offset = $paramFetcher->get('offset');
 
+        $data = null;
+
         try{
-            $entities = $callback($this->getWorkflow(), $offset, $limit, $queryParam);
+            $data = $callback($this->getWorkflow(), $offset, $limit, $queryParam);
         }catch (NoResultException $e) {
             $this->handleNotFound($e->getMessage());
         }catch( \Exception $e){
             $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
         }
 
-        return $this->prepareView(new ViewData(Codes::HTTP_OK, $entities, array('offset' => $offset, 'limit' => $limit)));
+        return $this->prepareView(new ViewData(Codes::HTTP_OK, $data, array('offset' => $offset, 'limit' => $limit)), $context);
     }
 }

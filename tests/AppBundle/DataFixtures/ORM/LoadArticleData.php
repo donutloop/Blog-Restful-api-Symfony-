@@ -140,7 +140,7 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
 
         $count = 0;
 
-        while ($count !=  10) {
+        while ($count != 100) {
 
             $tags = array();
             $user = null;

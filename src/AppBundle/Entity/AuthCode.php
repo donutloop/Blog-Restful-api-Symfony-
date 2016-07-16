@@ -7,10 +7,13 @@ namespace AppBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMSAnnotation;
 
 /**
  * @ORM\Table("oauth2_auth_codes")
  * @ORM\Entity
+ *
+ * @JMSAnnotation\ExclusionPolicy("all")
  */
 class AuthCode extends BaseAuthCode
 {

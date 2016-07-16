@@ -8,6 +8,7 @@ namespace AppBundle\Entity;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMSAnnotation;
 
 /**
  * ArticleContent
@@ -15,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="article_content")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleContentRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @JMSAnnotation\ExclusionPolicy("all")
  */
 class ArticleContent implements DatabaseWorkflowEntityInterface
 {
@@ -24,6 +27,9 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $id;
 
@@ -44,6 +50,9 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      * @Assert\NotBlank()
      *
      * @ORM\Column(name="content_type", type="string", length=255)
+     * 
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_list", "viewdata_reverse_list"})
      */
     private $contentType;
 
@@ -51,6 +60,9 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      * @var string
      *
      * @ORM\Column(name="created_at", type="string", length=255)
+     * 
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata"})
      */
     private $createdAt;
 
@@ -58,12 +70,18 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      * @var string
      *
      * @ORM\Column(name="update_at", type="string", length=255, nullable=true)
+     * 
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata"})
      */
     private $updateAt;
     
     /**
      * @ORM\ManyToOne(targetEntity="Article")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id", onDelete="CASCADE")
+     * 
+     * @JMSAnnotation\Expose
+     * @JMSAnnotation\Groups({"viewdata", "viewdata_reverse_list"})
      */
     private $article_id;
 

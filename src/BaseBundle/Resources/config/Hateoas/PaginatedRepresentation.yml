@@ -1,0 +1,63 @@
+Hateoas\Representation\PaginatedRepresentation:
+    exclusion_policy: ALL
+    xml_root_name: collection
+    root_name: collection
+    accessor_order: custom
+    custom_accessor_order:
+        - total
+        - page
+        - pages
+        - limit
+    properties:
+        page:
+            groups: ["viewdata_list", "viewdata_reverse_list"]
+            xml_attribute:  true
+            expose: true
+        limit:
+            groups: ["viewdata_list", "viewdata_reverse_list"]
+            xml_attribute:  true
+            expose: true
+        pages:
+            groups: ["viewdata_list", "viewdata_reverse_list"]
+            xml_attribute:  true
+            expose: true
+        total:
+            groups: ["viewdata_list", "viewdata_reverse_list"]
+            xml_attribute:  true
+            expose: true
+    relations:
+        -
+            rel: first
+            href:
+                route: expr(object.getRoute())
+                parameters: expr(object.getParameters(1))
+            absolute: expr(object.isAbsolute())
+            exclusion:
+                groups: ["viewdata_list", "viewdata_reverse_list"]
+        -
+            rel: last
+            href:
+                route: expr(object.getRoute())
+                parameters: expr(object.getParameters(object.getPages()))
+            absolute: expr(object.isAbsolute())
+            exclusion:
+                groups: ["viewdata_list", "viewdata_reverse_list"]
+                exclude_if: expr(object.getPages() === null)
+        -
+            rel: next
+            href:
+                route: expr(object.getRoute())
+                parameters: expr(object.getParameters(object.getPage() + 1))
+            absolute: expr(object.isAbsolute())
+            exclusion:
+                groups: ["viewdata_list", "viewdata_reverse_list"]
+                exclude_if: expr(object.getPages() !== null && (object.getPage() + 1) > object.getPages())
+        -
+            rel: previous
+            href:
+                route: expr(object.getRoute())
+                parameters: expr(object.getParameters(object.getPage() - 1))
+            absolute: expr(object.isAbsolute())
+            exclusion:
+                groups: ["viewdata_list", "viewdata_reverse_list"]
+                exclude_if: expr((object.getPage() - 1) < 1)
