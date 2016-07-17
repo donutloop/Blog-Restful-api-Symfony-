@@ -90,7 +90,8 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      *
      * @param $article
      */
-    public function setArticle(Article $article){
+    public function setArticle(Article $article)
+    {
         $this->article_id = $article;
     }
 
@@ -99,7 +100,8 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      *
      * @return mixed
      */
-    public function getArticle(){
+    public function getArticle()
+    {
         return $this->article_id;
     }
 
@@ -166,7 +168,8 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      *
      * @ORM\PrePersist
      */
-    public function setCreateAt(){
+    public function setCreateAt()
+    {
         $this->createdAt = date('Y-m-d H:i:s');
     }
 
@@ -175,7 +178,8 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      *
      * @ORM\PreUpdate
      */
-    public function setUpdateAt(){
+    public function setUpdateAt()
+    {
         $this->updateAt = date('Y-m-d H:i:s');
     }
 
@@ -184,7 +188,8 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      *
      * @return string
      */
-    public function getCreateAt(){
+    public function getCreateAt()
+    {
         return $this->createdAt;
     }
 
@@ -193,7 +198,8 @@ class ArticleContent implements DatabaseWorkflowEntityInterface
      *
      * @return string
      */
-    public function getUpdateAt(){
+    public function getUpdateAt()
+    {
         return $this->updateAt;
     }
 

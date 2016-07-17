@@ -13,8 +13,15 @@ use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-class UserController extends AbstractWorkflowController {
-
+/**
+ * Class UserController
+ * @package AppBundle\Controller
+ */
+class UserController extends AbstractWorkflowController
+{
+    /**
+     * @return DatabaseWorkflowAwareInterface
+     */
     public function getWorkflow(): DatabaseWorkflowAwareInterface
     {
         return $this->get('appbundle.user.workflow');
@@ -44,7 +51,8 @@ class UserController extends AbstractWorkflowController {
      *
      * @return View
      */
-    public function getUserAction(int $id): View {
+    public function getUserAction(int $id): View
+    {
         return $this->handleGetOne($id);
     }
 
@@ -66,7 +74,8 @@ class UserController extends AbstractWorkflowController {
      *
      * @return View
      */
-    public function postUserAction(UserEntry $userEntry): View{
+    public function postUserAction(UserEntry $userEntry): View
+    {
       return $this->handleCreate($userEntry);
     }
 
@@ -88,7 +97,8 @@ class UserController extends AbstractWorkflowController {
      *
      * @return View
      */
-    public function putUserAction(UserEntry $userEntry): View{
+    public function putUserAction(UserEntry $userEntry): View
+    {
         return $this->handleUpdate($userEntry);
     }
 }

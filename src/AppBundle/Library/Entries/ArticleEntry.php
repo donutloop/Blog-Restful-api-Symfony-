@@ -10,8 +10,8 @@ use BaseBundle\Library\DatabaseEntryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
 
-class ArticleEntry implements DatabaseEntryInterface{
-
+class ArticleEntry implements DatabaseEntryInterface
+{
     /**
      * @Type("integer")
      */
@@ -74,6 +74,7 @@ class ArticleEntry implements DatabaseEntryInterface{
     public function setUsername($username): ArticleEntry
     {
         $this->username = $username;
+        
         return $this;
     }
 
@@ -92,6 +93,7 @@ class ArticleEntry implements DatabaseEntryInterface{
     public function setTitle($title): ArticleEntry
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -110,6 +112,7 @@ class ArticleEntry implements DatabaseEntryInterface{
     public function setContents($contents): ArticleEntry
     {
         $this->contents = $contents;
+
         return $this;
     }
 
@@ -128,6 +131,7 @@ class ArticleEntry implements DatabaseEntryInterface{
     public function setTags($tags)
     {
         $this->tags = $tags;
+
         return $this;
     }
 

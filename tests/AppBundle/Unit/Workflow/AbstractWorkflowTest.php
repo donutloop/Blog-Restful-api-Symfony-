@@ -9,9 +9,12 @@ use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
+/**
+ * Class AbstractWorkflowTest
+ * @package Tests\AppBundle\Unit\Workflow
+ */
 abstract class AbstractWorkflowTest extends WebTestCase
 {
-
     /**
      * @return string
      */
@@ -27,7 +30,8 @@ abstract class AbstractWorkflowTest extends WebTestCase
      */
     abstract  protected  function getWorkflow(): DatabaseWorkflow;
 
-    public function testCreate() {
+    public function testCreate()
+    {
         $workflow = $this->getWorkflow();
 
         $expectedEntity = $this->getEntity();

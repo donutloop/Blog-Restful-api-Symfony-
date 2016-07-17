@@ -10,11 +10,14 @@ use BaseBundle\Library\DatabaseEntryInterface;
 use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NoResultException;
 
-class TagWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface{
-
+/**
+ * Class TagWorkflow
+ * @package AppBundle\Library\Workflow
+ */
+class TagWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface
+{
     /**
      * @inheritDoc
      */
@@ -29,28 +32,14 @@ class TagWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInter
      * @param DatabaseEntryInterface $tagEntry
      * @return Tag
      */
-    public function prepareEntity(DatabaseEntryInterface $tagEntry): Tag{
+    public function prepareEntity(DatabaseEntryInterface $tagEntry): Tag
+    {
         $entity = new Tag();
         $entity->setName($tagEntry->getName());
-        return $entity;
-    }
-
-    /**
-     * @param string $name
-     * @return DatabaseWorkflowEntityInterface
-     * @throws EntityNotFoundException
-     */
-    public function getBy(string $name): DatabaseWorkflowEntityInterface {
-
-        $entity = $this->getRepository()->findOneBy(array('name' => $name));
-
-        if (!$entity) {
-            throw new EntityNotFoundException(sprintf('Dataset not found (id: %d)', $name));
-        }
 
         return $entity;
     }
-
+    
     /**
      * @inheritDoc
      */
@@ -71,6 +60,7 @@ class TagWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInter
     {
         $entity = $this->get($entry->getId());
         $entity->setName($entry->getName());
+
         return $entity;
     }
 }

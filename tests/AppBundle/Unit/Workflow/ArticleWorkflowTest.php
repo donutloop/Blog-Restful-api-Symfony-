@@ -10,36 +10,44 @@ use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Tests\AppBundle\DataFixtures\ORM\LoadOneArticleData;
 
+/**
+ * Class ArticleWorkflowTest
+ * @package Tests\AppBundle\Unit\Workflow
+ */
 class ArticleWorkflowTest extends AbstractWorkflowTest
 {
-
     /**
      * @return string
      */
-    protected function getRepositoryName(): string{
+    protected function getRepositoryName(): string
+    {
         return 'AppBundle:Article';
     }
 
     /**
      * @return DatabaseWorkflowEntityInterface
      */
-    protected function getEntity(): DatabaseWorkflowEntityInterface{
+    protected function getEntity(): DatabaseWorkflowEntityInterface
+    {
         $entity = new Article();
         $entity->setTitle(sprintf('test-title-%s', uniqid()));
+        
         return $entity;
     }
 
     /**
      * @return DatabaseWorkflow
      */
-    protected function getWorkflow(): DatabaseWorkflow {
+    protected function getWorkflow(): DatabaseWorkflow
+    {
         return $this->getContainer()->get('appbundle.article.workflow');
     }
 
-    public function testDeleteArticle() {
-        $this->loadFixtures(array(
+    public function testDeleteArticle() 
+    {
+        $this->loadFixtures([
             'Tests\AppBundle\DataFixtures\ORM\LoadOneArticleData'
-        ));
+        ]);
 
         $workflow = $this->getWorkflow();
 
@@ -54,14 +62,16 @@ class ArticleWorkflowTest extends AbstractWorkflowTest
         static::assertEquals(null, $entity);
     }
 
-    public function testCreateInvalidTitle(){
+    public function testCreateInvalidTitle()
+    {
         $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
         $entity = $this->getEntity();
         $entity->setTitle('');
         $this->getWorkflow()->create($entity);
     }
 
-    public function testValidateInvalidTitle(){
+    public function testValidateInvalidTitle()
+    {
         $this->setExpectedException('Symfony\Component\Validator\Exception\ValidatorException');
         $entity = $this->getEntity();
         $entity->setTitle('');

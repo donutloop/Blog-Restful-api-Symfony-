@@ -10,7 +10,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class AppBundleExtension extends Extension{
+/**
+ * Class AppBundleExtension
+ * @package AppBundle\DependencyInjection
+ */
+class AppBundleExtension extends Extension
+{
     /**
      * @inheritDoc
      */
@@ -19,5 +24,4 @@ class AppBundleExtension extends Extension{
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__. '/../Resources/config/'));
         $loader->load('services.yml');
     }
-
 }

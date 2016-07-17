@@ -20,6 +20,10 @@ use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+/**
+ * Class ArticleController
+ * @package AppBundle\Controller
+ */
 class ArticleController extends AbstractWorkflowController
 {
     /**
@@ -57,7 +61,8 @@ class ArticleController extends AbstractWorkflowController
      *
      * @return View
      */
-    public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): View {
+    public function getArticlesByTagAction($tag, ParamFetcher $paramFetcher): View
+    {
         return $this->handleFindAllBy(['search' => $tag], $paramFetcher);
     }
 
@@ -80,7 +85,8 @@ class ArticleController extends AbstractWorkflowController
      *
      * @return View
      */
-    public function getArticlesAction(ParamFetcher $paramFetcher): View {
+    public function getArticlesAction(ParamFetcher $paramFetcher): View
+    {
         return $this->handleFindAll($paramFetcher);
     }
 
@@ -107,7 +113,8 @@ class ArticleController extends AbstractWorkflowController
      * @param $id
      * @return View
      */
-    public function deleteArticleAction(int $id): View {
+    public function deleteArticleAction(int $id): View
+    {
       return $this->handleDelete($id);
     }
 
@@ -128,8 +135,8 @@ class ArticleController extends AbstractWorkflowController
      * @param ArticleEntry $articleEntry
      * @return View
      */
-    public function postArticleAction(ArticleEntry $articleEntry): View {
-
+    public function postArticleAction(ArticleEntry $articleEntry): View
+    {
         if (!empty($articleEntry->getUsername())) {
 
             /**
@@ -138,14 +145,16 @@ class ArticleController extends AbstractWorkflowController
             $workflow = $this->get('appbundle.user.workflow');
 
             try{
-                $user = $workflow->getBy($articleEntry->getUsername());
+                $user = $workflow->getBy(['username' => $articleEntry->getUsername()]);
             }catch (EntityNotFoundException $e){
+
                 return $this->handleNotFound($e->getMessage());
             }
             
             $articleEntry->setUser($user);
 
         }else{
+
             return $this->handleError(Codes::HTTP_BAD_REQUEST,'User not set');
         }
 
@@ -155,9 +164,11 @@ class ArticleController extends AbstractWorkflowController
         $workflow = $this->get('appbundle.article.workflow');
         
         $mainEntity = $workflow->prepareEntity($articleEntry);
+
         try{
             $workflow->create($mainEntity);
         }catch(\Exception $e){
+
             return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
         };
             
@@ -171,13 +182,16 @@ class ArticleController extends AbstractWorkflowController
             foreach($articleEntry->getContents() as $content) {
 
                 $entity = $workflow->prepareEntity($content, $mainEntity);
+
                 try{
                     $workflow->create($entity);
                 }catch(\Exception $e){
+
                     return $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
                 };
             }
         } else {
+
             return $this->handleError(Codes::HTTP_BAD_REQUEST, 'Content not set');
         }
 
@@ -185,7 +199,7 @@ class ArticleController extends AbstractWorkflowController
 
             $workflow = $this->get('appbundle.tag.workflow');
 
-            $tagsLinked = array();
+            $tagsLinked = [];
                 
             foreach($articleEntry->getTags() as $tag) {
 
@@ -194,7 +208,7 @@ class ArticleController extends AbstractWorkflowController
                 }
 
                 try{
-                    $entity = $workflow->getBy($tag->getName());
+                    $entity = $workflow->getBy(['name' => $tag->getName()]);
                 }catch (NoResultException $e){
                     continue;
                 }
@@ -205,6 +219,7 @@ class ArticleController extends AbstractWorkflowController
                 }
             }
         }
+        
         return $this->handleSuccess(sprintf('Dataset succesfully created (id: %d)', $mainEntity->getId()), Codes::HTTP_CREATED);
     }
 }

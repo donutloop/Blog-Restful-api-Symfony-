@@ -8,7 +8,12 @@ namespace AppBundle\Library\Entries;
 use BaseBundle\Library\DatabaseEntryInterface;
 use JMS\Serializer\Annotation\Type;
 
-class UserEntry implements DatabaseEntryInterface{
+/**
+ * Class UserEntry
+ * @package AppBundle\Library\Entries
+ */
+class UserEntry implements DatabaseEntryInterface
+{
 
     /**
      * @Type("integer")

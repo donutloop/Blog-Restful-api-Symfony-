@@ -9,6 +9,7 @@ namespace BaseBundle\Library;
  * Interface DatabaseEntryInterface
  * @package BaseBundle\Library
  */
-interface DatabaseEntryInterface{
+interface DatabaseEntryInterface
+{
     public function getIdentifier();
 }

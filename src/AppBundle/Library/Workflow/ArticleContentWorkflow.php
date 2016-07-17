@@ -10,14 +10,18 @@ use BaseBundle\Library\DatabaseEntryInterface;
 use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 
-class ArticleContentWorkflow extends DatabaseWorkflow{
-
+/**
+ * Class ArticleContentWorkflow
+ * @package AppBundle\Library\Workflow
+ */
+class ArticleContentWorkflow extends DatabaseWorkflow
+{
     /**
      * @inheritDoc
      */
     protected function checkType(DatabaseWorkflowEntityInterface $entity)
     {
-        if(!($entity instanceof ArticleContent)){
+        if (!($entity instanceof ArticleContent)){
 
         }
     }
@@ -27,11 +31,13 @@ class ArticleContentWorkflow extends DatabaseWorkflow{
      * @param $mainEntity
      * @return ArticleContent
      */
-    public function prepareEntity(DatabaseEntryInterface $data, $mainEntity){
+    public function prepareEntity(DatabaseEntryInterface $data, $mainEntity)
+    {
         $entity = new ArticleContent();
         $entity->setContent($data->getContent());
         $entity->setContentType($data->getType());
         $entity->setArticle($mainEntity);
+
         return $entity;
     }
 

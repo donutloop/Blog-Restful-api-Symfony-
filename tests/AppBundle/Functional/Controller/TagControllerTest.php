@@ -8,12 +8,17 @@ use FOS\RestBundle\Util\Codes;
 use Tests\AppBundle\DataFixtures\ORM\LoadOneTagData;
 use Tests\AppBundle\DataFixtures\ORM\LoadTagData;
 
+/**
+ * Class TagControllerTest
+ * @package Tests\AppBundle\Functional\Controller
+ */
 class TagControllerTest extends ControllerTestCase
 {
     /**
      * @return array
      */
-   private function getRawTagData(){
+   private function getRawTagData()
+   {
        return [
            'name' => ''
        ];
@@ -22,7 +27,8 @@ class TagControllerTest extends ControllerTestCase
     /**
      * @param $entityRaw
      */
-    private function createTagErrorWrapper($entityRaw) {
+    private function createTagErrorWrapper($entityRaw)
+    {
         $serializer = $this->getContainer()->get('jms_serializer');
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
@@ -35,8 +41,8 @@ class TagControllerTest extends ControllerTestCase
     /**
      * @param $entityRaw
      */
-    private function updateTagErrorWrapper($entityRaw) {
-
+    private function updateTagErrorWrapper($entityRaw)
+    {
         $serializer = $this->getContainer()->get('jms_serializer');
 
         $entityJson = $serializer->serialize($entityRaw, 'json');
@@ -46,7 +52,8 @@ class TagControllerTest extends ControllerTestCase
         $this->assertEquals(Codes::HTTP_BAD_REQUEST, $view->code);
     }
 
-    public function testTagsAction() {
+    public function testTagsAction()
+    {
        $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadTagData'];
        $this->loadFixtures($fixtures);
 
@@ -57,7 +64,8 @@ class TagControllerTest extends ControllerTestCase
        $this->assertEquals(true, $acutal);
    }
 
-    public function testDeleteTagAction() {
+    public function testDeleteTagAction()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadTagData'];
         $this->loadFixtures($fixtures);
 
@@ -68,8 +76,8 @@ class TagControllerTest extends ControllerTestCase
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
-    public function testCreateTagAction(){
-
+    public function testCreateTagAction()
+    {
         $serializer = $this->getContainer()->get('jms_serializer');
 
         $entityRaw = $this->getRawTagData();
@@ -82,24 +90,27 @@ class TagControllerTest extends ControllerTestCase
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
-    public function testCreateTagEmptyNameAction(){
+    public function testCreateTagEmptyNameAction()
+    {
         $entityRaw = $this->getRawTagData();
         $this->createTagErrorWrapper($entityRaw);
     }
 
-    public function testCreateTagUnvaildMinAction(){
+    public function testCreateTagUnvaildMinAction()
+    {
         $entityRaw = $this->getRawTagData();
         $entityRaw['name'] = 'te';
         $this->createTagErrorWrapper($entityRaw);
     }
 
-    public function testCreateTagUnvaildMaxAction(){
+    public function testCreateTagUnvaildMaxAction()
+    {
         $entityRaw = $this->getRawTagData();
         $this->createTagErrorWrapper($entityRaw);
     }
 
-    public function testCreateTagUniqueAction() {
-        
+    public function testCreateTagUniqueAction()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'];
         $this->loadFixtures($fixtures);
 
@@ -108,12 +119,13 @@ class TagControllerTest extends ControllerTestCase
         $this->createTagErrorWrapper($entityRaw);
     }
 
-    public function testCreateTagBadFormatAction() {
+    public function testCreateTagBadFormatAction()
+    {
         $this->createTagErrorWrapper([]);
     }
 
-    public function testUpdateTagAction() {
-
+    public function testUpdateTagAction()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'];
         $this->loadFixtures($fixtures);
         
@@ -130,15 +142,16 @@ class TagControllerTest extends ControllerTestCase
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
-    public function testUpdateTagEntityNotFoundAction() {
+    public function testUpdateTagEntityNotFoundAction()
+    {
         $entityRaw = $this->getRawTagData();
         $entityRaw['name'] = 'test-tag-update';
         $entityRaw['id'] = '1';
         $this->updateTagErrorWrapper($entityRaw);
     }
 
-    public function testUpdateTagUnvaildMinAction() {
-
+    public function testUpdateTagUnvaildMinAction()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'];
         $this->loadFixtures($fixtures);
 
@@ -149,8 +162,8 @@ class TagControllerTest extends ControllerTestCase
         $this->updateTagErrorWrapper($entityRaw);
     }
 
-    public function testUpdateTagUnvaildMaxAction() {
-
+    public function testUpdateTagUnvaildMaxAction()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadOneTagData'];
         $this->loadFixtures($fixtures);
 
@@ -161,8 +174,8 @@ class TagControllerTest extends ControllerTestCase
         $this->updateTagErrorWrapper($entityRaw);
     }
 
-    public function testUpdateTagUniqueAction() {
-
+    public function testUpdateTagUniqueAction()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadTagData'];
         $this->loadFixtures($fixtures);
 

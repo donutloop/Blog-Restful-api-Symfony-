@@ -58,7 +58,7 @@ abstract class DatabaseWorkflow implements ContainerAwareInterface{
      */
     public function getContainer(): ContainerInterface {
 
-        if ($this->container === null){
+        if (null === $this->container){
             throw new \RuntimeException("Container isn't set");
         }
 
@@ -109,6 +109,22 @@ abstract class DatabaseWorkflow implements ContainerAwareInterface{
 
         if (!$entity) {
             throw new EntityNotFoundException(sprintf('Dataset not found (id: %d)', $id));
+        }
+
+        return $entity;
+    }
+
+    /**
+     * @param array $criteria
+     * @return DatabaseWorkflowEntityInterface
+     * @throws EntityNotFoundException
+     */
+    public function getBy(array $criteria): DatabaseWorkflowEntityInterface {
+
+        $entity = $this->getRepository()->findOneBy($criteria);
+
+        if (!$entity) {
+            throw new EntityNotFoundException(sprintf('Dataset not found (Criteria: %d)', json_encode($criteria)));
         }
 
         return $entity;
@@ -216,7 +232,7 @@ abstract class DatabaseWorkflow implements ContainerAwareInterface{
 
         $errors = $validator->validate($entity);
 
-        if (count($errors) > 0) {
+        if (0 !== count($errors)) {
             throw new ValidatorException((string) $errors);
         }
 

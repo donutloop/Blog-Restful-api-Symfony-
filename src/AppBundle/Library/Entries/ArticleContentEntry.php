@@ -8,6 +8,10 @@ namespace AppBundle\Library\Entries;
 use BaseBundle\Library\DatabaseEntryInterface;
 use JMS\Serializer\Annotation\Type;
 
+/**
+ * Class ArticleContentEntry
+ * @package AppBundle\Library\Entries
+ */
 class ArticleContentEntry implements DatabaseEntryInterface{
 
     /**
@@ -56,6 +60,7 @@ class ArticleContentEntry implements DatabaseEntryInterface{
     public function setContent($content): ArticleContentEntry
     {
         $this->content = $content;
+
         return $this;
     }
 
@@ -74,6 +79,7 @@ class ArticleContentEntry implements DatabaseEntryInterface{
     public function setType($type): ArticleContentEntry
     {
         $this->type = $type;
+
         return $this;
     }
 

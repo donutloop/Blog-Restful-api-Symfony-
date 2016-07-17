@@ -9,7 +9,7 @@ function runCommand($command){
     printf(">>> %s%s", $command, PHP_EOL);
 
     if ($result > 0) {
-        fwrite(STDERR, vsprintf('%s returned with %s \n', array($command, $result)));
+        fwrite(STDERR, vsprintf('%s returned with %s \n', [$command, $result]));
         exit(1);
     }
 }

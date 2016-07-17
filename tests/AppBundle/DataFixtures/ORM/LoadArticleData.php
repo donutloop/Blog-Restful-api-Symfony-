@@ -13,12 +13,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Tag;
 
+/**
+ * Class LoadArticleData
+ * @package Tests\AppBundle\DataFixtures\ORM
+ */
 class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @var array
      */
-    static $articles = array();
+    static $articles = [];
 
     /**
      * @var
@@ -30,13 +34,15 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
      * @param int $number
      * @return User
      */
-    private function createTestUser($data, $number = 1) {
+    private function createTestUser($data, $number = 1) 
+    {
         $number = (string) $number;
         $entity = new User();
         $entity->setUsername(sprintf($data['username'], $number));
         $entity->setEmail(sprintf($data['email'], $number));
         $entity->setPassword($data['password']);
         $this->getManager()->persist($entity);
+       
         return $entity;
     }
 
@@ -45,10 +51,12 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
      * @param $uid
      * @return Tag
      */
-    private function createTestTag($data, $uid) {
+    private function createTestTag($data, $uid) 
+    {
         $entity = new Tag();
         $entity->setName(sprintf($data['name'], $uid));
         $this->getManager()->persist($entity);
+    
         return $entity;
     }
 
@@ -59,13 +67,13 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
      * @param int $number
      * @return Article
      */
-    private function createTestArticle($data, array $tags = array(), User $user , $number = 1) {
-
+    private function createTestArticle($data, array $tags = [], User $user , $number = 1) 
+    {
         $entity = new Article();
         $entity->setTitle(sprintf($data['title'], $number));
         $entity->setUser($user);
 
-        foreach ($tags as $tag){
+        foreach ($tags as $tag) {
             $entity->addTag($tag);
         }
 
@@ -78,7 +86,8 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
      * @param $article
      * @param $data
      */
-    private function createTestArticleContent($article, $data) {
+    private function createTestArticleContent($article, $data) 
+    {
         $entity = new ArticleContent();
         $entity->setContentType($data['type']);
         $entity->setContent($data['content']);
@@ -89,60 +98,62 @@ class LoadArticleData extends AbstractFixture implements OrderedFixtureInterface
     /**
      * @param $manager
      */
-    private function setManager($manager) {
+    private function setManager($manager) 
+    {
         $this->manager = $manager;
     }
 
     /**
      * @return mixed
      */
-    private function getManager() {
+    private function getManager() 
+    {
         return $this->manager;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $manager) {
-
+    public function load(ObjectManager $manager) 
+    {
         $this->setManager($manager);
 
-        $data = array(
-                'user' => array(
+        $data = [
+                'user' => [
                     'username' => 'test-user-%d',
                     'email' => '%d-test@test.com',
                     'password' => 'test'
-                ),
-                'tags' => array (
-                    array(
+                ],
+                'tags' => [
+                    [
                         'name' => 'test-tag-%s',
-                    ),
-                     array(
+                    ],
+                    [
                          'name' => 'test-tag-%s',
-                     )
-                ),
-                'article' => array(
+                    ]
+                ],
+                'article' => [
                     'title' => 'test-entry-%d'
-                ),
+                ],
                 'articleContent' => array(
-                    array(
+                    [
                         'type' => 'text',
                         'content' => 'Lorem Ipsum'
-                    ),
-                    array(
+                    ],
+                    [
                         'type' => 'code',
                         'content' => 'Lorem Ipsum'
-                    )
+                    ]
                 )
-        );
+        ];
 
-        self::$articles = array();
+        self::$articles = [];
 
         $count = 0;
 
         while ($count != 100) {
 
-            $tags = array();
+            $tags = [];
             $user = null;
             $article = null;
 

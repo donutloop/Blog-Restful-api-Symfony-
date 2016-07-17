@@ -154,6 +154,6 @@ abstract class AbstractWorkflowController extends ApiController {
             $this->handleError(Codes::HTTP_BAD_REQUEST, $e->getMessage());
         }
 
-        return $this->prepareView(new ViewData(Codes::HTTP_OK, $data, array('offset' => $offset, 'limit' => $limit)), $context);
+        return $this->prepareView(new ViewData(Codes::HTTP_OK, $data, ['offset' => $offset, 'limit' => $limit]), $context);
     }
 }

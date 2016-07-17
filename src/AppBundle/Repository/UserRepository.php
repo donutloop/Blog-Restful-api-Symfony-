@@ -8,7 +8,6 @@ namespace AppBundle\Repository;
 use BaseBundle\Library\DatabaseWorkflowRepositoryInterface;
 use BaseBundle\Library\Repository;
 
-
 /**
  * Class UserRepository
  *

@@ -8,9 +8,12 @@ namespace AppBundle\Library\Entries;
 use BaseBundle\Library\DatabaseEntryInterface;
 use JMS\Serializer\Annotation\Type;
 
-class TagEntry implements DatabaseEntryInterface{
-
-
+/**
+ * Class TagEntry
+ * @package AppBundle\Library\Entries
+ */
+class TagEntry implements DatabaseEntryInterface
+{
     /**
      * @Type("integer")
      */

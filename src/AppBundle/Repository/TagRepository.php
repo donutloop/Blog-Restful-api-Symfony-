@@ -11,7 +11,6 @@ use BaseBundle\Library\Repository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 
-
 /**
  * TagRepository
  *
@@ -26,8 +25,8 @@ class TagRepository extends Repository implements DatabaseWorkflowRepositoryInte
      * @return Query
      * @throws NoResultException
      */
-    public function createFindAllQuery(int $firstResult = 0, int $maxResults = 10, $queryParam): Query {
-        
+    public function createFindAllQuery(int $firstResult = 0, int $maxResults = 10, $queryParam): Query
+    {
         $query = $this->createQueryBuilder('t')
             ->select('t.name')
             ->setMaxResults($maxResults)
@@ -46,7 +45,8 @@ class TagRepository extends Repository implements DatabaseWorkflowRepositoryInte
      *
      *  TODO write test cases
      */
-    public function link(int $tag_id, Article $article) {
+    public function link(int $tag_id, Article $article)
+    {
         $entity = $this->find($tag_id);
 
         if ($entity) {
@@ -61,7 +61,8 @@ class TagRepository extends Repository implements DatabaseWorkflowRepositoryInte
      * @param $name
      * @return mixed
      */
-    public function findIdByName(string $name): int {
+    public function findIdByName(string $name): int
+    {
         return $this->createQueryBuilder('t')
             ->select('t.id')
             ->where('t.name = :name')

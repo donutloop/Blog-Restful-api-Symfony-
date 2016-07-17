@@ -13,8 +13,12 @@ use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use BaseBundle\Library\TraitWorkflowUtility;
 use Doctrine\ORM\NoResultException;
 
-class ArticleWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface{
-    
+/**
+ * Class ArticleWorkflow
+ * @package AppBundle\Library\Workflow
+ */
+class ArticleWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface
+{
     use TraitWorkflowUtility;
     
     /**
@@ -22,7 +26,7 @@ class ArticleWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareI
      */
     protected function checkType(DatabaseWorkflowEntityInterface $entity)
     {
-        if(!($entity instanceof Article)){
+        if (!($entity instanceof Article)){
             
         }
     }
@@ -31,10 +35,12 @@ class ArticleWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareI
      * @param DatabaseEntryInterface $entry
      * @return Article
      */
-    public function prepareEntity(DatabaseEntryInterface $entry){
+    public function prepareEntity(DatabaseEntryInterface $entry)
+    {
         $entity = new Article();
         $entity->setTitle($entry->getTitle());
         $entity->setUser($entry->getUser());
+
         return $entity;
     }
 

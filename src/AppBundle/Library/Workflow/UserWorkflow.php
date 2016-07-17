@@ -6,21 +6,24 @@
 namespace AppBundle\Library\Workflow;
 
 use AppBundle\Entity\User;
-use AppBundle\Library\Entries\UserEntry;
 use BaseBundle\Library\DatabaseEntryInterface;
 use BaseBundle\Library\DatabaseWorkflow;
 use BaseBundle\Library\DatabaseWorkflowAwareInterface;
 use BaseBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\EntityNotFoundException;
 
-class UserWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface{
-
+/**
+ * Class UserWorkflow
+ * @package AppBundle\Library\Workflow
+ */
+class UserWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInterface
+{
     /**
      * @inheritDoc
      */
     protected function checkType(DatabaseWorkflowEntityInterface $entity)
     {
-        if(!($entity instanceof User)){
+        if (!($entity instanceof User)){
             
         }
     }
@@ -29,11 +32,13 @@ class UserWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInte
      * @param DatabaseEntryInterface $userEntry
      * @return User
      */
-    public function prepareEntity(DatabaseEntryInterface $userEntry): User{
+    public function prepareEntity(DatabaseEntryInterface $userEntry): User
+    {
         $entity = new User();
         $entity->setUsername($userEntry->getUsername());
         $entity->setEmail($userEntry->getEmail());
         $entity->setPassword($userEntry->getPassword());
+
         return $entity;
     }
 
@@ -42,7 +47,8 @@ class UserWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInte
      * @return User
      * @throws EntityNotFoundException
      */
-    public function prepareUpdateEntity(DatabaseEntryInterface $userEntry): User{
+    public function prepareUpdateEntity(DatabaseEntryInterface $userEntry): User
+    {
         /**
          * @var User $entity
          */
@@ -51,21 +57,6 @@ class UserWorkflow extends DatabaseWorkflow implements DatabaseWorkflowAwareInte
         $entity->setUsername($userEntry->getUsername());
         $entity->setEmail($userEntry->getEmail());
         $entity->setPassword($userEntry->getPassword());
-        return $entity;
-    }
-
-    /**
-     * @param string $username
-     * @return DatabaseWorkflowEntityInterface
-     * @throws EntityNotFoundException
-     */
-    public function getBy(string $username): DatabaseWorkflowEntityInterface {
-
-        $entity = $this->getRepository()->findOneBy(array('username' => $username));
-
-        if (!$entity) {
-            throw new EntityNotFoundException(sprintf('Dataset not found (id: %d)', $username));
-        }
 
         return $entity;
     }

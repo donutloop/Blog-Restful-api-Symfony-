@@ -21,14 +21,14 @@ class ArticleRepository extends Repository implements DatabaseWorkflowRepository
      * @param $queryParam
      * @return QueryBuilder
      */
-    public function createBaseFindAllByQuery($queryParam): QueryBuilder {
-        
+    public function createBaseFindAllByQuery($queryParam): QueryBuilder 
+    {
         $queryBuilder = $this->createQueryBuilder('a')
                      ->join('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.article_id')
                      ->join('AppBundle\Entity\User', 'u', 'WITH', 'a.user_id = u.id')
                      ->join('AppBundle\Entity\Tag', 't');
 
-        if (isset($queryParam['search'])){
+        if (array_key_exists('search', $queryParam)){
             $queryBuilder->where('t.name LIKE :name')
                   ->setParameter('name', $queryParam['search']. '%');
         }
@@ -39,8 +39,8 @@ class ArticleRepository extends Repository implements DatabaseWorkflowRepository
     /**
      * @return QueryBuilder
      */
-    public function createBaseFindAllQuery(): QueryBuilder {
-
+    public function createBaseFindAllQuery(): QueryBuilder 
+    {
         $queryBuilder = $this->createQueryBuilder('a')
             ->join('AppBundle\Entity\ArticleContent', 'ac', 'WITH', 'a.id = ac.article_id')
             ->join('AppBundle\Entity\User', 'u', 'WITH', 'a.user_id = u.id')

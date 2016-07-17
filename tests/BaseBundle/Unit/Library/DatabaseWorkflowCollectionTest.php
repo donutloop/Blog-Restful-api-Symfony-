@@ -12,26 +12,30 @@ use Tests\BaseBundle\Library\DatabaseWorkflowTestEntity2;
  */
 class DatabaseWorkflowCollectionTest extends \PHPUnit_Framework_TestCase
 {
-   public function getEntity(): DatabaseWorkflowEntityInterface{
+   public function getEntity(): DatabaseWorkflowEntityInterface
+   {
       return new DatabaseWorkflowTestEntity();
    }
 
-   public function getEntity2(): DatabaseWorkflowEntityInterface{
+   public function getEntity2(): DatabaseWorkflowEntityInterface
+   {
        return new DatabaseWorkflowTestEntity2();
    }
 
-   public function testConstructor(){
-       $collection = new DatabaseWorkflowCollection(array($this->getEntity()));
+   public function testConstructor()
+   {
+       $collection = new DatabaseWorkflowCollection([$this->getEntity()]);
        static::assertEquals(1, $collection->count());
    }
 
-    public function testConstructorInvalidArg(){
+    public function testConstructorInvalidArg()
+    {
         $this->setExpectedException("InvalidArgumentException");
-        $collection = new DatabaseWorkflowCollection(array($this->getEntity(), $this->getEntity2()));
+        $collection = new DatabaseWorkflowCollection([$this->getEntity(), $this->getEntity2()]);
     }
 
-    public function testAddEntity(){
-       
+    public function testAddEntity()
+    {
        $collection = new DatabaseWorkflowCollection();
        
        $collection->addEntity($this->getEntity());
@@ -40,7 +44,8 @@ class DatabaseWorkflowCollectionTest extends \PHPUnit_Framework_TestCase
        static::assertEquals(2, $collection->count());
    }
 
-    public function testAddEntityInvalidArg() {
+    public function testAddEntityInvalidArg()
+    {
         $this->setExpectedException("InvalidArgumentException");
 
         $collection = new DatabaseWorkflowCollection();
@@ -49,21 +54,22 @@ class DatabaseWorkflowCollectionTest extends \PHPUnit_Framework_TestCase
         $collection->addEntity($this->getEntity2());
     }
 
-    public function testSetEntities(){
-
+    public function testSetEntities()
+    {
         $collection = new DatabaseWorkflowCollection();
 
-        $collection->setEntities(array($this->getEntity(), $this->getEntity()));
+        $collection->setEntities([$this->getEntity(), $this->getEntity()]);
 
         static::assertEquals(2, $collection->count());
     }
 
-    public function testSetEntitiesInvalidArg() {
+    public function testSetEntitiesInvalidArg()
+    {
         $this->setExpectedException("InvalidArgumentException");
 
         $collection = new DatabaseWorkflowCollection();
 
-        $collection->setEntities(array($this->getEntity(), $this->getEntity2()));
+        $collection->setEntities([$this->getEntity(), $this->getEntity2()]);
     }
 
    public function testRemoveEntity(){
@@ -72,7 +78,7 @@ class DatabaseWorkflowCollectionTest extends \PHPUnit_Framework_TestCase
 
        $id = $entity->getIdentifier();
 
-       $collection = new DatabaseWorkflowCollection(array($entity));
+       $collection = new DatabaseWorkflowCollection([$entity]);
 
        $collection->removeEntity($id);
 

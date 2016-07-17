@@ -16,8 +16,8 @@ use JMS\Serializer\Annotation\Groups;
  *
  * @ExclusionPolicy("all")
  */
-class ViewData {
-
+class ViewData
+{
     /**
      * @var mixed
      *
@@ -74,7 +74,8 @@ class ViewData {
      * @param array $errors
      * @param array $warnings
      */
-    public function __construct(int $code, $data = null, array $queryParam = [], string $message = '', array $errors = [], array $warnings = []) {
+    public function __construct(int $code, $data = null, array $queryParam = [], string $message = '', array $errors = [], array $warnings = [])
+    {
       $this->code = $code;
       $this->data = $data;
       $this->message = $message;
@@ -87,15 +88,18 @@ class ViewData {
      * @param $data
      * @return $this
      */
-    public function setData($data) {
-       $this->data = $data;
+    public function setData($data)
+    {
+        $this->data = $data;
+
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getData() {
+    public function getData()
+    {
         return $this->data;
     }
 
@@ -103,7 +107,8 @@ class ViewData {
      * @param int $code
      * @return $this
      */
-    public function setCode(int $code) {
+    public function setCode(int $code)
+    {
         $this->code = $code;
         return $this;
     }
@@ -111,7 +116,8 @@ class ViewData {
     /**
      * @return int
      */
-    public function getCode(): int {
+    public function getCode(): int
+    {
         return $this->code;
     }
 
@@ -119,15 +125,18 @@ class ViewData {
      * @param array $errors
      * @return $this
      */
-    public function setErrors(array $errors) {
+    public function setErrors(array $errors)
+    {
         $this->errors = $errors;
+
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getErrors(): array {
+    public function getErrors(): array
+    {
         return $this->errors;
     }
 
@@ -135,15 +144,18 @@ class ViewData {
      * @param array $warnings
      * @return $this
      */
-    public function setWarnings(array $warnings) {
+    public function setWarnings(array $warnings)
+    {
         $this->warnings = $warnings;
+
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getWarnings(): array {
+    public function getWarnings(): array
+    {
         return $this->warnings;
     }
 
@@ -151,15 +163,18 @@ class ViewData {
      * @param string $message
      * @return $this
      */
-    public function setMessage(string $message) {
+    public function setMessage(string $message)
+    {
         $this->message = $message;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getMessage(): string {
+    public function getMessage(): string
+    {
         return $this->message;
     }
 
@@ -167,15 +182,18 @@ class ViewData {
      * @param array $queryParam
      * @return $this
      */
-    public function setQueryParam(array $queryParam) {
+    public function setQueryParam(array $queryParam)
+    {
         $this->queryParam = $queryParam;
+
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getQueryParam(): array {
+    public function getQueryParam(): array
+    {
         return $this->queryParam;
     }
 }

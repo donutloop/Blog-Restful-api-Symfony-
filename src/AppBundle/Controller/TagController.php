@@ -15,12 +15,17 @@ use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-class TagController extends AbstractWorkflowController{
-
+/**
+ * Class TagController
+ * @package AppBundle\Controller
+ */
+class TagController extends AbstractWorkflowController
+{
     /**
      * @return DatabaseWorkflowAwareInterface
      */
-    public function getWorkflow(): DatabaseWorkflowAwareInterface {
+    public function getWorkflow(): DatabaseWorkflowAwareInterface
+    {
         return $this->get('appbundle.tag.workflow');
     }
 
@@ -43,7 +48,8 @@ class TagController extends AbstractWorkflowController{
      *
      * @return View
      */
-   public function getTagsAction(ParamFetcher $paramFetcher): View {
+   public function getTagsAction(ParamFetcher $paramFetcher): View
+   {
       return $this->handleFindAll($paramFetcher);
    }
 
@@ -70,7 +76,8 @@ class TagController extends AbstractWorkflowController{
      * @param $id
      * @return View
      */
-    public function deleteTagAction(int $id): View {
+    public function deleteTagAction(int $id): View
+    {
         return $this->handleDelete($id);
     }
 
@@ -99,7 +106,8 @@ class TagController extends AbstractWorkflowController{
       *
       * @return View
      **/
-    public function postTagAction(TagEntry $tagEntry): View {
+    public function postTagAction(TagEntry $tagEntry): View
+    {
         return $this->handleCreate($tagEntry);
     }
 
@@ -133,7 +141,8 @@ class TagController extends AbstractWorkflowController{
      *
      * @return View
      **/
-    public function putTagAction(TagEntry $tagEntry): View {
+    public function putTagAction(TagEntry $tagEntry): View
+    {
         return $this->handleUpdate($tagEntry);
     }
 }

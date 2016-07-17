@@ -101,7 +101,8 @@ class User extends BaseUser implements DatabaseWorkflowEntityInterface
      *
      * @ORM\PreUpdate
      */
-    public function setUpdateAt(){
+    public function setUpdateAt()
+    {
         $this->updateAt = date('Y-m-d H:i:s');
     }
 
@@ -110,7 +111,8 @@ class User extends BaseUser implements DatabaseWorkflowEntityInterface
      *
      * @return string
      */
-    public function getCreateAt(){
+    public function getCreateAt()
+    {
         return $this->createdAt;
     }
 
@@ -119,7 +121,8 @@ class User extends BaseUser implements DatabaseWorkflowEntityInterface
      *
      * @return string
      */
-    public function getUpdateAt(){
+    public function getUpdateAt()
+    {
         return $this->updateAt;
     }
 

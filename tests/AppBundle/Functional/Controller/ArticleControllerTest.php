@@ -8,10 +8,12 @@ namespace Tests\AppBundle\Functional\Controller;
 use FOS\RestBundle\Util\Codes;
 use Tests\AppBundle\DataFixtures\ORM\LoadArticleData;
 
-
+/**
+ * Class ArticleControllerTest
+ * @package Tests\AppBundle\Functional\Controller
+ */
 class ArticleControllerTest extends ControllerTestCase
 {
-
     /**
      * @return array
      */
@@ -43,8 +45,8 @@ class ArticleControllerTest extends ControllerTestCase
     /**
      * @param $entityRaw
      */
-    private function createArticleErrorWrapper($entityRaw, $code = Codes::HTTP_BAD_REQUEST) {
-
+    private function createArticleErrorWrapper($entityRaw, $code = Codes::HTTP_BAD_REQUEST)
+    {
         $serializer = $this->getContainer()->get('jms_serializer');
         $entityJson = $serializer->serialize($entityRaw, 'json');
 
@@ -52,8 +54,8 @@ class ArticleControllerTest extends ControllerTestCase
         $this->assertEquals($code, $view->code);
     }
 
-    public function testCreateArticle() {
-
+    public function testCreateArticle()
+    {
         $fixtures = [
             'Tests\AppBundle\DataFixtures\ORM\LoadUserData',
             'Tests\AppBundle\DataFixtures\ORM\LoadTagData'
@@ -71,64 +73,74 @@ class ArticleControllerTest extends ControllerTestCase
         $this->assertEquals(Codes::HTTP_CREATED, $view->code);
     }
 
-    public function testCreateArticleDataEmpty() {
+    public function testCreateArticleDataEmpty()
+    {
         $this->createArticleErrorWrapper([]);
     }
 
-    public function testCreateArticleUserNotSet() {
+    public function testCreateArticleUserNotSet()
+    {
         $entityRaw = $this->getRawArticleData();
         $entityRaw['username'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
 
-    public function testCreateArticleUserNotFound() {
+    public function testCreateArticleUserNotFound()
+    {
         $entityRaw = $this->getRawArticleData();
         $entityRaw['username'] = 'test-user-x';
         $this->createArticleErrorWrapper($entityRaw, Codes::HTTP_NOT_FOUND);
     }
 
-    public function testCreateArticleTitleEmpty() {
+    public function testCreateArticleTitleEmpty()
+    {
         $entityRaw = $this->getRawArticleData();
         $entityRaw['title'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
 
-    public function testCreateArticleContentNotSet() {
+    public function testCreateArticleContentNotSet()
+    {
         $entityRaw = $this->getRawArticleData();
         $entityRaw['contents'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
     
-    public function testCreateArticleContentTypeEmpty() {
+    public function testCreateArticleContentTypeEmpty()
+    {
         $entityRaw = $this->getRawArticleData();
         $entityRaw['contents'][0]['type'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
 
-    public function testCreateArticleContentEmpty() {
+    public function testCreateArticleContentEmpty()
+    {
         $entityRaw = $this->getRawArticleData();
         $entityRaw['contents'][0]['content'] = null;
         $this->createArticleErrorWrapper($entityRaw);
     }
     
-    public function testCreateArticleBlank() {
+    public function testCreateArticleBlank()
+    {
         $entityRaw = $this->getRawArticleData();
         $entityRaw['title'] = '';
         $this->createArticleErrorWrapper($entityRaw);
     }
     
-    public function testArticlesAction() {
+    public function testArticlesAction()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadArticleData'];
         $this->loadFixtures($fixtures);
 
         $view = $this->getJson($this->getUrl('get_articles'));
         
-        $acutal = count($view->data) > 0;
+        $acutal = 0 < count($view->data);
 
         $this->assertEquals(true, $acutal);
     }
 
-    public function testArticleByTagAction() {
+    public function testArticleByTagAction()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadArticleData'];
         $this->loadFixtures($fixtures);
 
@@ -138,7 +150,8 @@ class ArticleControllerTest extends ControllerTestCase
         $this->assertEquals(1, $actual);
     }
     
-    public function testDeleteArticle() {
+    public function testDeleteArticle()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadArticleData'];
         $this->loadFixtures($fixtures);
 
@@ -148,9 +161,8 @@ class ArticleControllerTest extends ControllerTestCase
         $this->assertEquals(Codes::HTTP_OK, $view->code);
     }
 
-    public function testDeleteArticleNotFound() {
-        $client = static::createClient();
-
+    public function testDeleteArticleNotFound()
+    {
         $view = $this->deleteJson($this->getUrl('delete_article', ['id' => 999]));
         
         $this->assertEquals(Codes::HTTP_NOT_FOUND, $view->code);

@@ -82,7 +82,8 @@ class Tag implements DatabaseWorkflowEntityInterface
     /**
      * Tag constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->articles = new ArrayCollection();
     }
 
@@ -131,6 +132,7 @@ class Tag implements DatabaseWorkflowEntityInterface
         $this->articles->add($article);
         return $this;
     }
+    
     /**
      * Remove article
      *
@@ -166,7 +168,8 @@ class Tag implements DatabaseWorkflowEntityInterface
      *
      * @ORM\PreUpdate
      */
-    public function setUpdateAt(){
+    public function setUpdateAt()
+    {
         $this->updateAt = date('Y-m-d H:i:s');
     }
 
@@ -175,7 +178,8 @@ class Tag implements DatabaseWorkflowEntityInterface
      *
      * @return string
      */
-    public function getCreateAt(){
+    public function getCreateAt()
+    {
         return $this->createdAt;
     }
 
@@ -184,7 +188,8 @@ class Tag implements DatabaseWorkflowEntityInterface
      *
      * @return string
      */
-    public function getUpdateAt(){
+    public function getUpdateAt()
+    {
         return $this->updateAt;
     }
 

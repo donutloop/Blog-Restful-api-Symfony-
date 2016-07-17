@@ -12,15 +12,17 @@ use AppBundle\Entity\Tag;
 
 class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
 {
-
-    static $tags = null;
+    /**
+     * @var array
+     */
+    static $tags = [];
 
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-        $tagNames = array(
+        $tagNames = [
             'TDD',
             'OOP',
             'GOlang',
@@ -31,9 +33,9 @@ class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
             'Unit testing',
             'Machine learing',
             'Math'
-        );
+        ];
 
-        self::$tags = array();
+        self::$tags = [];
 
         foreach ($tagNames as $tagName) {
             $tag = new Tag();
@@ -45,6 +47,9 @@ class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
     }
 
+    /**
+     * @return int
+     */
     public function getOrder()
     {
         return 1;

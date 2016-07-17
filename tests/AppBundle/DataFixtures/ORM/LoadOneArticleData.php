@@ -10,9 +10,15 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Article;
 
+/**
+ * Class LoadOneArticleData
+ * @package Tests\AppBundle\DataFixtures\ORM
+ */
 class LoadOneArticleData extends AbstractFixture implements OrderedFixtureInterface
 {
-
+    /**
+     * @var Article
+     */
     static $entity;
 
     /**
@@ -29,6 +35,9 @@ class LoadOneArticleData extends AbstractFixture implements OrderedFixtureInterf
         self::$entity = $entity;
     }
 
+    /**
+     * @return int
+     */
     public function getOrder()
     {
         return 1;

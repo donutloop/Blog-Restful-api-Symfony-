@@ -15,11 +15,20 @@ use Pagerfanta\Pagerfanta;
  * Class TraitWorkflowUtility
  * @package BaseBundle\Library
  */
-trait TraitWorkflowUtility{
-    
-    public function  generatePaginateCollection($qb, string $route, array $sort = [], array $filter = [], int $page = 1, int $limit = 25, array $extraParams = []): PaginatedRepresentation{
-
-
+trait TraitWorkflowUtility
+{
+    /**
+     * @param $qb
+     * @param string $route
+     * @param array $sort
+     * @param array $filter
+     * @param int $page
+     * @param int $limit
+     * @param array $extraParams
+     * @return PaginatedRepresentation
+     */
+    public function generatePaginateCollection($qb, string $route, array $sort = [], array $filter = [], int $page = 1, int $limit = 25, array $extraParams = []): PaginatedRepresentation
+    {
         $pagerAdapter = new DoctrineORMAdapter($qb);
 
         $pager = new Pagerfanta($pagerAdapter);
@@ -30,7 +39,6 @@ trait TraitWorkflowUtility{
         
         $pagerFactory = new PagerfantaFactory();
 
-
         $routeParam = [
             'limit' => $limit,
             'page' => $pager,
@@ -38,10 +46,9 @@ trait TraitWorkflowUtility{
             'filter' => $filter
         ];
 
-        if (0 != count($extraParams)) {
+        if (0 !== count($extraParams)) {
             $routeParam = array_merge($routeParam, $extraParams);
         }
-
 
         return $pagerFactory->createRepresentation($pager, new Route($route, $routeParam));
     }

@@ -11,8 +11,8 @@ use BaseBundle\Library\DatabaseWorkflowEntityInterface;
  * Class DatabaseWorkflowTestEntity
  * @package Tests\BaseBundle\Library
  */
-class DatabaseWorkflowTestEntity implements DatabaseWorkflowEntityInterface{
-
+class DatabaseWorkflowTestEntity implements DatabaseWorkflowEntityInterface
+{
     /**
      * @inheritDoc
      */

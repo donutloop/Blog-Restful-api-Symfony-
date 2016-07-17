@@ -8,6 +8,10 @@ use FOS\RestBundle\Util\Codes;
 use JMS\Serializer\Serializer;
 use Tests\AppBundle\DataFixtures\ORM\LoadUserData;
 
+/**
+ * Class UserControllerTest
+ * @package Tests\AppBundle\Functional\Controller
+ */
 class UserControllerTest extends ControllerTestCase
 {
     /**
@@ -22,8 +26,8 @@ class UserControllerTest extends ControllerTestCase
         ];
     }
 
-    public function testUpdateUserAction() {
-
+    public function testUpdateUserAction()
+    {
         $fixtures = ['Tests\AppBundle\DataFixtures\ORM\LoadUserData'];
         $this->loadFixtures($fixtures);
 

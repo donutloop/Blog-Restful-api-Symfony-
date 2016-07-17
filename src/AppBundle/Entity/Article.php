@@ -94,7 +94,8 @@ class Article implements DatabaseWorkflowEntityInterface
     /**
      * Article constructor.
      */
-    public function __construct() {
+    public function __construct() 
+    {
         $this->tags = new ArrayCollection();
     }
     
@@ -146,7 +147,8 @@ class Article implements DatabaseWorkflowEntityInterface
      *
      * @param $user
      */
-    public function setUser(User $user){
+    public function setUser(User $user)
+    {
         $this->user_id = $user;
     }
     
@@ -159,6 +161,7 @@ class Article implements DatabaseWorkflowEntityInterface
     public function addTag(Tag $tag)
     {
         $this->tags[] = $tag;
+
         return $this;
     }
     
@@ -187,7 +190,8 @@ class Article implements DatabaseWorkflowEntityInterface
      * 
      * @ORM\PrePersist 
      */
-    public function setCreateAt(){
+    public function setCreateAt()
+    {
         $this->createdAt = date('Y-m-d H:i:s');
     }
     
@@ -196,7 +200,8 @@ class Article implements DatabaseWorkflowEntityInterface
      * 
      * @ORM\PreUpdate
      */
-    public function setUpdateAt(){
+    public function setUpdateAt()
+    {
        $this->updateAt = date('Y-m-d H:i:s'); 
     }
 
@@ -205,7 +210,8 @@ class Article implements DatabaseWorkflowEntityInterface
      * 
      * @return string
      */
-    public function getCreateAt(){
+    public function getCreateAt()
+    {
         return $this->createdAt;
     }
 
@@ -214,7 +220,8 @@ class Article implements DatabaseWorkflowEntityInterface
      * 
      * @return string
      */
-    public function getUpdateAt(){
+    public function getUpdateAt()
+    {
         return $this->updateAt;
     }
 

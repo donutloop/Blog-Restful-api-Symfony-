@@ -12,7 +12,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {
-
+    /**
+     * @var User
+     */
     static $entity = null;
 
     static $username = null;
@@ -35,6 +37,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         self::$username = $username;
     }
 
+    /**
+     * @return int
+     */
     public function getOrder()
     {
         return 1;

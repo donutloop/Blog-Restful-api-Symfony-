@@ -9,8 +9,8 @@ namespace BaseBundle\Library;
  * Interface DatabaseWorkflowEntityInterface
  * @package BaseBundle\Library
  */
-interface DatabaseWorkflowEntityInterface{
-
+interface DatabaseWorkflowEntityInterface
+{
     /**
      * @return string
      */

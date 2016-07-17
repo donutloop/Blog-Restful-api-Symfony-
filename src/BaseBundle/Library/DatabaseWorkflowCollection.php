@@ -4,6 +4,10 @@
  */
 namespace BaseBundle\Library;
 
+/**
+ * Class DatabaseWorkflowCollection
+ * @package BaseBundle\Library
+ */
 class DatabaseWorkflowCollection
 {
     /**
@@ -17,7 +21,8 @@ class DatabaseWorkflowCollection
      * DatabaseWorkflowCollection constructor.
      * @param array $entities
      */
-    final public function __construct(array $entities = []) {
+    final public function __construct(array $entities = [])
+    {
         $this->container = new \ArrayObject();
         $this->setEntities($entities);
     }
@@ -26,10 +31,12 @@ class DatabaseWorkflowCollection
      * @param DatabaseWorkflowEntityInterface $entity
      * @return DatabaseWorkflowCollection
      */
-    private function checkType(DatabaseWorkflowEntityInterface $entity): DatabaseWorkflowCollection{
-        if($this->type != get_class($entity)){
+    private function checkType(DatabaseWorkflowEntityInterface $entity): DatabaseWorkflowCollection
+    {
+        if ($this->type != get_class($entity)){
             throw new \InvalidArgumentException("Wrong type");
         }
+
         return $this;
     }
 
@@ -37,10 +44,12 @@ class DatabaseWorkflowCollection
      * @param DatabaseWorkflowEntityInterface $entity
      * @return DatabaseWorkflowCollection
      */
-    private function setTypeIfNull(DatabaseWorkflowEntityInterface $entity): DatabaseWorkflowCollection{
-        if($this->type === null){
+    private function setTypeIfNull(DatabaseWorkflowEntityInterface $entity): DatabaseWorkflowCollection
+    {
+        if ($this->type === null){
             $this->type = get_class($entity);
         }
+
         return $this;
     }
 
@@ -48,13 +57,14 @@ class DatabaseWorkflowCollection
      * @param DatabaseWorkflowEntityInterface $entity
      * @return DatabaseWorkflowCollection
      */
-    public function addEntity(DatabaseWorkflowEntityInterface $entity): DatabaseWorkflowCollection {
-
+    public function addEntity(DatabaseWorkflowEntityInterface $entity): DatabaseWorkflowCollection
+    {
         $this->setTypeIfNull($entity)->checkType($entity);
 
-        if(!$this->container->offsetExists($entity->getIdentifier())) {
+        if (!$this->container->offsetExists($entity->getIdentifier())) {
             $this->container->offsetSet($entity->getIdentifier(), $entity);
         }
+
         return $this;
     }
 
@@ -62,14 +72,16 @@ class DatabaseWorkflowCollection
      * @param array $entities
      * @return DatabaseWorkflowCollection
      */
-    public function setEntities(array $entities): DatabaseWorkflowCollection {
-        if (!empty($entities) && is_array($entities)) {
+    public function setEntities(array $entities): DatabaseWorkflowCollection
+    {
+        if (0 !== count($entities) && is_array($entities)) {
 
             foreach ($entities as $entity) {
 
                 $this->setTypeIfNull($entity)->checkType($entity);
 
-                if($entity instanceof DatabaseWorkflowEntityInterface) {
+                if ($entity instanceof DatabaseWorkflowEntityInterface) {
+
                     if (!$this->container->offsetExists($entity->getIdentifier())){
                         $this->container->offsetSet($entity->getIdentifier(), $entity->getIdentifier());
                     }else{
@@ -81,6 +93,7 @@ class DatabaseWorkflowCollection
                 }
             }
         }
+
         return $this;
     }
 
@@ -88,10 +101,12 @@ class DatabaseWorkflowCollection
      * @param mixed $id
      * @return DatabaseWorkflowCollection
      */
-    public function removeEntity($id): DatabaseWorkflowCollection {
-        if($this->container->offsetExists($id)) {
+    public function removeEntity($id): DatabaseWorkflowCollection
+    {
+        if ($this->container->offsetExists($id)) {
             $this->container->offsetUnset($id);
         }
+
         return $this;
     }
 
@@ -99,8 +114,10 @@ class DatabaseWorkflowCollection
      * @param mixed $id
      * @return mixed
      */
-    public function getEntity($id) {
-        if($this->container->offsetExists($id)) {
+    public function getEntity($id)
+    {
+        if ($this->container->offsetExists($id)) {
+
             return $this->container->offsetGet($id);
         }
     }
@@ -108,14 +125,16 @@ class DatabaseWorkflowCollection
     /**
      * @return \ArrayObject
      */
-    public function getEntities(): \ArrayObject{
+    public function getEntities(): \ArrayObject
+    {
         return $this->container;
     }
 
     /**
      * @return int
      */
-    public function count(): int{
+    public function count(): int
+    {
         return count($this->container);
     }
 }

@@ -12,7 +12,9 @@ use AppBundle\Entity\Tag;
 
 class LoadOneTagData extends AbstractFixture implements OrderedFixtureInterface
 {
-
+    /**
+     * @var Tag 
+     */
     static $entity = null;
 
     /**
@@ -28,6 +30,9 @@ class LoadOneTagData extends AbstractFixture implements OrderedFixtureInterface
         self::$entity = $tag;
     }
 
+    /**
+     * @return int
+     */
     public function getOrder()
     {
         return 1;
