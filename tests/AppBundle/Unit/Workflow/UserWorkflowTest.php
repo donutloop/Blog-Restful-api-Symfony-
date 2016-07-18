@@ -6,8 +6,8 @@
 namespace Tests\AppBundle\Unit\Workflow;
 
 use AppBundle\Entity\User;
-use BaseBundle\Library\DatabaseWorkflow;
-use BaseBundle\Library\DatabaseWorkflowEntityInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflow;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowEntityInterface;
 
 /**
  * Class UserWorkflowTest

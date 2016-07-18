@@ -6,10 +6,10 @@
 namespace AppBundle\Library\Workflow;
 
 use AppBundle\Entity\User;
-use BaseBundle\Library\DatabaseEntryInterface;
-use BaseBundle\Library\DatabaseWorkflow;
-use BaseBundle\Library\DatabaseWorkflowAwareInterface;
-use BaseBundle\Library\DatabaseWorkflowEntityInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseEntryInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflow;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowAwareInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowEntityInterface;
 use Doctrine\ORM\EntityNotFoundException;
 
 /**

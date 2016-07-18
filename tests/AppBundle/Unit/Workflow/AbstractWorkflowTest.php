@@ -5,8 +5,8 @@
 
 namespace Tests\AppBundle\Unit\Workflow;
 
-use BaseBundle\Library\DatabaseWorkflow;
-use BaseBundle\Library\DatabaseWorkflowEntityInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflow;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowEntityInterface;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**

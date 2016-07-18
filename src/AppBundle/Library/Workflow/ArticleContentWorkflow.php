@@ -6,9 +6,9 @@
 namespace AppBundle\Library\Workflow;
 
 use AppBundle\Entity\ArticleContent;
-use BaseBundle\Library\DatabaseEntryInterface;
-use BaseBundle\Library\DatabaseWorkflow;
-use BaseBundle\Library\DatabaseWorkflowEntityInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseEntryInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflow;
+use  Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowEntityInterface;
 
 /**
  * Class ArticleContentWorkflow

@@ -5,7 +5,7 @@
 
 namespace AppBundle\Entity;
 
-use BaseBundle\Library\DatabaseWorkflowEntityInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowEntityInterface;
 use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMSAnnotation;

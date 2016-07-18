@@ -5,7 +5,7 @@
 
 namespace AppBundle\Library\Entries;
 
-use BaseBundle\Library\DatabaseEntryInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseEntryInterface;
 use JMS\Serializer\Annotation\Type;
 
 /**

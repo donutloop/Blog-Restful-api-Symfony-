@@ -5,7 +5,7 @@
 
 namespace AppBundle\Repository;
 
-use BaseBundle\Library\Repository;
+use Donutloop\RestfulApiWorkflowBundle\Library\Repository;
 
 /**
  * ArticleContentRepository

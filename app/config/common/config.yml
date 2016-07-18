@@ -102,7 +102,7 @@ jms_serializer:
         directories:
             Hateoas:
                 namespace_prefix: "Hateoas\\Representation"
-                path: "@BaseBundle/Resources/config/Hateoas/"
+                path: "@RestfulApiWorkflowBundle/Resources/config/Hateoas/"
         auto_detection: true
     visitors:
         json:

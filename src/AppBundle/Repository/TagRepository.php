@@ -6,8 +6,8 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Article;
-use BaseBundle\Library\DatabaseWorkflowRepositoryInterface;
-use BaseBundle\Library\Repository;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowRepositoryInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\Repository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 

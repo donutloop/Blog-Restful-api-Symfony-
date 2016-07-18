@@ -6,9 +6,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Library\Entries\TagEntry;
-use BaseBundle\Controller\AbstractWorkflowController;
-use BaseBundle\Library\DatabaseWorkflow;
-use BaseBundle\Library\DatabaseWorkflowAwareInterface;
+use Donutloop\RestfulApiWorkflowBundle\Controller\AbstractWorkflowController;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowAwareInterface;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\View\View;

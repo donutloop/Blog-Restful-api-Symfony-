@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2cd57e9cfae7ea813419fb534737f8da",
-    "content-hash": "b15c96ac31e54f50c0591e2b6d06a819",
+    "hash": "108984208a135253a87428a079d32a71",
+    "content-hash": "1bb2852e76ca2394e8e7f17c0d31e47f",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -773,6 +773,65 @@
                 "orm"
             ],
             "time": "2016-01-05 21:34:58"
+        },
+        {
+            "name": "donutloop/restful-api-workflow-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/donutloop/RestfulApiWorkflowBundle.git",
+                "reference": "c4b711afb57238e07c8a203f69a5636f170b1804"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/donutloop/RestfulApiWorkflowBundle/zipball/c4b711afb57238e07c8a203f69a5636f170b1804",
+                "reference": "c4b711afb57238e07c8a203f69a5636f170b1804",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/doctrine-bundle": "^1.6",
+                "doctrine/doctrine-cache-bundle": "^1.2",
+                "doctrine/orm": "^2.5",
+                "friendsofsymfony/rest-bundle": "^1.7",
+                "jms/serializer-bundle": "^1.1",
+                "php": ">=7.0",
+                "sensio/distribution-bundle": "^5.0",
+                "sensio/framework-extra-bundle": "^3.0.2",
+                "symfony/monolog-bundle": "^2.8",
+                "symfony/symfony": "3.1.*",
+                "white-october/pagerfanta-bundle": "^1.0",
+                "willdurand/hateoas-bundle": "^1.1"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7|~3.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Donutloop\\RestfulApiWorkflowBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Edmund Franke"
+                }
+            ],
+            "description": "Create workflows for your REST API",
+            "keywords": [
+                "api",
+                "rest",
+                "workflow"
+            ],
+            "time": "2016-07-18 16:45:46"
         },
         {
             "name": "friendsofsymfony/oauth-server-bundle",
@@ -3216,7 +3275,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "friendsofsymfony/user-bundle": 20
+        "friendsofsymfony/user-bundle": 20,
+        "donutloop/restful-api-workflow-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -6,8 +6,8 @@
 namespace Tests\AppBundle\Unit\Workflow;
 
 use AppBundle\Entity\Article;
-use BaseBundle\Library\DatabaseWorkflow;
-use BaseBundle\Library\DatabaseWorkflowEntityInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflow;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowEntityInterface;
 use Tests\AppBundle\DataFixtures\ORM\LoadOneArticleData;
 
 /**

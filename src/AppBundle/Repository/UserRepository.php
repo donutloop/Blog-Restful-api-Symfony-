@@ -5,8 +5,8 @@
 
 namespace AppBundle\Repository;
 
-use BaseBundle\Library\DatabaseWorkflowRepositoryInterface;
-use BaseBundle\Library\Repository;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowRepositoryInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\Repository;
 
 /**
  * Class UserRepository

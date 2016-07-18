@@ -6,7 +6,7 @@
 namespace AppBundle\Library\Entries;
 
 use AppBundle\Entity\User;
-use BaseBundle\Library\DatabaseEntryInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseEntryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
 

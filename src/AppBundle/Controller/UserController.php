@@ -6,8 +6,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Library\Entries\UserEntry;
-use BaseBundle\Controller\AbstractWorkflowController;
-use BaseBundle\Library\DatabaseWorkflowAwareInterface;
+use Donutloop\RestfulApiWorkflowBundle\Library\DatabaseWorkflowAwareInterface;
+use Donutloop\RestfulApiWorkflowBundle\Controller\AbstractWorkflowController;
 use FOS\RestBundle\Controller\Annotations as RestAnnotaions;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;

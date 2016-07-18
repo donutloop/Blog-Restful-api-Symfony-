@@ -23,7 +23,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\RestBundle\FOSRestBundle(),
-            new BaseBundle\BaseBundle(),
+            new Donutloop\RestfulApiWorkflowBundle\RestfulApiWorkflowBundle(),
             new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
