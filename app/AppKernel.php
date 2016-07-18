@@ -23,12 +23,12 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\RestBundle\FOSRestBundle(),
-            new Donutloop\RestfulApiWorkflowBundle\RestfulApiWorkflowBundle(),
-            new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
-            new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle()
+            new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
+            new Donutloop\RestfulApiWorkflowBundle\RestfulApiWorkflowBundle(),
+            new AppBundle\AppBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
