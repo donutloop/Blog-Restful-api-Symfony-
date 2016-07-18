@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "108984208a135253a87428a079d32a71",
-    "content-hash": "1bb2852e76ca2394e8e7f17c0d31e47f",
+    "hash": "7c13d8e73649ed8021307c7af8c34206",
+    "content-hash": "6319031aa985cf05d41e2f4b20d262be",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -780,12 +780,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/donutloop/RestfulApiWorkflowBundle.git",
-                "reference": "c4b711afb57238e07c8a203f69a5636f170b1804"
+                "reference": "3b407a177c747a4ca4de4ffed5553791e6ede215"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/donutloop/RestfulApiWorkflowBundle/zipball/c4b711afb57238e07c8a203f69a5636f170b1804",
-                "reference": "c4b711afb57238e07c8a203f69a5636f170b1804",
+                "url": "https://api.github.com/repos/donutloop/RestfulApiWorkflowBundle/zipball/3b407a177c747a4ca4de4ffed5553791e6ede215",
+                "reference": "3b407a177c747a4ca4de4ffed5553791e6ede215",
                 "shasum": ""
             },
             "require": {
@@ -808,12 +808,12 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.0.2-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Donutloop\\RestfulApiWorkflowBundle\\": ""
+                    "Donutloop\\RestfulApiWorkflowBundle\\": "src/Donutloop/RestfulApiWorkflowBundle"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -831,7 +831,7 @@
                 "rest",
                 "workflow"
             ],
-            "time": "2016-07-18 16:45:46"
+            "time": "2016-07-18 17:57:39"
         },
         {
             "name": "friendsofsymfony/oauth-server-bundle",
